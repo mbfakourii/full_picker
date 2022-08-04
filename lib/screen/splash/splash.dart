@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-import '../../utils/common_utils.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../navigation/navigation.dart';
 
 late String accessToken;
