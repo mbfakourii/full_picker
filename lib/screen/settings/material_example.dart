@@ -6,7 +6,7 @@
 // Created Date: April 16, 2021
 
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:ahille/test.dart';
+import 'package:ahille/screen/settings/test.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage2 extends StatefulWidget {

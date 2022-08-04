@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
-import 'generated/l10n.dart';
+import '../../generated/l10n.dart';
 
 String currentLanguage = "${LanguageCubit.baseLanguage.languageCode}_${LanguageCubit.baseLanguage.countryCode ?? ""}";
 bool currentLanguageIsSystemLocal = false;
