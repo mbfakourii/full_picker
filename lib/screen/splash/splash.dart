@@ -173,7 +173,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
 
   void checkApplication() async {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const Navigation()));
+        context, MaterialPageRoute(builder: (context) => Navigation()));
     // if (await getApplication()) {
     //   if (await initParse()) {
     //     Navigator.pushReplacement(

@@ -505,7 +505,7 @@ packages:
     source: hosted
     version: "1.0.0"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       url: "https://pub.dartlang.org"

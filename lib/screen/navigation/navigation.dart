@@ -1,102 +1,70 @@
-import 'package:ahille/screen/settings/settingsmain.dart';
+import 'package:ahille/screen/account/account.dart';
+import 'package:ahille/screen/chat/chat.dart';
+import 'package:ahille/screen/navigation/update_navigation.dart';
+import 'package:ahille/screen/search/search.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import '../../generated/l10n.dart';
-import '../settings/settings.dart';
+import '../home/home.dart';
 
+class Navigation extends StatelessWidget {
+  Navigation({Key? key}) : super(key: key);
+  final List<Widget> _items = [];
+  late final List<Widget> _pages = <Widget>[];
 
-class Navigation extends StatefulWidget {
-  const Navigation({Key? key}) : super(key: key);
+  addItem(Widget widget, IconData icon, String label) {
+    _pages.add(widget);
+    _items.add(
+      NavigationDestination(
+        icon: Icon(icon),
+        label: label,
+      ),
+    );
+  }
 
-  @override
-  State<Navigation> createState() => _NavigationState();
-}
+  buttons(context) {
+    if (_items.isNotEmpty) {
+      _items.clear();
+      _pages.clear();
+    }
 
-class _NavigationState extends State<Navigation> {
-  int currentPageIndex = 0;
+    addItem(const Home(), Icons.sensor_window_sharp, S.current.home);
+    addItem(const Chat(), Icons.article, S.current.chat);
+    addItem(const Search(), Icons.search, S.current.search);
+    addItem(const Account(), Icons.account_box, S.current.account);
+  }
+
+  UpdateNavigation getUpdateNavigation(context, {bool listen=true}) {
+    return Provider.of<UpdateNavigation>(context,listen: listen);
+  }
 
   @override
   Widget build(BuildContext context) {
+    buttons(context);
+
     return Scaffold(
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
+            // sets the background color of the `BottomNavigationBar`
             canvasColor: Colors.green,
-            iconTheme: IconThemeData.fallback().copyWith(
-                color: Colors.red
-            ),
-            listTileTheme:const ListTileThemeData(
+            iconTheme: const IconThemeData.fallback().copyWith(color: Colors.red),
+            listTileTheme: const ListTileThemeData(
               iconColor: Colors.red,
             ),
             // sets the active color of the `BottomNavigationBar` if `Brightness` is light
             primaryColor: Colors.red,
-            textTheme: Theme
-                .of(context)
-                .textTheme
-                .copyWith(caption: new TextStyle(color: Colors.yellow))), // sets the inactive color of the `BottomNavigationBar`
+            textTheme: Theme.of(context).textTheme.copyWith(caption: const TextStyle(color: Colors.yellow))),
+        // sets the inactive color of the `BottomNavigationBar`
 
         child: NavigationBar(
           onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
+            getUpdateNavigation(context,listen: false).updatePageIndex(index);
           },
-          height: 60,
-          selectedIndex: currentPageIndex,
-          destinations: <Widget>[
-            NavigationDestination(
-              icon: const Icon(Icons.sensor_window_sharp),
-              label: S.current.home,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.article),
-              label: S.current.chat,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.search),
-              label: S.current.search,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.account_box),
-              label: S.current.account,
-            ),
-          ],
+          selectedIndex: getUpdateNavigation(context).getPageIndex,
+          destinations: _items,
         ),
       ),
-      body: <Widget>[
-        Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              const Text('Page 1'),
-              const Text('Page 1'),
-              const Text('Page 1'),
-              TextButton(onPressed: () {
-                setState(() {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyHomePage()));
-                });
-              }, child: Text("Setting")),
-
-            ],
-          ),
-        ),
-        Container(
-          color: Colors.green,
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
-        Container(
-          color: Colors.green,
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
-        Container(
-          color: Colors.blue,
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        ),
-      ][currentPageIndex],
+      body: _pages[getUpdateNavigation(context).getPageIndex],
     );
   }
 }
