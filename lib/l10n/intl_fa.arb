@@ -1,46 +1,7 @@
 {
   "@@locale": "fa",
-  "pageHomeListTitle": "برخی از رشته های محلی:",
-  "pageHomeSamplePlaceholder": "خوش آمدی {name}",
-  "pageHomeSamplePlaceholdersOrdered": "اسم من هست {lastName}, {firstName} {lastName}",
-  "@pageHomeSamplePlaceholdersOrdered": {
-    "placeholders": {
-      "firstName": {},
-      "lastName": {}
-    }
-  },
-  "pageHomeSamplePlural": "{howMany, plural, one{You have 1 message} دیگر{You have {howMany} پیام ها}}",
-  "@pageHomeSamplePlural": {
-    "placeholders": {
-      "howMany": {
-        "type": "int"
-      }
-    }
-  },
-  "pageHomeSampleTotalAmount": "جمع: {total}",
-  "@pageHomeSampleTotalAmount": {
-    "placeholders": {
-      "total": {
-        "type": "double",
-        "format": "currency",
-        "optionalParameters": {
-          "symbol": "ریال",
-          "decimalDigits": 2
-        }
-      }
-    }
-  },
-  "pageHomeSampleCurrentDateTime": "تاریخ: {date} زمان: {time}",
-  "@pageHomeSampleCurrentDateTime": {
-    "placeholders": {
-      "date": {
-        "type": "DateTime",
-        "format": "yMd"
-      },
-      "time": {
-        "type": "DateTime",
-        "format": "Hm"
-      }
-    }
-  }
+  "home": "خانه",
+  "chat": "صحبت",
+  "search": "جست و جو",
+  "account": "حساب کاربری"
 }

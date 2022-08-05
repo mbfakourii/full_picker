@@ -47,7 +47,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await initParse();
-      // checkApplication();
+      checkApplication();
     });
   }
 

@@ -27,9 +27,25 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<LanguageCubit, Locale>(builder: (context, lang) {
         return AdaptiveTheme(
           light: ThemeData(
-            brightness: ThemeData.light().brightness,
-            useMaterial3: true,
-          ),
+              useMaterial3: true,
+              navigationBarTheme: NavigationBarThemeData(
+                iconTheme: MaterialStateProperty.resolveWith((states) {
+                  if (states.contains(MaterialState.selected)) {
+                    return const IconThemeData(
+                      color: Color(0xFFF2F2F2),
+                    );
+                  }
+                  return const IconThemeData(
+                    color: Color(0xff333333),
+                  );
+                }),
+              ),
+              colorScheme: ThemeData().colorScheme.copyWith(
+                    primary: Colors.yellow,
+                    background: Colors.green,
+                    secondaryContainer: const Color(0xff333333),
+                    brightness: ThemeData.light().brightness,
+                  )),
           dark: ThemeData(
             brightness: ThemeData.dark().brightness,
             useMaterial3: true,

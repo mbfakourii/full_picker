@@ -40,31 +40,31 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    S.of(context).pageHomeListTitle,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(""),
-                  Text(
-                    S.of(context).pageHomeSamplePlaceholder('John'),
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    S.of(context).pageHomeSamplePlaceholdersOrdered('John', 'Doe'),
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    S.of(context).pageHomeSamplePlural(2),
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    S.of(context).pageHomeSampleTotalAmount(2500.0),
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    S.of(context).pageHomeSampleCurrentDateTime(DateTime.now(), DateTime.now()),
-                    style: const TextStyle(fontSize: 20),
-                  ),
+                  // Text(
+                  //   S.of(context).pageHomeListTitle,
+                  //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  // ),
+                  // const Text(""),
+                  // Text(
+                  //   S.of(context).pageHomeSamplePlaceholder('John'),
+                  //   style: const TextStyle(fontSize: 20),
+                  // ),
+                  // Text(
+                  //   S.of(context).pageHomeSamplePlaceholdersOrdered('John', 'Doe'),
+                  //   style: const TextStyle(fontSize: 20),
+                  // ),
+                  // Text(
+                  //   S.of(context).pageHomeSamplePlural(2),
+                  //   style: const TextStyle(fontSize: 20),
+                  // ),
+                  // Text(
+                  //   S.of(context).pageHomeSampleTotalAmount(2500.0),
+                  //   style: const TextStyle(fontSize: 20),
+                  // ),
+                  // Text(
+                  //   S.of(context).pageHomeSampleCurrentDateTime(DateTime.now(), DateTime.now()),
+                  //   style: const TextStyle(fontSize: 20),
+                  // ),
                   Text(
                     "currentLanguage\n    $currentLanguage",
                     style: const TextStyle(fontSize: 20),

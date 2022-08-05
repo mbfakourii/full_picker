@@ -50,75 +50,43 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Some localized strings:`
-  String get pageHomeListTitle {
+  /// `Home`
+  String get home {
     return Intl.message(
-      'Some localized strings:',
-      name: 'pageHomeListTitle',
+      'Home',
+      name: 'home',
       desc: '',
       args: [],
     );
   }
 
-  /// `Welcome {name}`
-  String pageHomeSamplePlaceholder(Object name) {
+  /// `Chat`
+  String get chat {
     return Intl.message(
-      'Welcome $name',
-      name: 'pageHomeSamplePlaceholder',
+      'Chat',
+      name: 'chat',
       desc: '',
-      args: [name],
+      args: [],
     );
   }
 
-  /// `My name is {lastName}, {firstName} {lastName}`
-  String pageHomeSamplePlaceholdersOrdered(Object firstName, Object lastName) {
+  /// `Search`
+  String get search {
     return Intl.message(
-      'My name is $lastName, $firstName $lastName',
-      name: 'pageHomeSamplePlaceholdersOrdered',
+      'Search',
+      name: 'search',
       desc: '',
-      args: [firstName, lastName],
+      args: [],
     );
   }
 
-  /// `{howMany, plural, one{You have 1 message} other{You have {howMany} messages}}`
-  String pageHomeSamplePlural(int howMany) {
-    return Intl.plural(
-      howMany,
-      one: 'You have 1 message',
-      other: 'You have $howMany messages',
-      name: 'pageHomeSamplePlural',
-      desc: '',
-      args: [howMany],
-    );
-  }
-
-  /// `Total: {total}`
-  String pageHomeSampleTotalAmount(double total) {
-    final NumberFormat totalNumberFormat = NumberFormat.currency(
-        locale: Intl.getCurrentLocale(), symbol: '€', decimalDigits: 2);
-    final String totalString = totalNumberFormat.format(total);
-
+  /// `Account`
+  String get account {
     return Intl.message(
-      'Total: $totalString',
-      name: 'pageHomeSampleTotalAmount',
+      'Account',
+      name: 'account',
       desc: '',
-      args: [totalString],
-    );
-  }
-
-  /// `Date: {date} Time: {time}`
-  String pageHomeSampleCurrentDateTime(DateTime date, DateTime time) {
-    final DateFormat dateDateFormat = DateFormat.yMd(Intl.getCurrentLocale());
-    final String dateString = dateDateFormat.format(date);
-
-    final DateFormat timeDateFormat = DateFormat.Hm(Intl.getCurrentLocale());
-    final String timeString = timeDateFormat.format(time);
-
-    return Intl.message(
-      'Date: $dateString Time: $timeString',
-      name: 'pageHomeSampleCurrentDateTime',
-      desc: '',
-      args: [dateString, timeString],
+      args: [],
     );
   }
 }
@@ -129,8 +97,6 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'ar'),
-      Locale.fromSubtags(languageCode: 'de'),
       Locale.fromSubtags(languageCode: 'fa'),
     ];
   }
