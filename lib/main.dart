@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'components/colors.dart';
 import 'generated/l10n.dart';
 import 'screen/bloc/language_cubit.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -26,25 +27,52 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => LanguageCubit(),
       child: BlocBuilder<LanguageCubit, Locale>(builder: (context, lang) {
+        // Set Language
+        context.read<LanguageCubit>().changeStartLanguage();
+
         return AdaptiveTheme(
           light: ThemeData(
               useMaterial3: true,
+              fontFamily: 'IRANSans',
               navigationBarTheme: NavigationBarThemeData(
                 iconTheme: MaterialStateProperty.resolveWith((states) {
                   if (states.contains(MaterialState.selected)) {
                     return const IconThemeData(
-                      color: Color(0xFFF2F2F2),
+                      color: antiFlashWhite,
                     );
                   }
                   return const IconThemeData(
-                    color: Color(0xff333333),
+                    color: darkCharcoal,
                   );
                 }),
               ),
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ElevatedButton.styleFrom(
+                primary: darkCharcoal,
+                onPrimary: white,
+              )),
+              outlinedButtonTheme: OutlinedButtonThemeData(
+                  style: OutlinedButton.styleFrom(
+                primary: Colors.green,
+                backgroundColor: Colors.blue,
+                side: const BorderSide(color: Colors.black, width: 2.5),
+              )),
+              iconTheme: const IconThemeData(
+                color: darkCharcoal,
+              ),
+              textTheme: const TextTheme(
+                bodyText2: TextStyle(),
+              ).apply(
+                bodyColor: darkCharcoal,
+              ),
+              scaffoldBackgroundColor: white,
+              backgroundColor: white,
+              cardTheme: const CardTheme(
+                color: antiFlashWhite,
+                elevation: 0,
+              ),
               colorScheme: ThemeData().colorScheme.copyWith(
-                    primary: Colors.yellow,
-                    background: Colors.green,
-                    secondaryContainer: const Color(0xff333333),
+                    secondaryContainer: darkCharcoal,
                     brightness: ThemeData.light().brightness,
                   )),
           dark: ThemeData(

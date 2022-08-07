@@ -4,5 +4,7 @@
   "chat": "Chat",
   "search": "Search",
   "account": "Account",
+  "welcome": "Welcome to Ahille",
+  "login_text": "To register and enter the program, please enter your mobile number",
   "ahille": "Ahille"
 }

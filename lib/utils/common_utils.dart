@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 import 'package:timezone/timezone.dart';
 import 'package:timezone/data/latest.dart' ;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_compress/video_compress.dart';
 
 convertHashMapListToPointer(dynamic parseHashMap) {
   return encodeObject(parseHashMap['className'], parseHashMap['objectId']);
@@ -126,7 +128,35 @@ ParseFile? getVideoThumbnailListParseFile(List<dynamic> thumbnailFiles, String p
   return null;
 }
 
-bool isVideo(String path) {
+Future<String> generateVideoThumbnail(String path) async {
+  Uint8List byteData;
+  try {
+    final thumbnailFile = await VideoCompress.getFileThumbnail(path,
+        quality: 50, // default(100)
+        position: -1 // default(-1)
+    );
+
+    return thumbnailFile.path;
+  } catch (e) {
+    final b = await rootBundle.load('assets/images/logo.png');
+    byteData = b.buffer.asUint8List();
+  }
+
+  Directory extDir;
+  if (io.Platform.isIOS) {
+    extDir = await getApplicationDocumentsDirectory();
+  } else {
+    extDir = (await getExternalStorageDirectory())!;
+  }
+  String dirPAth = "${extDir.path}/Pictures";
+  await Directory(dirPAth).create(recursive: true);
+  File file = File('$dirPAth/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg');
+  await file.writeAsBytes(byteData);
+
+  return file.path;
+}
+
+bool isUrlHasVideo(String path) {
   RegExp exp = RegExp(
       r"((?:www\.)?(?:\S+)(?:%2F|\/)(?:(?!\.(?:mp4|mkv|wmv|m4v|mov|avi|flv|webm|flac|mka|m4a|aac|ogg))[^\/])*\.(mp4|mkv|wmv|m4v|mov|avi|flv|webm|flac|mka|m4a|aac|ogg))(?!\/|\.[a-z]{1,3})");
 

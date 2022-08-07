@@ -26,6 +26,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "ahille": MessageLookupByLibrary.simpleMessage("Ahille"),
         "chat": MessageLookupByLibrary.simpleMessage("Chat"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
-        "search": MessageLookupByLibrary.simpleMessage("Search")
+        "login_text": MessageLookupByLibrary.simpleMessage(
+            "To register and enter the program, please enter your mobile number"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "welcome": MessageLookupByLibrary.simpleMessage("Welcome to Ahille")
       };
 }

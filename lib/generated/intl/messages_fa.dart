@@ -23,8 +23,12 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "account": MessageLookupByLibrary.simpleMessage("حساب کاربری"),
+        "ahille": MessageLookupByLibrary.simpleMessage("آهیل"),
         "chat": MessageLookupByLibrary.simpleMessage("صحبت"),
         "home": MessageLookupByLibrary.simpleMessage("خانه"),
-        "search": MessageLookupByLibrary.simpleMessage("جست و جو")
+        "login_text": MessageLookupByLibrary.simpleMessage(
+            "برای ثبت نام و وارد شدن به برنامه لطفا شماره موبایل خود را وارد کنید"),
+        "search": MessageLookupByLibrary.simpleMessage("جست و جو"),
+        "welcome": MessageLookupByLibrary.simpleMessage("به آهیل خوش آمدید")
       };
 }

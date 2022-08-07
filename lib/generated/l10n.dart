@@ -90,6 +90,26 @@ class S {
     );
   }
 
+  /// `Welcome to Ahille`
+  String get welcome {
+    return Intl.message(
+      'Welcome to Ahille',
+      name: 'welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To register and enter the program, please enter your mobile number`
+  String get login_text {
+    return Intl.message(
+      'To register and enter the program, please enter your mobile number',
+      name: 'login_text',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ahille`
   String get ahille {
     return Intl.message(
