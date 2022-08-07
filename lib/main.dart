@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'components/colors.dart';
+import 'config/colors.dart';
 import 'generated/l10n.dart';
 import 'screen/bloc/language_cubit.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -57,6 +57,18 @@ class MyApp extends StatelessWidget {
                 backgroundColor: Colors.blue,
                 side: const BorderSide(color: Colors.black, width: 2.5),
               )),
+              textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                primary: darkCharcoal,
+              )),
+              inputDecorationTheme: const InputDecorationTheme(
+                fillColor: white,
+                filled: true,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: darkCharcoal),
+                ),
+              ),
+            dialogBackgroundColor: antiFlashWhite,
               iconTheme: const IconThemeData(
                 color: darkCharcoal,
               ),
@@ -64,6 +76,7 @@ class MyApp extends StatelessWidget {
                 bodyText2: TextStyle(),
               ).apply(
                 bodyColor: darkCharcoal,
+
               ),
               scaffoldBackgroundColor: white,
               backgroundColor: white,
@@ -73,6 +86,7 @@ class MyApp extends StatelessWidget {
               ),
               colorScheme: ThemeData().colorScheme.copyWith(
                     secondaryContainer: darkCharcoal,
+                    primary: darkCharcoal,
                     brightness: ThemeData.light().brightness,
                   )),
           dark: ThemeData(

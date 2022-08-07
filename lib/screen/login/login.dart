@@ -1,6 +1,7 @@
 import 'package:ahille/widgets/h3.dart';
 import 'package:ahille/widgets/info.dart';
 import 'package:ahille/widgets/logo.dart';
+import 'package:ahille/widgets/phone_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -32,6 +33,11 @@ class _LoginState extends State<Login> {
           //   onPressed: () {},
           //   child: const Text("Test"),
           // )
+
+          const PhoneTextField(),
+          MaterialButton(onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyHomePage()));
+          },child: const Text("settings"))
         ]),
       ),
     );

@@ -1,5 +1,9 @@
 {
   "@@locale": "en",
+  "@optionalParameters": {
+    "symbol": "€",
+    "decimalDigits": 2
+  },
   "home": "Home",
   "chat": "Chat",
   "search": "Search",
