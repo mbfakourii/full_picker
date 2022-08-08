@@ -63,7 +63,7 @@ flutter:
   fonts:
     - family: IRANSans
       fonts:
-        - asset: fonts/iran_sans_num_medium.ttf
+        - asset: fonts/iran_sansx_medium.ttf
 
 flutter_icons:
   image_path: "assets/images/logo.png"

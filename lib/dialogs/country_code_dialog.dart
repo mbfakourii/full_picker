@@ -2,7 +2,6 @@ import 'package:ahille/widgets/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../generated/l10n.dart';
 import '../utils/countrie_codes.dart';
 
 class CountryCodeDialog extends StatelessWidget {
@@ -38,8 +37,12 @@ class CountryCodeDialog extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Expanded(flex: 6, child: Text(countries[index].name)),
-                                  Expanded(flex: 1, child: Text(countries[index].dialCode)),
+                                  Expanded(flex: 8, child: Text(countries[index].name)),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Align(
+                                          alignment: AlignmentDirectional.topEnd,
+                                          child: Text(countries[index].dialCode, maxLines: 1))),
                                 ],
                               ),
                             ),

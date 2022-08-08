@@ -91,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("کنگو، جمهوری دموکراتیک کنگو"),
         "cook_islands": MessageLookupByLibrary.simpleMessage("جزایر کوک"),
         "costa_rica": MessageLookupByLibrary.simpleMessage("کاستاریکا"),
+        "cote_d_ivoire": MessageLookupByLibrary.simpleMessage("ساحل عاج"),
         "croatia": MessageLookupByLibrary.simpleMessage("کرواسی"),
         "cuba": MessageLookupByLibrary.simpleMessage("کوبا"),
         "cyprus": MessageLookupByLibrary.simpleMessage("قبرس"),
