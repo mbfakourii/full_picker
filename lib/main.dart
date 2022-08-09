@@ -1,6 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:ahille/screen/navigation/update_navigation.dart';
 import 'package:ahille/screen/splash/splash.dart';
+import 'package:ahille/widgets/phone_textfield.dart';
+import 'package:ahille/widgets/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'config/colors.dart';
 import 'generated/l10n.dart';
-import 'screen/bloc/language_cubit.dart';
+import 'bloc/language_cubit.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
@@ -53,9 +55,9 @@ class MyApp extends StatelessWidget {
               )),
               outlinedButtonTheme: OutlinedButtonThemeData(
                   style: OutlinedButton.styleFrom(
-                primary: Colors.green,
-                backgroundColor: Colors.blue,
-                side: const BorderSide(color: Colors.black, width: 2.5),
+                primary: darkCharcoal,
+                backgroundColor: white,
+                side: const BorderSide(color: grayX11, width: 2.5),
               )),
               textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(
@@ -68,7 +70,7 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide(color: darkCharcoal),
                 ),
               ),
-            dialogBackgroundColor: antiFlashWhite,
+              dialogBackgroundColor: antiFlashWhite,
               iconTheme: const IconThemeData(
                 color: darkCharcoal,
               ),
@@ -76,7 +78,6 @@ class MyApp extends StatelessWidget {
                 bodyText2: TextStyle(),
               ).apply(
                 bodyColor: darkCharcoal,
-
               ),
               scaffoldBackgroundColor: white,
               backgroundColor: white,
@@ -102,6 +103,13 @@ class MyApp extends StatelessWidget {
                     providers: [
                       ChangeNotifierProvider.value(
                         value: UpdateNavigation(),
+                      ),
+                      ChangeNotifierProvider.value(
+                        value: UpdateSearchbar(),
+                      ),
+
+                      ChangeNotifierProvider.value(
+                        value: UpdatePhoneTextField(),
                       ),
                     ],
                     child: MaterialApp(

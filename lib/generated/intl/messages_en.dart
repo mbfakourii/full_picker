@@ -107,6 +107,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ecuador": MessageLookupByLibrary.simpleMessage("Ecuador"),
         "egypt": MessageLookupByLibrary.simpleMessage("Egypt"),
         "el_salvador": MessageLookupByLibrary.simpleMessage("El Salvador"),
+        "enter_the_value":
+            MessageLookupByLibrary.simpleMessage("Please enter the value"),
         "equatorial_guinea":
             MessageLookupByLibrary.simpleMessage("Equatorial Guinea"),
         "eritrea": MessageLookupByLibrary.simpleMessage("Eritrea"),
@@ -224,11 +226,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "niger": MessageLookupByLibrary.simpleMessage("Niger"),
         "nigeria": MessageLookupByLibrary.simpleMessage("Nigeria"),
         "niue": MessageLookupByLibrary.simpleMessage("Niue"),
+        "no_amount_found":
+            MessageLookupByLibrary.simpleMessage("No value found"),
         "norfolk_island":
             MessageLookupByLibrary.simpleMessage("Norfolk Island"),
         "northern_mariana_islands":
             MessageLookupByLibrary.simpleMessage("Northern Mariana Islands"),
         "norway": MessageLookupByLibrary.simpleMessage("Norway"),
+        "not_found": MessageLookupByLibrary.simpleMessage("Not found"),
         "oman": MessageLookupByLibrary.simpleMessage("Oman"),
         "pakistan": MessageLookupByLibrary.simpleMessage("Pakistan"),
         "palau": MessageLookupByLibrary.simpleMessage("Palau"),
@@ -318,6 +323,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "united_kingdom":
             MessageLookupByLibrary.simpleMessage("United Kingdom"),
         "united_states": MessageLookupByLibrary.simpleMessage("United States"),
+        "unknown_error": MessageLookupByLibrary.simpleMessage("Unknown error"),
         "uruguay": MessageLookupByLibrary.simpleMessage("Uruguay"),
         "uzbekistan": MessageLookupByLibrary.simpleMessage("Uzbekistan"),
         "vanuatu": MessageLookupByLibrary.simpleMessage("Vanuatu"),

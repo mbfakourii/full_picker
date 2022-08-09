@@ -1,6 +1,7 @@
 // see: https://en.wikipedia.org/wiki/List_of_country_calling_codes
 // for list of country/calling codes
-import '../../generated/l10n.dart';
+import '../../../../generated/l10n.dart';
+import '../model/country.dart';
 
 List<Country> countries = [
   Country(
@@ -1976,34 +1977,3 @@ List<Country> countries = [
     maxLength: 9,
   ),
 ];
-
-class Country {
-  final String name;
-  final String flag;
-  final String code;
-  final String dialCode;
-  final String regionCode;
-  final int minLength;
-  final int maxLength;
-
-  const Country({
-    required this.name,
-    required this.flag,
-    required this.code,
-    required this.dialCode,
-    required this.minLength,
-    required this.maxLength,
-    this.regionCode = "",
-  });
-
-  String get fullCountryCode {
-    return dialCode + regionCode;
-  }
-
-  String get displayCC {
-    if (regionCode != "") {
-      return "$dialCode $regionCode";
-    }
-    return dialCode;
-  }
-}

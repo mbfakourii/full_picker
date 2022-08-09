@@ -12,7 +12,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 import 'package:timezone/timezone.dart';
-import 'package:timezone/data/latest.dart' ;
+import 'package:timezone/data/latest.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_compress/video_compress.dart';
 
@@ -78,6 +78,14 @@ void toastShow(value) {
   Fluttertoast.showToast(msg: value, toastLength: Toast.LENGTH_SHORT);
 }
 
+void closeKeyboard(context, bool clear) {
+  if (clear) {
+    FocusScope.of(context).unfocus();
+  } else {
+    FocusScope.of(context).nextFocus();
+  }
+}
+
 void showVideoPlayer(parentContext, String address) async {
   // await Navigator.of(parentContext).push(MaterialPageRoute(builder: (context) => VideoPlayer(address)));
 
@@ -134,7 +142,7 @@ Future<String> generateVideoThumbnail(String path) async {
     final thumbnailFile = await VideoCompress.getFileThumbnail(path,
         quality: 50, // default(100)
         position: -1 // default(-1)
-    );
+        );
 
     return thumbnailFile.path;
   } catch (e) {
@@ -298,7 +306,7 @@ ParseObject convertHashMapToParseObject(dynamic hashMap) {
   }
 }
 
-ParseRelation convertHashMapToParseRelation(dynamic hashMap,ParseObject aa) {
+ParseRelation convertHashMapToParseRelation(dynamic hashMap, ParseObject aa) {
   try {
     ParseObject parseObject2 = ParseObject(hashMap['className']);
     ParseRelation parseObject = ParseRelation(key: hashMap["className"], parent: parseObject2);
@@ -307,6 +315,7 @@ ParseRelation convertHashMapToParseRelation(dynamic hashMap,ParseObject aa) {
     return hashMap;
   }
 }
+
 String dateToJalali(dynamic dateTime2, {bool showTime = false, bool showOnlyTime = false}) {
   DateTime? dateTime;
   try {

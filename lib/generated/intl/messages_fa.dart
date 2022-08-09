@@ -104,6 +104,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ecuador": MessageLookupByLibrary.simpleMessage("اکوادور"),
         "egypt": MessageLookupByLibrary.simpleMessage("مصر"),
         "el_salvador": MessageLookupByLibrary.simpleMessage("ناجی"),
+        "enter_the_value":
+            MessageLookupByLibrary.simpleMessage("لطفا مقداری را وارد کنید"),
         "equatorial_guinea":
             MessageLookupByLibrary.simpleMessage("گینه استوایی"),
         "eritrea": MessageLookupByLibrary.simpleMessage("اریتره"),
@@ -220,10 +222,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "niger": MessageLookupByLibrary.simpleMessage("نیجر"),
         "nigeria": MessageLookupByLibrary.simpleMessage("نیجریه"),
         "niue": MessageLookupByLibrary.simpleMessage("نیوئه"),
+        "no_amount_found":
+            MessageLookupByLibrary.simpleMessage("مقداری یافت نشد"),
         "norfolk_island": MessageLookupByLibrary.simpleMessage("جزیره نورفولک"),
         "northern_mariana_islands":
             MessageLookupByLibrary.simpleMessage("جزایر ماریانای شمالی"),
         "norway": MessageLookupByLibrary.simpleMessage("نروژ"),
+        "not_found": MessageLookupByLibrary.simpleMessage("مقداری وجود نشد"),
         "oman": MessageLookupByLibrary.simpleMessage("عمان"),
         "pakistan": MessageLookupByLibrary.simpleMessage("پاکستان"),
         "palau": MessageLookupByLibrary.simpleMessage("پالائو"),
@@ -310,6 +315,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "united_kingdom": MessageLookupByLibrary.simpleMessage("انگلستان"),
         "united_states":
             MessageLookupByLibrary.simpleMessage("ایالات متحده آمریکا"),
+        "unknown_error": MessageLookupByLibrary.simpleMessage("خطای نامشخص"),
         "uruguay": MessageLookupByLibrary.simpleMessage("اروگوئه"),
         "uzbekistan": MessageLookupByLibrary.simpleMessage("ازبکستان"),
         "vanuatu": MessageLookupByLibrary.simpleMessage("وانواتو"),

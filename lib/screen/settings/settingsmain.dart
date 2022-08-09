@@ -3,8 +3,7 @@ import 'package:ahille/screen/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../generated/l10n.dart';
-import '../bloc/language_cubit.dart';
+import '../../bloc/language_cubit.dart';
 import 'material_example.dart';
 
 class MyHomePage extends StatefulWidget {

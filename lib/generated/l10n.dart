@@ -50,6 +50,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Ahille`
+  String get ahille {
+    return Intl.message(
+      'Ahille',
+      name: 'ahille',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Home`
   String get home {
     return Intl.message(
@@ -110,11 +120,41 @@ class S {
     );
   }
 
-  /// `Ahille`
-  String get ahille {
+  /// `No value found`
+  String get no_amount_found {
     return Intl.message(
-      'Ahille',
-      name: 'ahille',
+      'No value found',
+      name: 'no_amount_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the value`
+  String get enter_the_value {
+    return Intl.message(
+      'Please enter the value',
+      name: 'enter_the_value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown error`
+  String get unknown_error {
+    return Intl.message(
+      'Unknown error',
+      name: 'unknown_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not found`
+  String get not_found {
+    return Intl.message(
+      'Not found',
+      name: 'not_found',
       desc: '',
       args: [],
     );

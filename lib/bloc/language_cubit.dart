@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
-import '../../generated/l10n.dart';
+import '../generated/l10n.dart';
 
 String currentLanguage = "${LanguageCubit.baseLanguage.languageCode}_${LanguageCubit.baseLanguage.countryCode ?? ""}";
 bool currentLanguageIsSystemLocal = false;
@@ -17,10 +17,7 @@ class LanguageCubit extends Cubit<Locale> {
     bool? isSystemLocal = prefs.getBool('isSystemLocal');
     if (isSystemLocal != null) {
       if (isSystemLocal) {
-        List<dynamic> list = getSystemLocal(checkCountryCodeInSystemLocal: checkCountryCodeInSystemLocal);
-        currentLanguageIsSystemLocal = true;
-        currentLanguage = list[0] + "_" + list[1];
-        emit(Locale(list[0], list[1]));
+        setBaseSystem(checkCountryCodeInSystemLocal);
       } else {
         String? languageCode = prefs.getString('languageCode');
         String? countryCode = prefs.getString('countryCode');
@@ -32,7 +29,16 @@ class LanguageCubit extends Cubit<Locale> {
           emit(Locale(languageCode, countryCode));
         }
       }
+    } else {
+      setBaseSystem(checkCountryCodeInSystemLocal);
     }
+  }
+
+  setBaseSystem(checkCountryCodeInSystemLocal) {
+    List<dynamic> list = getSystemLocal(checkCountryCodeInSystemLocal: checkCountryCodeInSystemLocal);
+    currentLanguageIsSystemLocal = true;
+    currentLanguage = list[0] + "_" + list[1];
+    emit(Locale(list[0], list[1]));
   }
 
   List<dynamic> getSystemLocal({required bool checkCountryCodeInSystemLocal}) {

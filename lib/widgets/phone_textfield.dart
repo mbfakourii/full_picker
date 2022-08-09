@@ -1,28 +1,37 @@
-import 'package:ahille/dialogs/country_code_dialog.dart';
+import 'package:ahille/dialogs/country_code/model/country.dart';
+import 'package:ahille/dialogs/country_code/view/country_code_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+// ignore_for_file: use_build_context_synchronously
 class PhoneTextField extends StatelessWidget {
-  const PhoneTextField({Key? key}) : super(key: key);
+  const PhoneTextField(this.controller, {Key? key}) : super(key: key);
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: TextField(
+        controller: controller,
         style: TextStyle(fontSize: 18.sp),
-        keyboardType:TextInputType.phone,
+        keyboardType: TextInputType.phone,
         decoration: InputDecoration(
           prefixIcon: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children:  [
+            children: [
               Padding(
-                padding: const EdgeInsets.only(left: 5,right: 5),
-                child: TextButton(onPressed: () {
-                  showDialog(
-                      context: context, builder: (context) =>  CountryCodeDialog());
-                },
-                child:  Text("+98",style: TextStyle(fontSize: 18.sp))),
+                padding: const EdgeInsets.only(left: 5, right: 5),
+                child: TextButton(
+                    onPressed: () async {
+                      Country? country = await showDialog(context: context, builder: (context) => CountryCodeDialog());
+
+                      if (country != null) {
+                        getUpdatePhoneTextField(context, listen: false).update(country.dialCode, country);
+                      }
+                    },
+                    child: Text(getUpdatePhoneTextField(context).text, style: TextStyle(fontSize: 18.sp))),
               ),
             ],
           ),
@@ -30,5 +39,24 @@ class PhoneTextField extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  UpdatePhoneTextField getUpdatePhoneTextField(context, {bool listen = true}) {
+    return Provider.of<UpdatePhoneTextField>(context, listen: listen);
+  }
+}
+
+class UpdatePhoneTextField extends ChangeNotifier {
+  var _text = "+1";
+  Country? _country;
+
+  get text => _text;
+
+  Country? get country => _country;
+
+  void update(value, country) {
+    _text = value;
+    _country = country;
+    notifyListeners();
   }
 }
