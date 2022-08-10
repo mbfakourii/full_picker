@@ -228,7 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "northern_mariana_islands":
             MessageLookupByLibrary.simpleMessage("جزایر ماریانای شمالی"),
         "norway": MessageLookupByLibrary.simpleMessage("نروژ"),
-        "not_found": MessageLookupByLibrary.simpleMessage("مقداری وجود نشد"),
+        "not_found": MessageLookupByLibrary.simpleMessage("مقداری وجود ندارد"),
         "oman": MessageLookupByLibrary.simpleMessage("عمان"),
         "pakistan": MessageLookupByLibrary.simpleMessage("پاکستان"),
         "palau": MessageLookupByLibrary.simpleMessage("پالائو"),

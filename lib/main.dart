@@ -6,6 +6,7 @@ import 'package:ahille/widgets/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'config/colors.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider(
       create: (context) => LanguageCubit(),
       child: BlocBuilder<LanguageCubit, Locale>(builder: (context, lang) {
@@ -99,6 +101,7 @@ class MyApp extends StatelessWidget {
             builder: (context, orientation, deviceType) {
               return ResponsiveSizer(
                 builder: (context, orientation, screenType) {
+
                   return MultiProvider(
                     providers: [
                       ChangeNotifierProvider.value(
@@ -112,33 +115,35 @@ class MyApp extends StatelessWidget {
                         value: UpdatePhoneTextField(),
                       ),
                     ],
-                    child: MaterialApp(
-                      title: 'Ahille',
-                      localizationsDelegates: const [
-                        S.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                      ],
-                      supportedLocales: S.delegate.supportedLocales,
-                      locale: lang,
-                      theme: theme,
-                      debugShowCheckedModeBanner: false,
-                      darkTheme: darkTheme,
-                      builder: (context, widget) => ResponsiveWrapper.builder(
-                        ClampingScrollWrapper.builder(context, widget!),
-                        defaultScale: true,
-                        minWidth: 360,
-                        defaultName: MOBILE,
-                        breakpoints: [
-                          const ResponsiveBreakpoint.resize(360),
-                          const ResponsiveBreakpoint.resize(480, name: MOBILE),
-                          const ResponsiveBreakpoint.resize(640, name: 'MOBILE_LARGE'),
-                          const ResponsiveBreakpoint.resize(850, name: TABLET),
-                          const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
+                    child: OKToast(
+                      child: MaterialApp(
+                        title: 'Ahille',
+                        localizationsDelegates: const [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
                         ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        locale: lang,
+                        theme: theme,
+                        debugShowCheckedModeBanner: false,
+                        darkTheme: darkTheme,
+                        builder: (context, widget) => ResponsiveWrapper.builder(
+                          ClampingScrollWrapper.builder(context, widget!),
+                          defaultScale: true,
+                          minWidth: 360,
+                          defaultName: MOBILE,
+                          breakpoints: [
+                            const ResponsiveBreakpoint.resize(360),
+                            const ResponsiveBreakpoint.resize(480, name: MOBILE),
+                            const ResponsiveBreakpoint.resize(640, name: 'MOBILE_LARGE'),
+                            const ResponsiveBreakpoint.resize(850, name: TABLET),
+                            const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
+                          ],
+                        ),
+                        home: const Splash(),
                       ),
-                      home: const Splash(),
                     ),
                   );
                 },

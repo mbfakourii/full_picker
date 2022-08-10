@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import '../generated/l10n.dart';
 import '../utils/border_radius_m3.dart';
 
@@ -28,9 +27,8 @@ class Searchbar extends StatelessWidget {
             onPressed: () {
               onPressed.call(_textEditingController.text);
             },
-            child: Icon(
+            child: const Icon(
               Icons.search,
-              size: 6.w,
             ),
           ),
         ),
@@ -41,12 +39,11 @@ class Searchbar extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     onClose.call();
-                    _textEditingController.text="";
+                    _textEditingController.text = "";
                     getUpdateSearchbar(context, listen: false).updateText(_textEditingController.text);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.close,
-                    size: 6.w,
                   ),
                 ),
               ),

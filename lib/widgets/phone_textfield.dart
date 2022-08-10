@@ -1,5 +1,6 @@
 import 'package:ahille/dialogs/country_code/model/country.dart';
 import 'package:ahille/dialogs/country_code/view/country_code_dialog.dart';
+import 'package:ahille/widgets/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -30,6 +31,8 @@ class PhoneTextField extends StatelessWidget {
                       if (country != null) {
                         getUpdatePhoneTextField(context, listen: false).update(country.dialCode, country);
                       }
+
+                      Provider.of<UpdateSearchbar>(context, listen: false).updateText("");
                     },
                     child: Text(getUpdatePhoneTextField(context).text, style: TextStyle(fontSize: 18.sp))),
               ),

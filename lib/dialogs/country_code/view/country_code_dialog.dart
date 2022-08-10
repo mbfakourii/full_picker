@@ -3,16 +3,16 @@ import 'package:ahille/utils/common_utils.dart';
 import 'package:ahille/widgets/searchbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../generated/l10n.dart';
 import '../../../utils/border_radius_m3.dart';
 import '../bloc/country_code_bloc.dart';
 
-class CountryCodeDialog extends StatelessWidget {
+class CountryCodeDialog extends StatelessWidget  {
   CountryCodeDialog({Key? key}) : super(key: key) {
     countryCodeBloc = CountryCodeBloc(countryCodeRepository: repository);
+
     countryCodeBloc.add(CountryCodeStarted());
   }
 
@@ -21,6 +21,7 @@ class CountryCodeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -32,35 +33,33 @@ class CountryCodeDialog extends StatelessWidget {
       child: BlocProvider(
         create: (context) => countryCodeBloc,
         child: AlertDialog(
-          content: SingleChildScrollView(
-            child: SizedBox(
-              width: double.maxFinite,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Searchbar(
-                    onPressed: (value) {
-                      countryCodeBloc.add(CountryCodeSearch(name: value, searchClick: true));
-                      closeKeyboard(context, false);
-                    },
-                    onChanged: (value) {
-                      countryCodeBloc.add(CountryCodeSearch(name: value, searchClick: false));
-                    },
-                    onClose: () {
-                      closeKeyboard(context, true);
-                      countryCodeBloc.add(CountryCodeStarted());
-                    },
-                  ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 100.h,
-                    ),
+          content: Column(
+            children: [
+              Searchbar(
+                onPressed: (value) {
+                  countryCodeBloc.add(CountryCodeSearch(name: value, searchClick: true));
+                  closeKeyboard(context, false);
+                },
+                onChanged: (value) {
+                  countryCodeBloc.add(CountryCodeSearch(name: value, searchClick: false));
+                },
+                onClose: () {
+                  closeKeyboard(context, true);
+                  countryCodeBloc.add(CountryCodeStarted());
+                },
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    width: double.maxFinite,
                     child: ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.only(top: 0.5.h),
                       children: [
                         BlocBuilder<CountryCodeBloc, CountryCodeState>(builder: (context, state) {
                           if (state is CountryCodeEmptySearch) {
-                            toastShow(S.current.no_amount_found);
+                            // toastShow(S.current.no_amount_found);
                             return _buildNotFoundWidget();
                           }
 
@@ -76,25 +75,24 @@ class CountryCodeDialog extends StatelessWidget {
                             for (final country in state.country) {
                               listCountryWidget.add(Card(
                                   child: InkWell(
-                                borderRadius: BorderRadiusM3.medium,
-                                onTap: () {
-                                  Provider.of<UpdateSearchbar>(context, listen: false).updateText("");
-                                  Navigator.of(context, rootNavigator: true).pop(country);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(flex: 8, child: Text(country.name)),
-                                      Expanded(
-                                          flex: 2,
-                                          child: Align(
-                                              alignment: AlignmentDirectional.topEnd,
-                                              child: Text(country.dialCode, maxLines: 1))),
-                                    ],
-                                  ),
-                                ),
-                              )));
+                                    borderRadius: BorderRadiusM3.medium,
+                                    onTap: () {
+                                      Navigator.of(context, rootNavigator: true).pop(country);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(flex: 8, child: Text(country.name)),
+                                          Expanded(
+                                              flex: 2,
+                                              child: Align(
+                                                  alignment: AlignmentDirectional.topEnd,
+                                                  child: Text(country.dialCode, maxLines: 1))),
+                                        ],
+                                      ),
+                                    ),
+                                  )));
                             }
                             return Column(children: listCountryWidget);
                           }
@@ -103,10 +101,10 @@ class CountryCodeDialog extends StatelessWidget {
                         })
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -75,14 +75,21 @@ bool isNull(dynamic value) {
 }
 
 void toastShow(value) {
-  Fluttertoast.showToast(msg: value, toastLength: Toast.LENGTH_SHORT);
+  showToast(value,
+    position: ToastPosition.bottom,
+  );
 }
 
 void closeKeyboard(context, bool clear) {
   if (clear) {
     FocusScope.of(context).unfocus();
   } else {
-    FocusScope.of(context).nextFocus();
+    if (!kIsWeb) {
+      if (Platform.isAndroid || Platform.isIOS) {
+        FocusScope.of(context).nextFocus();
+      }
+    }
+
   }
 }
 

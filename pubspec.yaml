@@ -34,7 +34,7 @@ dependencies:
   timezone: ^0.8.0
 
   # Toast
-  fluttertoast: ^8.0.9
+  oktoast: ^3.2.0
 
   persian_datetime_picker: ^2.4.0
 
