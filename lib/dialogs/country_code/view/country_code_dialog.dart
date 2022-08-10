@@ -9,7 +9,7 @@ import '../../../generated/l10n.dart';
 import '../../../utils/border_radius_m3.dart';
 import '../bloc/country_code_bloc.dart';
 
-class CountryCodeDialog extends StatelessWidget  {
+class CountryCodeDialog extends StatelessWidget {
   CountryCodeDialog({Key? key}) : super(key: key) {
     countryCodeBloc = CountryCodeBloc(countryCodeRepository: repository);
 
@@ -21,7 +21,6 @@ class CountryCodeDialog extends StatelessWidget  {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -52,55 +51,51 @@ class CountryCodeDialog extends StatelessWidget  {
                 child: SingleChildScrollView(
                   child: SizedBox(
                     width: double.maxFinite,
-                    child: ListView(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.only(top: 0.5.h),
-                      children: [
-                        BlocBuilder<CountryCodeBloc, CountryCodeState>(builder: (context, state) {
-                          if (state is CountryCodeEmptySearch) {
-                            // toastShow(S.current.no_amount_found);
-                            return _buildNotFoundWidget();
-                          }
+                    child: BlocBuilder<CountryCodeBloc, CountryCodeState>(builder: (context, state) {
+                      if (state is CountryCodeEmptySearch) {
+                        // toastShow(S.current.no_amount_found);
+                        return _buildNotFoundWidget();
+                      }
 
-                          if (state is CountryCodeError) {
-                            if (state.searchClick) {
-                              toastShow(state.error);
-                            }
-                            countryCodeBloc.add(CountryCodeStarted());
-                          }
+                      if (state is CountryCodeError) {
+                        if (state.searchClick) {
+                          toastShow(state.error);
+                        }
+                        countryCodeBloc.add(CountryCodeStarted());
+                      }
 
-                          if (state is CountryCodeLoaded) {
-                            List<Widget> listCountryWidget = [];
-                            for (final country in state.country) {
-                              listCountryWidget.add(Card(
+                      if (state is CountryCodeLoaded) {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(top: 0.5.h),
+                            itemCount: state.country.length,
+                            itemBuilder: (context, index) {
+                              return Card(
                                   child: InkWell(
-                                    borderRadius: BorderRadiusM3.medium,
-                                    onTap: () {
-                                      Navigator.of(context, rootNavigator: true).pop(country);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Expanded(flex: 8, child: Text(country.name)),
-                                          Expanded(
-                                              flex: 2,
-                                              child: Align(
-                                                  alignment: AlignmentDirectional.topEnd,
-                                                  child: Text(country.dialCode, maxLines: 1))),
-                                        ],
-                                      ),
-                                    ),
-                                  )));
-                            }
-                            return Column(children: listCountryWidget);
-                          }
+                                borderRadius: BorderRadiusM3.medium,
+                                onTap: () {
+                                  Navigator.of(context, rootNavigator: true).pop(state.country[index]);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(flex: 8, child: Text(state.country[index].name)),
+                                      Expanded(
+                                          flex: 2,
+                                          child: Align(
+                                              alignment: AlignmentDirectional.topEnd,
+                                              child: Text(state.country[index].dialCode, maxLines: 1))),
+                                    ],
+                                  ),
+                                ),
+                              ));
+                            });
+                      }
 
-                          return _buildProgressWidget();
-                        })
-                      ],
-                    ),
+                      return _buildProgressWidget();
+                    }),
                   ),
                 ),
               ),
