@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:ahille/dialogs/country_code/view/update_country_code.dart';
 import 'package:ahille/screen/navigation/update_navigation.dart';
 import 'package:ahille/screen/splash/splash.dart';
 import 'package:ahille/widgets/phone_textfield.dart';
@@ -27,7 +28,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider(
       create: (context) => LanguageCubit(),
       child: BlocBuilder<LanguageCubit, Locale>(builder: (context, lang) {
@@ -101,7 +101,6 @@ class MyApp extends StatelessWidget {
             builder: (context, orientation, deviceType) {
               return ResponsiveSizer(
                 builder: (context, orientation, screenType) {
-
                   return MultiProvider(
                     providers: [
                       ChangeNotifierProvider.value(
@@ -110,9 +109,11 @@ class MyApp extends StatelessWidget {
                       ChangeNotifierProvider.value(
                         value: UpdateSearchbar(),
                       ),
-
                       ChangeNotifierProvider.value(
                         value: UpdatePhoneTextField(),
+                      ),
+                      ChangeNotifierProvider.value(
+                        value: UpdateCountryCode(),
                       ),
                     ],
                     child: OKToast(

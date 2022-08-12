@@ -5,6 +5,10 @@ abstract class CountryCodeEvent extends Equatable {
 }
 
 class CountryCodeStarted extends CountryCodeEvent {
+  final int skip;
+
+  const CountryCodeStarted({required this.skip});
+
   @override
   List<Object> get props => [];
 }
@@ -12,9 +16,11 @@ class CountryCodeStarted extends CountryCodeEvent {
 class CountryCodeSearch extends CountryCodeEvent {
   final String name;
   final bool searchClick;
+  final int skip;
+  final DateTime dateTime;
 
-  const CountryCodeSearch({required this.name,required this.searchClick});
+  const CountryCodeSearch({required this.name,required this.searchClick,required this.skip,required this.dateTime});
 
   @override
-  List<Object> get props => [name];
+  List<Object> get props => [name,searchClick,skip,dateTime];
 }

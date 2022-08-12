@@ -27,10 +27,10 @@ class CountryCodeBloc extends Bloc<CountryCodeEvent, CountryCodeState> {
   ) async {
     emit(CountryCodeLoading());
     try {
-      final countryCode = await countryCodeRepository.loadCountryCode();
-      emit(CountryCodeLoaded(countryCode));
+      final countryCode = await countryCodeRepository.loadCountryCode(event.skip);
+      emit(CountryCodeLoaded(countryCode, event.skip, DateTime.now(), true));
     } catch (_) {
-      emit(CountryCodeError(S.current.unknown_error, false));
+      emit(CountryCodeError(S.current.unknown_error));
     }
   }
 
@@ -42,17 +42,17 @@ class CountryCodeBloc extends Bloc<CountryCodeEvent, CountryCodeState> {
     try {
       String? validator = _validators.checkEmptyString(event.name);
       if (validator.isEmpty) {
-        final countryCode = await countryCodeRepository.searchCountryName(event.name);
+        final countryCode = await countryCodeRepository.searchCountryName(event.name, event.skip);
         if (countryCode.isEmpty) {
-          emit(CountryCodeEmptySearch(event.searchClick));
+          emit(const CountryCodeEmptySearch());
         } else {
-          emit(CountryCodeLoaded(countryCode));
+          emit(CountryCodeLoaded(countryCode, event.skip, event.dateTime, event.searchClick));
         }
       } else {
-        emit(CountryCodeError(validator, event.searchClick));
+        emit(CountryCodeError(validator));
       }
     } catch (_) {
-      emit(CountryCodeError(S.current.unknown_error, event.searchClick));
+      emit(CountryCodeError(S.current.unknown_error));
     }
   }
 }
