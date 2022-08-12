@@ -26,7 +26,6 @@ class CountryCodeRepository {
   }
 
   Future<List<Country>> _getSkipData(List<Country> data, int skip) async {
-    await new Future.delayed(new Duration(seconds: 2));
     return data.skip(20 * skip).take(20).toList();
   }
 }
