@@ -1,30 +1,17 @@
 import 'package:flutter/material.dart';
 import '../model/country.dart';
 
-// ignore_for_file: prefer_final_fields
 class UpdateCountryCode extends ChangeNotifier {
-  List<Country> _listCountries = [];
-  bool _canLoadMore = false;
-  bool _isLoading = true;
   int _skip = 0;
-  bool _nowSearch = false;
-  String _lastTextSearch = "";
-
-  String get lastTextSearch => _lastTextSearch;
-
-  bool get nowSearch => _nowSearch;
 
   int get skip => _skip;
 
-  bool get canLoadMore => _canLoadMore;
-
-  List<Country> get getCountries => _listCountries;
-
-
-  bool get isLoading => _isLoading;
+  set skip(int value) {
+    _skip = value;
+    notifyListeners();
+  }
 
   dynamic _backState;
-
 
   dynamic get backState => _backState;
 
@@ -33,51 +20,19 @@ class UpdateCountryCode extends ChangeNotifier {
     notifyListeners();
   }
 
-  set isLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
-
-  set lastTextSearch(String value) {
-    _lastTextSearch = value;
-    notifyListeners();
-  }
-
-  set nowSearch(bool value) {
-    _nowSearch = value;
-    notifyListeners();
-  }
-
-  set skip(int value) {
-    _skip = value;
-    notifyListeners();
-  }
-
-  set canLoadMore(value) {
-    _canLoadMore = value;
-    notifyListeners();
-  }
-
-  void updateListview(List<Country> country, context) {
-    // print(country.first.name);
-    _listCountries += country;
-    // print(_listCountries.length);
+  void updateListview(List<Country> country, context, int pageKey, pagingController) {
     try {
-      if (country.length < 20) {
-        isLoading = true;
-      }else{
-        isLoading = false;
+      final isLastPage = country.length < 20;
+      if (isLastPage) {
+        pagingController.appendLastPage(country);
+      } else {
+        final nextPageKey = pageKey + 1;
+        skip = nextPageKey;
+        pagingController.appendPage(country, nextPageKey);
       }
-    } catch (e) {
-      isLoading = false;
+    } catch (error) {
+      pagingController.error = error;
     }
-
-    notifyListeners();
-  }
-
-  void clearData() {
-    _listCountries.clear();
-    _isLoading = true;
 
     notifyListeners();
   }

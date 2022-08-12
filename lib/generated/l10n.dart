@@ -121,10 +121,10 @@ class S {
   }
 
   /// `No value found`
-  String get no_amount_found {
+  String get no_value_found {
     return Intl.message(
       'No value found',
-      name: 'no_amount_found',
+      name: 'no_value_found',
       desc: '',
       args: [],
     );

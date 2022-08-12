@@ -8,14 +8,13 @@ abstract class CountryCodeState extends Equatable {
 }
 
 class CountryCodeLoaded extends CountryCodeState {
-  const CountryCodeLoaded(this.country,this.skip,this.dateTime, this.searchClick);
+  const CountryCodeLoaded(this.country,this.skip,this.dateTime);
   final int skip;
   final List<Country> country;
-  final DateTime dateTime;
-  final bool searchClick;
+  final DateTime? dateTime;
 
   @override
-  List<Object> get props => [country,dateTime,skip,searchClick];
+  List<Object> get props => [country,skip];
 }
 
 class CountryCodeLoading extends CountryCodeState {}
@@ -27,11 +26,4 @@ class CountryCodeError extends CountryCodeState {
 
   @override
   List<Object> get props => [error];
-}
-
-class CountryCodeEmptySearch extends CountryCodeState {
-  const CountryCodeEmptySearch();
-
-  @override
-  List<Object> get props => [];
 }

@@ -7,7 +7,7 @@
   "account": "Account",
   "welcome": "Welcome to Ahille",
   "login_text": "To register and enter the program, please enter your mobile number",
-  "no_amount_found": "No value found",
+  "no_value_found": "No value found",
   "enter_the_value": "Please enter the value",
   "unknown_error": "Unknown error",
   "not_found": "Not found",

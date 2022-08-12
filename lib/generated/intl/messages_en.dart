@@ -226,7 +226,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "niger": MessageLookupByLibrary.simpleMessage("Niger"),
         "nigeria": MessageLookupByLibrary.simpleMessage("Nigeria"),
         "niue": MessageLookupByLibrary.simpleMessage("Niue"),
-        "no_amount_found":
+        "no_value_found":
             MessageLookupByLibrary.simpleMessage("No value found"),
         "norfolk_island":
             MessageLookupByLibrary.simpleMessage("Norfolk Island"),
