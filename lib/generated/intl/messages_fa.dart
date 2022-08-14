@@ -104,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ecuador": MessageLookupByLibrary.simpleMessage("اکوادور"),
         "egypt": MessageLookupByLibrary.simpleMessage("مصر"),
         "el_salvador": MessageLookupByLibrary.simpleMessage("ناجی"),
+        "enter": MessageLookupByLibrary.simpleMessage("وارد شدن"),
         "enter_the_value":
             MessageLookupByLibrary.simpleMessage("لطفا مقداری را وارد کنید"),
         "equatorial_guinea":
@@ -239,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paraguay": MessageLookupByLibrary.simpleMessage("پاراگوئه"),
         "peru": MessageLookupByLibrary.simpleMessage("پرو"),
         "philippines": MessageLookupByLibrary.simpleMessage("فیلیپین"),
+        "phone_number": MessageLookupByLibrary.simpleMessage("شماره تلفن"),
         "pitcairn": MessageLookupByLibrary.simpleMessage("پیتکرن"),
         "poland": MessageLookupByLibrary.simpleMessage("لهستان"),
         "portugal": MessageLookupByLibrary.simpleMessage("پرتغال"),

@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../utils/country_controller.dart';
+
 // ignore_for_file: use_build_context_synchronously
 class PhoneTextField extends StatelessWidget {
-  const PhoneTextField(this.controller, {Key? key}) : super(key: key);
+  const PhoneTextField(this.controller, this.countryController, {Key? key}) : super(key: key);
   final TextEditingController controller;
+  final CountryController countryController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class PhoneTextField extends StatelessWidget {
                       Country? country = await showDialog(context: context, builder: (context) => CountryCodeDialog());
 
                       if (country != null) {
+                        countryController.country = country;
                         getUpdatePhoneTextField(context, listen: false).update(country.dialCode, country);
                       }
 

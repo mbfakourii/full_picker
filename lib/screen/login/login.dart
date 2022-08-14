@@ -1,12 +1,12 @@
+import 'package:ahille/dialogs/country_code/repository/country_codes_data.dart';
+import 'package:ahille/utils/country_controller.dart';
 import 'package:ahille/widgets/logo.dart';
 import 'package:ahille/widgets/phone_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../generated/l10n.dart';
-import '../../widgets/h3.dart';
+import '../../widgets/heading.dart';
 import '../../widgets/info.dart';
-import '../settings/settingsmain.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   TextEditingController phoneTextFieldController = TextEditingController();
+  CountryController countryController = CountryController(country: searchCountryByName(S.current.united_states));
 
   @override
   Widget build(BuildContext context) {
@@ -26,34 +27,25 @@ class _LoginState extends State<Login> {
         child: SingleChildScrollView(
           child: Column(children: [
             Logo(40.w),
-            H3(S.current.welcome),
+            Heading(S.current.welcome, Headings.h3),
             Info(S.current.login_text, Icons.info_outline),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text("Test"),
-            ),
-            OutlinedButton(
-              onPressed: () {
-                print(phoneTextFieldController.text);
-                print(Provider.of<UpdatePhoneTextField>(context,listen: false).text);
-                try{
-                  print(Provider.of<UpdatePhoneTextField>(context,listen: false).country!.name);
-                }catch(e){
-                  print("not found");
-                }
-              },
-              child: const Text("Test"),
-            ),
-
-            PhoneTextField(phoneTextFieldController),
-            MaterialButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyHomePage()));
-                },
-                child: const Text("settings"))
+            Heading(S.current.phone_number, Headings.h4),
+            PhoneTextField(phoneTextFieldController, countryController),
+            enter(),
           ]),
         ),
       ),
+    );
+  }
+
+  enter() {
+    return ElevatedButton(
+      onPressed: () {
+        print(phoneTextFieldController.text);
+        print(countryController.country.name);
+        print(countryController.country.dialCode);
+      },
+      child: Text(S.current.enter),
     );
   }
 }

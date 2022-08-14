@@ -3,6 +3,10 @@
 import '../../../../generated/l10n.dart';
 import '../model/country.dart';
 
+Country searchCountryByName(String name) {
+  return countries.where((element) => element.name == name).toList()[0];
+}
+
 List<Country> countries = [
   Country(
     name: S.current.afghanistan,
