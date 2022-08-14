@@ -21,7 +21,11 @@ class PhoneTextField extends StatelessWidget {
         controller: controller,
         style: TextStyle(fontSize: 18.sp),
         keyboardType: TextInputType.phone,
+        autofillHints: const [
+          AutofillHints.telephoneNumber,
+        ],
         decoration: InputDecoration(
+          hintText: '(123) 456-7890',
           prefixIcon: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -44,6 +48,7 @@ class PhoneTextField extends StatelessWidget {
           ),
           border: const OutlineInputBorder(),
         ),
+
       ),
     );
   }

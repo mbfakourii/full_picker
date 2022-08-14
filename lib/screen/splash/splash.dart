@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../login/login.dart';
-import '../navigation/navigation.dart';
 
 late String accessToken;
 late String refreshToken;
@@ -174,7 +173,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
 
   void checkApplication() async {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Login()));
+        context, MaterialPageRoute(builder: (context) => const Login()));
     // if (await getApplication()) {
     //   if (await initParse()) {
     //     Navigator.pushReplacement(

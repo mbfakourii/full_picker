@@ -90,6 +90,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "congo_the_democratic_republic_of_the_congo":
             MessageLookupByLibrary.simpleMessage("کنگو، جمهوری دموکراتیک کنگو"),
         "cook_islands": MessageLookupByLibrary.simpleMessage("جزایر کوک"),
+        "copyright_first_part": MessageLookupByLibrary.simpleMessage("© شرکت "),
+        "copyright_second_part":
+            MessageLookupByLibrary.simpleMessage(" سال 2022"),
         "costa_rica": MessageLookupByLibrary.simpleMessage("کاستاریکا"),
         "cote_d_ivoire": MessageLookupByLibrary.simpleMessage("ساحل عاج"),
         "croatia": MessageLookupByLibrary.simpleMessage("کرواسی"),
@@ -113,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "estonia": MessageLookupByLibrary.simpleMessage("استونی"),
         "eswatini": MessageLookupByLibrary.simpleMessage("در سوات"),
         "ethiopia": MessageLookupByLibrary.simpleMessage("اتیوپی"),
+        "exon": MessageLookupByLibrary.simpleMessage("اکسون"),
         "falkland_islands_malvinas":
             MessageLookupByLibrary.simpleMessage("جزایر فالکلند (مالویناس)"),
         "faroe_islands": MessageLookupByLibrary.simpleMessage("جزایر فارو"),

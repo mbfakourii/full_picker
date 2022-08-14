@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Info extends StatelessWidget {
   const Info(this.text, this.icon, {Key? key, this.useCard = true}) : super(key: key);
@@ -19,7 +20,7 @@ class Info extends StatelessWidget {
           ),
           Expanded(
             flex: 8,
-            child: Text(text),
+            child: Text(text, style: TextStyle(fontSize: 17.sp)),
           )
         ],
       ),

@@ -5,8 +5,9 @@ enum Headings { h1, h2, h3, h4, h5, h6 }
 
 // Heading Text
 class Heading extends StatelessWidget {
-  const Heading(this.text, this.type, {Key? key}) : super(key: key);
+  const Heading(this.text, this.type, {Key? key, this.center = false}) : super(key: key);
   final String text;
+  final bool center;
   final Headings type;
 
   @override
@@ -14,7 +15,7 @@ class Heading extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            child: Text(text, style: TextStyle(fontSize: () {
+            child: Text(text, textAlign: center ? TextAlign.center : null, style: TextStyle(fontSize: () {
           switch (type) {
             case Headings.h1:
               return 29.sp;

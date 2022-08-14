@@ -92,6 +92,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Congo, The Democratic Republic of the Congo"),
         "cook_islands": MessageLookupByLibrary.simpleMessage("Cook Islands"),
+        "copyright_first_part": MessageLookupByLibrary.simpleMessage("© 2022 "),
+        "copyright_second_part": MessageLookupByLibrary.simpleMessage(", Inc."),
         "costa_rica": MessageLookupByLibrary.simpleMessage("Costa Rica"),
         "cote_d_ivoire": MessageLookupByLibrary.simpleMessage("Cote d\'Ivoire"),
         "croatia": MessageLookupByLibrary.simpleMessage("Croatia"),
@@ -116,6 +118,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "estonia": MessageLookupByLibrary.simpleMessage("Estonia"),
         "eswatini": MessageLookupByLibrary.simpleMessage("Eswatini"),
         "ethiopia": MessageLookupByLibrary.simpleMessage("Ethiopia"),
+        "exon": MessageLookupByLibrary.simpleMessage("Exon"),
         "falkland_islands_malvinas":
             MessageLookupByLibrary.simpleMessage("Falkland Islands (Malvinas)"),
         "faroe_islands": MessageLookupByLibrary.simpleMessage("Faroe Islands"),

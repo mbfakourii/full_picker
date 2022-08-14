@@ -180,6 +180,36 @@ class S {
     );
   }
 
+  /// `© 2022 `
+  String get copyright_first_part {
+    return Intl.message(
+      '© 2022 ',
+      name: 'copyright_first_part',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exon`
+  String get exon {
+    return Intl.message(
+      'Exon',
+      name: 'exon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `, Inc.`
+  String get copyright_second_part {
+    return Intl.message(
+      ', Inc.',
+      name: 'copyright_second_part',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Afghanistan`
   String get afghanistan {
     return Intl.message(
