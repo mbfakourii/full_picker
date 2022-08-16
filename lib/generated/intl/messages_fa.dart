@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fa';
 
+  static String m0(phone) => "کد تایید برای شماره موبایل ${phone} ارسال شد.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "account": MessageLookupByLibrary.simpleMessage("حساب کاربری"),
@@ -86,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("جزایر کوکوس (کیلینگ)."),
         "colombia": MessageLookupByLibrary.simpleMessage("کلمبیا"),
         "comoros": MessageLookupByLibrary.simpleMessage("کومور"),
+        "confirm": MessageLookupByLibrary.simpleMessage("تایید"),
         "congo": MessageLookupByLibrary.simpleMessage("کنگو"),
         "congo_the_democratic_republic_of_the_congo":
             MessageLookupByLibrary.simpleMessage("کنگو، جمهوری دموکراتیک کنگو"),
@@ -227,6 +230,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "niger": MessageLookupByLibrary.simpleMessage("نیجر"),
         "nigeria": MessageLookupByLibrary.simpleMessage("نیجریه"),
         "niue": MessageLookupByLibrary.simpleMessage("نیوئه"),
+        "no_send_verification_code":
+            MessageLookupByLibrary.simpleMessage("کد برای شما ارسال نشده؟"),
         "no_value_found":
             MessageLookupByLibrary.simpleMessage("مقداری یافت نشد"),
         "norfolk_island": MessageLookupByLibrary.simpleMessage("جزیره نورفولک"),
@@ -250,6 +255,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "portugal": MessageLookupByLibrary.simpleMessage("پرتغال"),
         "puerto_rico": MessageLookupByLibrary.simpleMessage("پورتوریکو"),
         "qatar": MessageLookupByLibrary.simpleMessage("قطر"),
+        "resend_verification_code":
+            MessageLookupByLibrary.simpleMessage("ارسال مجدد کد"),
         "reunion": MessageLookupByLibrary.simpleMessage("تجدید دیدار"),
         "romania": MessageLookupByLibrary.simpleMessage("رومانی"),
         "russia": MessageLookupByLibrary.simpleMessage("روسیه"),
@@ -272,6 +279,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("سائوتومه و پرنسیپ"),
         "saudi_arabia": MessageLookupByLibrary.simpleMessage("عربستان سعودی"),
         "search": MessageLookupByLibrary.simpleMessage("جست و جو"),
+        "send_verification_code": m0,
         "senegal": MessageLookupByLibrary.simpleMessage("سنگال"),
         "serbia": MessageLookupByLibrary.simpleMessage("صربستان"),
         "seychelles": MessageLookupByLibrary.simpleMessage("سیشل"),
@@ -328,6 +336,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "venezuela_bolivarian_republic_of_venezuela":
             MessageLookupByLibrary.simpleMessage(
                 "ونزوئلا، جمهوری بولیواری ونزوئلا"),
+        "verification_code": MessageLookupByLibrary.simpleMessage("کد تایید"),
         "vietnam": MessageLookupByLibrary.simpleMessage("ویتنام"),
         "virgin_islands_british":
             MessageLookupByLibrary.simpleMessage("جزایر ویرجین، بریتانیا"),

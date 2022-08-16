@@ -15,7 +15,12 @@
   "phone_number": "Phone Number",
   "copyright_first_part": "© 2022 ",
   "exon": "Exon",
+  "confirm": "Confirm",
   "copyright_second_part": ", Inc.",
+  "verification_code": "Verification code",
+  "no_send_verification_code": "Code not sent to you?",
+  "resend_verification_code": "Resend the code",
+  "send_verification_code": "The confirmation code was sent to mobile number {phone}",
 
 
   "afghanistan": "Afghanistan",

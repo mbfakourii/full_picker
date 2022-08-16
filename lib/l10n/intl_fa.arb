@@ -16,6 +16,13 @@
   "copyright_first_part": "© شرکت ",
   "exon": "اکسون",
   "copyright_second_part": " سال 2022",
+  "verification_code": "کد تایید",
+  "no_send_verification_code": "کد برای شما ارسال نشده؟",
+  "resend_verification_code": "ارسال مجدد کد",
+  "send_verification_code": "کد تایید برای شماره موبایل {phone} ارسال شد.",
+  "confirm": "تایید",
+
+
 
 
   "afghanistan": "افغانستان",

@@ -20,6 +20,9 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(phone) =>
+      "The confirmation code was sent to mobile number ${phone}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "account": MessageLookupByLibrary.simpleMessage("Account"),
@@ -87,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cocos (Keeling) Islands"),
         "colombia": MessageLookupByLibrary.simpleMessage("Colombia"),
         "comoros": MessageLookupByLibrary.simpleMessage("Comoros"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "congo": MessageLookupByLibrary.simpleMessage("Congo"),
         "congo_the_democratic_republic_of_the_congo":
             MessageLookupByLibrary.simpleMessage(
@@ -230,6 +234,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "niger": MessageLookupByLibrary.simpleMessage("Niger"),
         "nigeria": MessageLookupByLibrary.simpleMessage("Nigeria"),
         "niue": MessageLookupByLibrary.simpleMessage("Niue"),
+        "no_send_verification_code":
+            MessageLookupByLibrary.simpleMessage("Code not sent to you?"),
         "no_value_found":
             MessageLookupByLibrary.simpleMessage("No value found"),
         "norfolk_island":
@@ -254,6 +260,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "portugal": MessageLookupByLibrary.simpleMessage("Portugal"),
         "puerto_rico": MessageLookupByLibrary.simpleMessage("Puerto Rico"),
         "qatar": MessageLookupByLibrary.simpleMessage("Qatar"),
+        "resend_verification_code":
+            MessageLookupByLibrary.simpleMessage("Resend the code"),
         "reunion": MessageLookupByLibrary.simpleMessage("Reunion"),
         "romania": MessageLookupByLibrary.simpleMessage("Romania"),
         "russia": MessageLookupByLibrary.simpleMessage("Russia"),
@@ -278,6 +286,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sao Tome and Principe"),
         "saudi_arabia": MessageLookupByLibrary.simpleMessage("Saudi Arabia"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "send_verification_code": m0,
         "senegal": MessageLookupByLibrary.simpleMessage("Senegal"),
         "serbia": MessageLookupByLibrary.simpleMessage("Serbia"),
         "seychelles": MessageLookupByLibrary.simpleMessage("Seychelles"),
@@ -335,6 +344,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "venezuela_bolivarian_republic_of_venezuela":
             MessageLookupByLibrary.simpleMessage(
                 "Venezuela, Bolivarian Republic of Venezuela"),
+        "verification_code":
+            MessageLookupByLibrary.simpleMessage("Verification code"),
         "vietnam": MessageLookupByLibrary.simpleMessage("Vietnam"),
         "virgin_islands_british":
             MessageLookupByLibrary.simpleMessage("Virgin Islands, British"),

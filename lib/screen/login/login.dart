@@ -1,21 +1,21 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:ahille/dialogs/country_code/repository/country_codes_data.dart';
+import 'package:ahille/screen/verification/verification.dart';
 import 'package:ahille/utils/country_controller.dart';
 import 'package:ahille/widgets/logo.dart';
 import 'package:ahille/widgets/phone_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../generated/l10n.dart';
+import '../../utils/common_utils.dart';
+import '../../widgets/copyright.dart';
 import '../../widgets/heading.dart';
 import '../../widgets/info.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class Login extends StatelessWidget {
+  Login({Key? key}) : super(key: key);
 
-  @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
   TextEditingController phoneTextFieldController = TextEditingController();
   CountryController countryController = CountryController(country: searchCountryByName(S.current.united_states));
 
@@ -34,9 +34,9 @@ class _LoginState extends State<Login> {
               Expanded(flex: 3, child: Heading(S.current.phone_number, Headings.h4)),
               Expanded(flex: 4, child: PhoneTextField(phoneTextFieldController, countryController)),
               Expanded(flex: 1, child: SizedBox(height: 1.h)),
-              Expanded(flex: 4, child: enter()),
+              Expanded(flex: 4, child: enter(context)),
               Expanded(flex: 3, child: SizedBox(height: 1.h)),
-              Expanded(flex: 3, child: copyRight()),
+              const Expanded(flex: 3, child: Copyright()),
               Expanded(flex: 2, child: SizedBox(height: 1.h)),
               // MaterialButton(onPressed: () {
               //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyHomePage()));
@@ -48,43 +48,22 @@ class _LoginState extends State<Login> {
     );
   }
 
-  enter() {
+  enter(context) {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: SizedBox(
         width: 80.w,
         child: ElevatedButton(
           onPressed: () {
-            print(phoneTextFieldController.text);
-            print(countryController.country.name);
-            print(countryController.country.dialCode);
+            p(phoneTextFieldController.text);
+            p(countryController.country.name);
+            p(countryController.country.dialCode);
+
+            go(context, Verification());
           },
           child: Text(S.current.enter),
         ),
       ),
-    );
-  }
-
-  copyRight() {
-    TextStyle style = TextStyle(
-      fontSize: 19.sp,
-      color: Theme.of(context).colorScheme.primary,
-    );
-    return RichText(
-      text: TextSpan(children: [
-        TextSpan(
-          text: S.current.copyright_first_part,
-          style: style,
-        ),
-        TextSpan(
-          text: S.current.exon,
-          style: style,
-        ),
-        TextSpan(
-          text: S.current.copyright_second_part,
-          style: style,
-        ),
-      ]),
     );
   }
 }

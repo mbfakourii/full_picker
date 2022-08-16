@@ -200,6 +200,16 @@ class S {
     );
   }
 
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `, Inc.`
   String get copyright_second_part {
     return Intl.message(
@@ -207,6 +217,46 @@ class S {
       name: 'copyright_second_part',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Verification code`
+  String get verification_code {
+    return Intl.message(
+      'Verification code',
+      name: 'verification_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Code not sent to you?`
+  String get no_send_verification_code {
+    return Intl.message(
+      'Code not sent to you?',
+      name: 'no_send_verification_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend the code`
+  String get resend_verification_code {
+    return Intl.message(
+      'Resend the code',
+      name: 'resend_verification_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The confirmation code was sent to mobile number {phone}`
+  String send_verification_code(Object phone) {
+    return Intl.message(
+      'The confirmation code was sent to mobile number $phone',
+      name: 'send_verification_code',
+      desc: '',
+      args: [phone],
     );
   }
 

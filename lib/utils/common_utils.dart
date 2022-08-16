@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,8 +57,21 @@ dynamic convertParseUserToUser(ParseUser parseUser) {
   // return User.fromJson(parseUser.toJson());
 }
 
-printShow(e) {
+//print with debug Print
+p(e) {
   debugPrint(e.toString());
+}
+
+// go Another Page
+Future<dynamic> go(context, Widget widget, {bool close = false}) {
+  if (close) {
+    return Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => widget));
+  } else {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => widget),
+    );
+  }
 }
 
 void showError(e) {
@@ -75,7 +87,8 @@ bool isNull(dynamic value) {
 }
 
 void toastShow(value) {
-  showToast(value,
+  showToast(
+    value,
     position: ToastPosition.bottom,
   );
 }
@@ -89,7 +102,6 @@ void closeKeyboard(context, bool clear) {
         FocusScope.of(context).nextFocus();
       }
     }
-
   }
 }
 

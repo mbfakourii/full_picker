@@ -87,12 +87,11 @@ class MyApp extends StatelessWidget {
                 color: antiFlashWhite,
                 elevation: 0,
               ),
-
               colorScheme: ThemeData().colorScheme.copyWith(
-                    secondaryContainer: darkCharcoal,
-                    primary: darkCharcoal,
-                    brightness: ThemeData.light().brightness,
-                  )),
+                  secondaryContainer: darkCharcoal,
+                  primary: darkCharcoal,
+                  brightness: ThemeData.light().brightness,
+                  secondary: antiFlashWhite)),
           dark: ThemeData(
             brightness: ThemeData.dark().brightness,
             useMaterial3: true,
