@@ -1,17 +1,15 @@
 import 'dart:async';
 import 'dart:io' as io;
+import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:file/local.dart';
 import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:file/file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../full_picker.dart';
 
 class SheetAudioRecorder extends StatefulWidget {
-  final LocalFileSystem localFileSystem;
   final BuildContext? context;
   final ValueSetter<OutputFile>? onSelected;
   final ValueSetter<int>? onError;
@@ -21,8 +19,7 @@ class SheetAudioRecorder extends StatefulWidget {
   bool file;
 
   SheetAudioRecorder(this.image, this.audio, this.video, this.file,
-      {localFileSystem, this.context, this.onSelected, this.onError})
-      : this.localFileSystem = localFileSystem ?? LocalFileSystem();
+      { this.context, this.onSelected, this.onError});
 
   @override
   State<StatefulWidget> createState() => new SheetAudioRecorderState();
@@ -303,10 +300,10 @@ class SheetAudioRecorderState extends State<SheetAudioRecorder> {
 
   _stop() async {
     var result = await _recorder!.stop();
-    lastFileSelect = widget.localFileSystem.file(result!.path);
+    // lastFileSelect = widget.localFileSystem.file(result!.path);
 
     setState(() {
-      _current = result;
+      // _current = result;
       _currentStatus = _current.status!;
       setStyleIcons();
     });

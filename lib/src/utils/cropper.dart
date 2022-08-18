@@ -14,11 +14,7 @@ class Cropper {
 
   final String imageName;
 
-  Cropper(this.context,
-      {Key? key,
-      required this.onSelected,
-      required this.onError,
-      required this.imageName}) {
+  Cropper(this.context, {Key? key, required this.onSelected, required this.onError, required this.imageName}) {
     cropImage();
   }
 
@@ -31,36 +27,39 @@ class Cropper {
       return;
     }
     firstCropSelected = false;
-    File? croppedFile = await ImageCropper.cropImage(
-        sourcePath: imageName,
-        compressQuality: 20,
-        aspectRatioPresets: Platform.isAndroid
-            ? [
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio16x9
-              ]
-            : [
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio5x3,
-                CropAspectRatioPreset.ratio5x4,
-                CropAspectRatioPreset.ratio7x5,
-                CropAspectRatioPreset.ratio16x9
-              ],
-        androidUiSettings: AndroidUiSettings(
+    CroppedFile? croppedFile = await await ImageCropper().cropImage(
+      sourcePath: imageName,
+      compressQuality: 20,
+      aspectRatioPresets: Platform.isAndroid
+          ? [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ]
+          : [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9
+            ],
+      uiSettings: [
+        AndroidUiSettings(
             toolbarTitle: language.cropper,
             toolbarColor: Colors.deepOrange,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
-        iosUiSettings: IOSUiSettings(
+        IOSUiSettings(
           title: language.cropper,
-        ));
+        )
+      ],
+    );
 
     final status = await Permission.storage.request();
     if (status == PermissionStatus.granted) {
