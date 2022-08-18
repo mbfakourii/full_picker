@@ -13,6 +13,30 @@ dependencies:
   flutter:
     sdk: flutter
 
+  responsive_sizer: ^3.1.0
+  camera: any
+
+  path_provider: ^2.0.11
+  fluttertoast: ^8.0.9
+
+  # Permission Handler
+  permission_handler: 8.1.6
+
+  # Crop
+  image_cropper: 1.4.1
+
+  # File Picker
+  file_picker: ^4.0.0
+
+  # Flutter Audio Recorder
+  flutter_audio_recorder2: ^0.0.2
+  # Audio Players
+  audioplayers: ^0.20.1
+
+  video_compress: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter:
