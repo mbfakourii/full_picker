@@ -7,7 +7,6 @@ class SheetSelect extends StatefulWidget {
   late ValueSetter<OutputFile> onSelected;
   late ValueSetter<int> onError;
   late bool image;
-  late bool audio;
   late bool video;
   late bool file;
   bool videoCompressor = true;
@@ -18,17 +17,13 @@ class SheetSelect extends StatefulWidget {
       ValueSetter<OutputFile>? onSelected,
       ValueSetter<int>? onError,
       bool? videoCompressor,
+      required this.modelName,
       bool? image,
-      bool? audio,
       bool? video,
       bool? file})
       : super(key: key) {
-    if ((image == null || image == false) &&
-        (audio == null || audio == false) &&
-        (video == null || video == false) &&
-        (file == null || file == false)) {
+    if ((image == null || image == false) && (video == null || video == false) && (file == null || file == false)) {
       image = true;
-      audio = true;
       video = true;
       file = true;
       videoCompressor = true;
@@ -36,7 +31,6 @@ class SheetSelect extends StatefulWidget {
 
     this.image = image!;
     this.video = video!;
-    this.audio = audio!;
     this.file = file!;
 
     if (videoCompressor != null) {
@@ -47,6 +41,8 @@ class SheetSelect extends StatefulWidget {
     this.onError = onError!;
     this.onSelected = onSelected!;
   }
+
+  final String modelName;
 
   @override
   _SheetSelectState createState() => _SheetSelectState();
@@ -65,42 +61,23 @@ class _SheetSelectState extends State<SheetSelect> {
     if (widget.image) {
       mList.add(newItem(language.image, Icons.image, () async {
         userClose = false;
-        executedImagePicker(  widget.image,
-            widget.audio,
-            widget.video,
-            widget.file,
-            widget.context, false, widget.onSelected, widget.onError);
+        executedImagePicker(widget.image, widget.video, widget.file, widget.context, false, widget.onSelected,
+            widget.onError, widget.modelName);
       }));
     }
     if (widget.video) {
       mList.add(newItem(language.video, Icons.video_library, () {
         userClose = false;
-        executedVideoPicker(  widget.image,
-            widget.audio,
-            widget.video,
-            widget.file,widget.context, false, widget.onSelected,
-            widget.onError, widget.videoCompressor);
+        executedVideoPicker(widget.image, widget.video, widget.file, widget.context, false, widget.onSelected,
+            widget.onError, widget.videoCompressor, widget.modelName);
       }));
     }
-    if (widget.audio) {
-      mList.add(newItem(language.record_audio, Icons.music_note, () {
-        userClose = false;
-        executedAudioPicker(
-            widget.image,
-            widget.audio,
-            widget.video,
-            widget.file,
-            widget.context,
-            false,
-            widget.onSelected,
-            widget.onError);
-      }));
-    }
+
     if (widget.file) {
       mList.add(newItem(language.file, Icons.insert_drive_file, () {
         userClose = false;
-        executedFilePicker(
-            widget.context, false, widget.onSelected, widget.onError);
+        // executedFilePicker(
+        //     widget.context, false, widget.onSelected, widget.onError, PickerFileType.FILE, widget.modelName);
       }));
     }
   }
@@ -117,29 +94,16 @@ class _SheetSelectState extends State<SheetSelect> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
         child: Container(
             color: Colors.white,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  topSheet(
-                      widget.image,
-                      widget.audio,
-                      widget.video,
-                      widget.file,
-                      language.select_file,
-                      true,
-                      context,
-                      false,
-                      widget.onSelected,
-                      widget.onError,
-                      widget.videoCompressor),
-                  Container(
-                    child: Wrap(children: mList),
-                  )
-                ])));
+            child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
+              topSheet(widget.image, widget.video, widget.file, language.select_file, true, context, widget.onSelected,
+                  widget.onError, widget.videoCompressor,
+                  modelName: widget.modelName),
+              Container(
+                child: Wrap(children: mList),
+              )
+            ])));
   }
 }

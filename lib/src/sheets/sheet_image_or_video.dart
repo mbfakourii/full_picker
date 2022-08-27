@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
 import 'package:video_compress/video_compress.dart';
@@ -14,9 +13,9 @@ class SheetImageOrVideo extends StatefulWidget {
   ValueSetter<OutputFile> onSelected;
   ValueSetter<int> onError;
   bool image;
-  bool audio;
   bool video;
   bool file;
+  String modelName;
 
   SheetImageOrVideo(
       {Key? key,
@@ -26,9 +25,9 @@ class SheetImageOrVideo extends StatefulWidget {
       required this.pictureOrVideo,
       required this.videoCompressor,
       required this.image,
-      required this.audio,
       required this.video,
       required this.file,
+      required this.modelName,
       required this.showAlone})
       : super(key: key);
 
@@ -61,144 +60,128 @@ class _SheetImageOrVideoState extends State<SheetImageOrVideo> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
         child: Container(
             color: Colors.white,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  topSheet(
-                      widget.image,
-                      widget.audio,
-                      widget.video,
-                      widget.file,
-                      language.select_file_method,
-                      widget.showAlone,
-                      widget.context,
-                      false,
-                      widget.onSelected,
-                      widget.onError,
-                      widget.videoCompressor!),
-                  Container(
-                    child: Wrap(
-                      children: <Widget>[
-                        newItem(language.camera, Icons.camera, () {
-                          if (widget.pictureOrVideo == 1) {
-                            contextHolder = context;
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) {
-                                return Camera(
-                                  isTakeImage: true,
-                                  onSelected: (value) {
-                                    Cropper(
-                                      context,
-                                      onSelected: (value) {
-                                        userClose = false;
-                                        Navigator.of(contextHolder).pop();
-                                        widget.onSelected.call(value);
-                                      },
-                                      onError: (value) {
-                                        userClose = false;
-                                        Navigator.of(contextHolder).pop();
-                                        widget.onError.call(value);
-                                      },
-                                      imageName: value.file.path,
-                                    );
-                                  },
-                                  onError: (value) {
-                                    userClose = false;
-                                    Navigator.of(contextHolder).pop();
-                                    widget.onError.call(1);
-                                  },
-                                );
+            child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
+              topSheet(widget.image, widget.video, widget.file, language.select_file_method, widget.showAlone,
+                  widget.context, widget.onSelected, widget.onError, widget.videoCompressor!,
+                  modelName: widget.modelName),
+              Container(
+                child: Wrap(
+                  children: <Widget>[
+                    newItem(language.camera, Icons.camera, () {
+                      if (widget.pictureOrVideo == 1) {
+                        contextHolder = context;
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) {
+                            return Text(":D");
+                            // return Camera(
+                            //   isTakeImage: true,
+                            //   onSelected: (value) {
+                            //     Cropper(
+                            //       context,
+                            //       onSelected: (value) {
+                            //         userClose = false;
+                            //         Navigator.of(contextHolder).pop();
+                            //         widget.onSelected.call(value);
+                            //       },
+                            //       onError: (value) {
+                            //         userClose = false;
+                            //         Navigator.of(contextHolder).pop();
+                            //         widget.onError.call(value);
+                            //       },
+                            //       imageName: value.name!,
+                            //     );
+                            //   },
+                            //   onError: (value) {
+                            //     userClose = false;
+                            //     Navigator.of(contextHolder).pop();
+                            //     widget.onError.call(1);
+                            //   },
+                            // );
+                          },
+                        ));
+                      } else {
+                        contextHolder = context;
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) {
+                            return Camera(
+                              isTakeImage: false,
+                              onSelected: (value) {
+                                userClose = false;
+                                Navigator.of(contextHolder).pop();
+                                widget.onSelected.call(value);
                               },
-                            ));
-                          } else {
-                            contextHolder = context;
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) {
-                                return Camera(
-                                  isTakeImage: false,
-                                  onSelected: (value) {
-                                    userClose = false;
-                                    Navigator.of(contextHolder).pop();
-                                    widget.onSelected.call(value);
-                                  },
-                                  onError: (value) {
-                                    userClose = false;
-                                    Navigator.of(contextHolder).pop();
-                                    widget.onError.call(1);
-                                  },
-                                );
+                              onError: (value) {
+                                userClose = false;
+                                Navigator.of(contextHolder).pop();
+                                widget.onError.call(1);
                               },
-                            ));
-                          }
-                        }),
-                        newItem(language.gallery, Icons.collections, () async {
-                          if (widget.pictureOrVideo == 1) {
-                            getFile(context, FileType.image, "IG")
-                                .then((value) => {
-                                      if (value!.path == '')
-                                        {
-                                          userClose = false,
-                                          widget.onError.call(1),
-                                        }
-                                      else
-                                        {
-                                          contextHolder = context,
-                                          Cropper(
-                                            context,
-                                            onSelected: (value) {
-                                              userClose = false;
-                                              Navigator.of(contextHolder).pop();
-                                              widget.onSelected.call(value);
-                                            },
-                                            onError: (value) {
-                                              userClose = false;
-                                              if (value == 44) {
-                                                Navigator.of(contextHolder)
-                                                    .pop();
-                                              }
-                                              widget.onError.call(1);
-                                              Navigator.of(context).pop();
-                                            },
-                                            imageName: value.path,
-                                          )
-                                        }
-                                    });
-                          } else {
-                            await getFile(context, FileType.video, "VG")
-                                .then((value) => {
-                                      if (value!.path != '')
-                                        {
-                                          if (widget.videoCompressor!)
-                                            {
-                                              videoCompress(value.path),
-                                            }
-                                          else
-                                            {
-                                              _desFile = value.path,
-                                              userClose = false,
-                                              Navigator.of(context).pop(),
-                                              widget.onSelected.call(OutputFile(
-                                                  File(_desFile),
-                                                  PickerFileType.VIDEO)),
-                                            }
-                                        }
-                                      else
-                                        {
-                                          userClose = false,
-                                          widget.onError.call(1),
-                                        }
-                                    });
-                          }
-                        }),
-                      ],
-                    ),
-                  )
-                ])));
+                            );
+                          },
+                        ));
+                      }
+                    }),
+                    newItem(language.gallery, Icons.collections, () async {
+                      if (widget.pictureOrVideo == 1) {
+                        // getFile(context, FileType.image, PickerFileType.IMAGE, widget.modelName).then((value) => {
+                        //       if (value == null)
+                        //         {
+                        //           userClose = false,
+                        //           widget.onError.call(1),
+                        //         }
+                        //       else
+                        //         {
+                        //           contextHolder = context,
+                        //           Cropper(
+                        //             context,
+                        //             onSelected: (value) {
+                        //               userClose = false;
+                        //               Navigator.of(contextHolder).pop();
+                        //               widget.onSelected.call(value);
+                        //             },
+                        //             onError: (value) {
+                        //               userClose = false;
+                        //               if (value == 44) {
+                        //                 Navigator.of(contextHolder).pop();
+                        //               }
+                        //               widget.onError.call(1);
+                        //               Navigator.of(context).pop();
+                        //             },
+                        //             imageName: "value",
+                        //           )
+                        //         }
+                        //     });
+                      } else {
+                        // await getFile(context, FileType.video, PickerFileType.VIDEO, widget.modelName)
+                        //     .then((value) => {
+                        //           if (value != null)
+                        //             {
+                        //               if (widget.videoCompressor!)
+                        //                 {
+                        //                   // videoCompress(value),
+                        //                 }
+                        //               else
+                        //                 {
+                        //                   // _desFile = value,
+                        //                   userClose = false,
+                        //                   Navigator.of(context).pop(),
+                        //                   widget.onSelected.call(value),
+                        //                 }
+                        //             }
+                        //           else
+                        //             {
+                        //               userClose = false,
+                        //               widget.onError.call(1),
+                        //             }
+                        //         });
+                      }
+                    }),
+                  ],
+                ),
+              )
+            ])));
   }
 
   videoCompress(String path) async {
@@ -208,15 +191,13 @@ class _SheetImageOrVideoState extends State<SheetImageOrVideo> {
     int _size;
     try {
       _size = int.parse(File(path).lengthSync().toString());
-
     } catch (e) {
       throw ArgumentError("Can not parse the size parameter: $e");
     }
-    if(_size<10000000){
+    if (_size < 10000000) {
       userClose = false;
       Navigator.of(context).pop();
-      widget.onSelected
-          .call(OutputFile(File(path), PickerFileType.VIDEO));
+      // widget.onSelected.call(OutputFile(File(path).readAsBytesSync(), PickerFileType.VIDEO, path));
       return;
     }
     Subscription _subscription;
@@ -240,10 +221,7 @@ class _SheetImageOrVideoState extends State<SheetImageOrVideo> {
     await VideoCompress.setLogLevel(3);
     try {
       final MediaInfo? info = await VideoCompress.compressVideo(path,
-          deleteOrigin: false,
-          includeAudio: true,
-          quality: VideoQuality.MediumQuality,
-          frameRate: 24);
+          deleteOrigin: false, quality: VideoQuality.MediumQuality, frameRate: 24);
 
       ppp.dismiss();
       _subscription.unsubscribe();
@@ -252,8 +230,7 @@ class _SheetImageOrVideoState extends State<SheetImageOrVideo> {
         _desFile = info.file!.path;
         userClose = false;
         Navigator.of(context).pop();
-        widget.onSelected
-            .call(OutputFile(File(_desFile), PickerFileType.VIDEO));
+        // widget.onSelected.call(OutputFile(File(_desFile).readAsBytesSync(), PickerFileType.VIDEO, _desFile));
       } else {
         widget.onError.call(1);
         userClose = false;
@@ -263,7 +240,7 @@ class _SheetImageOrVideoState extends State<SheetImageOrVideo> {
       print("ajabaaaaaaaaaaa");
       userClose = false;
       Navigator.of(context).pop();
-      widget.onSelected.call(OutputFile(File(path), PickerFileType.VIDEO));
+      // widget.onSelected.call(OutputFile(File(path).readAsBytesSync(), PickerFileType.VIDEO, path));
     }
   }
 }

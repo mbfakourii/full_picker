@@ -14,11 +14,7 @@ class Camera extends StatefulWidget {
   final ValueSetter<int> onError;
   final bool isTakeImage;
 
-  const Camera(
-      {Key? key,
-      required this.onSelected,
-      required this.onError,
-      required this.isTakeImage})
+  const Camera({Key? key, required this.onSelected, required this.onError, required this.isTakeImage})
       : super(key: key);
 
   @override
@@ -33,7 +29,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   CameraController? controller;
   String? videoPath;
 
-  bool toggleCameraVisibility = true;
+  bool toggleCameraAndTextVisibility = true;
   bool stopVideoClick = false;
   bool recordVideoClick = false;
   bool firstCamera = true;
@@ -93,7 +89,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         child: Stack(
           children: <Widget>[
             _cameraPreviewWidget(),
-            twoButton(),
+            buttons(),
           ],
         ),
       ),
@@ -106,10 +102,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
 
     double scale;
-    try{
+    try {
       scale = 1 / (controller!.value.aspectRatio * MediaQuery.of(context).size.aspectRatio);
-    }catch(e){
-      scale=1.0;
+    } catch (e) {
+      scale = 1.0;
     }
 
     return Transform.scale(
@@ -147,8 +143,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
           Navigator.pop(context);
         });
         userClose = false;
-        widget.onSelected
-            .call(OutputFile(File(filePath!), PickerFileType.IMAGE));
+        widget.onSelected.call(OutputFile([File(filePath!).readAsBytesSync()], PickerFileType.IMAGE, [filePath]));
       }
     });
   }
@@ -160,14 +155,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   }
 
   Future<void> onStopButtonPressed() async {
+    stopVideoClick = true;
     stopVideoRecording().then((file) {
       if (mounted)
         setState(() {
           Navigator.pop(context);
         });
       userClose = false;
-      widget.onSelected
-          .call(OutputFile(File(file!.path), PickerFileType.VIDEO));
+      widget.onSelected.call(OutputFile([File(file!.path).readAsBytesSync()], PickerFileType.VIDEO, [file.path]));
     });
   }
 
@@ -213,6 +208,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     } catch (e) {
       Navigator.pop(context);
     }
+    return null;
   }
 
   Future<String?> takePicture() async {
@@ -241,13 +237,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       Navigator.pop(context);
       widget.onError.call(1);
 
-      Fluttertoast.showToast(
-          msg: language.deny_access_permission,
-          toastLength: Toast.LENGTH_SHORT);
+      Fluttertoast.showToast(msg: language.deny_access_permission, toastLength: Toast.LENGTH_SHORT);
     }
   }
 
-  twoButton() {
+  buttons() {
     return Container(
       // remove this height
       height: MediaQuery.of(context).size.height,
@@ -256,7 +250,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       child: Column(
         children: [
           Visibility(
-            visible: toggleCameraVisibility,
+            visible: toggleCameraAndTextVisibility,
             child: Expanded(
               child: SizedBox(
                 width: double.infinity,
@@ -264,7 +258,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                     icon: Icon(
                       Icons.flip_camera_android,
                       color: Colors.red,
-                      size:  0.15.w,
+                      size: 15.w,
                     ),
                     onPressed: () {
                       changeCamera();
@@ -281,33 +275,44 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
           Expanded(
             child: SizedBox(
               width: double.infinity,
-              child: IconButton(
-                  icon: Icon(
-                    Icons.camera,
-                    color: colorCameraButton,
-                    size: 0.15.w,
-                  ),
-                  onPressed: () {
-                    if (widget.isTakeImage) {
-                      onTakePictureButtonPressed();
-                    } else {
-                      if (stopVideoClick) return;
-                      setState(() {
-                        toggleCameraVisibility = false;
-                        colorCameraButton = Colors.green;
-                      });
-                      if (controller!.value.isRecordingVideo) {
-                        stopVideoClick = true;
-                        onStopButtonPressed();
-                      } else {
-                        if (recordVideoClick) return;
-                        recordVideoClick = true;
-                        onVideoRecordButtonPressed();
-                      }
-                    }
-                  }),
+              child: GestureDetector(
+                onLongPress: () {
+                  if (stopVideoClick) return;
+                  setState(() {
+                    toggleCameraAndTextVisibility = false;
+                    colorCameraButton = Colors.green;
+                  });
+                  if (controller!.value.isRecordingVideo) {
+                    onStopButtonPressed();
+                  } else {
+                    if (recordVideoClick) return;
+                    recordVideoClick = true;
+                    onVideoRecordButtonPressed();
+                  }
+                },
+                onTap: () {
+                  if (controller!.value.isRecordingVideo) {
+                    onStopButtonPressed();
+                  } else {
+                    onTakePictureButtonPressed();
+                  }
+                },
+                child: Icon(
+                  Icons.camera,
+                  color: colorCameraButton,
+                  size: 15.w,
+                ),
+              ),
             ),
           ),
+          Visibility(
+            visible: toggleCameraAndTextVisibility,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 9),
+              child: Text(language.tap_for_photo_hold_for_video,
+                  style: TextStyle(color: Color(0xa3ffffff), fontSize: 18.sp)),
+            ),
+          )
         ],
       ),
     );
@@ -317,11 +322,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     if (firstCamera) {
       firstCamera = false;
       onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.front));
-
     } else {
       onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
       firstCamera = true;
     }
-
   }
 }

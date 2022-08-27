@@ -27,6 +27,7 @@ class Cropper {
       return;
     }
     firstCropSelected = false;
+
     CroppedFile? croppedFile = await await ImageCropper().cropImage(
       sourcePath: imageName,
       compressQuality: 20,
@@ -76,7 +77,7 @@ class Cropper {
       File file = File('$dirPAth/${timestamp()}.jpg');
       await file.writeAsBytes(buffer);
       userClose = false;
-      onSelected.call(OutputFile(file, PickerFileType.IMAGE));
+      onSelected.call(OutputFile([file.readAsBytesSync()], PickerFileType.IMAGE, [file.path]));
     }
   }
 

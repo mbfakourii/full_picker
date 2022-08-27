@@ -1,3 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+
 String fileSize(dynamic size, [int round = 2]) {
   /**
    * [size] can be passed as number or as string
@@ -8,7 +14,7 @@ String fileSize(dynamic size, [int round = 2]) {
   int divider = 1024;
   int _size;
   try {
-    _size = int.parse(size.toString());
+    _size = size.length;
   } catch (e) {
     throw ArgumentError("Can not parse the size parameter: $e");
   }
@@ -57,5 +63,14 @@ String fileSize(dynamic size, [int round = 2]) {
   } else {
     num r = _size / divider / divider / divider / divider / divider;
     return "${r.toStringAsFixed(round)} PB";
+  }
+}
+
+Uint8List? getByte(FilePickerResult result) {
+  if (kIsWeb) {
+    return result.files.first.bytes;
+  } else {
+    File file = File(result.files.first.path!);
+    return file.readAsBytesSync();
   }
 }

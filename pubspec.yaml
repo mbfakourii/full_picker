@@ -1,13 +1,13 @@
 name: full_picker
 description: A flutter package that helps you in selecting files
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/mbfakourii/full_picker
 issue_tracker: https://github.com/mbfakourii/full_picker/issues
 repository: https://github.com/mbfakourii/full_picker
 
-
 environment:
   sdk: ">=2.17.6 <3.0.0"
+  flutter: ">=2.17.6"
 
 dependencies:
   flutter:
@@ -20,18 +20,13 @@ dependencies:
   fluttertoast: ^8.0.9
 
   # Permission Handler
-  permission_handler: ^10.0.0
+  permission_handler: ^9.2.0
 
   # Crop
   image_cropper: ^3.0.0
 
   # File Picker
   file_picker: ^4.0.0
-
-  # Flutter Audio Recorder
-  flutter_audio_recorder2: ^0.0.2
-  # Audio Players
-  audioplayers: ^0.20.1
 
   video_compress: ^3.1.0
 
@@ -40,3 +35,17 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: full_picker
+      ios:
+        default_package: full_picker
+      linux:
+        default_package: full_picker
+      macos:
+        default_package: full_picker
+      web:
+        default_package: full_picker
+      windows:
+        default_package: full_picker

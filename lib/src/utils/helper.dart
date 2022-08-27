@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,43 +11,21 @@ import 'dart:io' as io;
 
 import '../../full_picker.dart';
 
-topSheet(
-    bool image,
-    bool audio,
-    bool video,
-    bool file,
-    String title,
-    bool showAlone,
-    BuildContext context,
-    bool audioRecorder,
-    ValueSetter<OutputFile> onSelected,
-    ValueSetter<int> onError,
-    bool videoCompressor,
-    {ValueSetter<int>? onBack}) {
+topSheet(bool image, bool video, bool file, String title, bool showAlone, BuildContext context,
+    ValueSetter<OutputFile> onSelected, ValueSetter<int> onError, bool videoCompressor,
+    {ValueSetter<int>? onBack, required String modelName}) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Padding(
       padding: EdgeInsets.only(top: 5, left: 5),
       child: ClipOval(
         child: Material(
           child: InkWell(
-            child:
-                SizedBox(width: 56, height: 56, child: Icon(Icons.arrow_back)),
+            child: SizedBox(width: 56, height: 56, child: Icon(Icons.arrow_back)),
             onTap: () {
               if (onBack != null) {
                 onBack.call(1);
               }
-              backArrowButton(
-                context,
-                showAlone,
-                audioRecorder,
-                image,
-                audio,
-                video,
-                file,
-                onSelected,
-                onError,
-                videoCompressor,
-              );
+              backArrowButton(context, showAlone, image, video, file, onSelected, onError, videoCompressor, modelName);
             },
           ),
         ),
@@ -73,40 +53,22 @@ void showSheet(Widget widget, BuildContext context) {
       });
 }
 
-void backArrowButton(
-    BuildContext context,
-    bool showAlone,
-    bool audioRecorder,
-    bool image,
-    bool audio,
-    bool video,
-    bool file,
-    ValueSetter<OutputFile> onSelected,
-    ValueSetter<int> onError,
-    bool? videoCompressor) {
+void backArrowButton(BuildContext context, bool showAlone, bool image, bool video, bool file,
+    ValueSetter<OutputFile> onSelected, ValueSetter<int> onError, bool? videoCompressor, String modelName) {
   Navigator.of(context).pop();
   if (!showAlone) {
-    if (audioRecorder) {
-      showSheet(
-          SheetAudio(image, audio, video, file,
-              showAlone: showAlone,
-              context: context,
-              onError: onError,
-              onSelected: onSelected),
-          context);
-    } else {
-      showSheet(
-          SheetSelect(
-              context: context,
-              onSelected: onSelected,
-              onError: onError,
-              image: image,
-              audio: audio,
-              file: file,
-              video: video,
-              videoCompressor: videoCompressor),
-          context);
-    }
+    showSheet(
+        SheetSelect(
+          context: context,
+          onSelected: onSelected,
+          onError: onError,
+          image: image,
+          file: file,
+          video: video,
+          videoCompressor: videoCompressor,
+          modelName: modelName,
+        ),
+        context);
   }
 }
 
@@ -114,47 +76,52 @@ newItem(String title, IconData icon, GestureTapCallback onTap) {
   return Material(
     child: Ink(
       color: Colors.transparent,
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: new ListTile(
-          leading: new Icon(icon),
-          title: new Text(title),
-          onTap: () => onTap.call(),
-        ),
+      child: new ListTile(
+        leading: new Icon(icon),
+        title: new Text(title),
+        onTap: () => onTap.call(),
       ),
     ),
   );
 }
 
-// AG = Audio Gallery
-// IG = Image Gallery
-// VG = Video Gallery
-// FG = File Gallery
-Future<File?> getFile(
-    BuildContext contextMain, FileType type, String from) async {
-  await FilePicker.platform.clearTemporaryFiles();
+Future<OutputFile?> getFiles(
+    {required BuildContext context,
+    required FileType fileType,
+    required PickerFileType pickerFileType,
+    required String firstPartFileName,
+    List<String>? allowedExtensions,
+    bool allowMultiple = false}) async {
+  try {
+    await FilePicker.platform.clearTemporaryFiles();
+  } catch (e) {
+    print(e);
+  }
+  late BuildContext lateDialogContext;
   FilePickerResult? result = await FilePicker.platform
       .pickFiles(
-    type: type,
+    allowMultiple: allowMultiple,
+    type: fileType,
+    allowedExtensions: allowedExtensions,
     onFileLoading: (value) {
       if (value == FilePickerStatus.picking) {
         showDialog(
-          context: contextMain,
+          context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
+            lateDialogContext = context;
             return WillPopScope(
               onWillPop: () {
                 return Future.value(false);
               },
-              child: Dialog(
-                child: Container(
+              child: const Dialog(
+                child: SizedBox(
                   height: 20,
                   width: 50,
                   child: Card(
                       child: LinearProgressIndicator(
                           backgroundColor: Colors.white,
-                          valueColor: new AlwaysStoppedAnimation<Color>(
-                              Colors.deepPurple),
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
                           minHeight: 8)),
                 ),
               ),
@@ -167,16 +134,31 @@ Future<File?> getFile(
     },
   )
       .catchError((error, stackTrace) {
-    Fluttertoast.showToast(
-        msg: language.deny_access_permission, toastLength: Toast.LENGTH_SHORT);
+    Fluttertoast.showToast(msg: language.deny_access_permission, toastLength: Toast.LENGTH_SHORT);
   });
 
-  Navigator.pop(contextMain);
+  Navigator.pop(context);
+
+  if (kIsWeb) {
+    Navigator.pop(lateDialogContext);
+  }
 
   if (result != null) {
-    return File(result.files.first.path!);
+    List<Uint8List?> bytes = [];
+    List<String?> name = [];
+
+    result.files.forEach((element) {
+      name.add(firstPartFileName + "_" + (name.length + 1).toString() +"."+ element.extension!);
+      if(element.bytes==null){
+        bytes.add(File(element.path!).readAsBytesSync());
+      }else {
+        bytes.add(element.bytes);
+      }
+    });
+
+    return OutputFile(bytes, pickerFileType, name);
   } else {
-    return File("");
+    return null;
   }
 }
 
@@ -201,20 +183,12 @@ Future<String> get destinationFile async {
   }
 }
 
-void executedImagePicker(
-    bool image,
-    bool audio,
-    bool video,
-    bool file,
-    BuildContext context,
-    bool showAlone,
-    ValueSetter<OutputFile> onSelected,
-    ValueSetter<int> onError) {
+void executedImagePicker(bool image, bool video, bool file, BuildContext context, bool showAlone,
+    ValueSetter<OutputFile> onSelected, ValueSetter<int> onError, String modelName) {
   if (!showAlone) Navigator.of(context).pop();
   showSheet(
       SheetImageOrVideo(
           image: image,
-          audio: audio,
           video: video,
           file: file,
           context: context,
@@ -222,25 +196,26 @@ void executedImagePicker(
           showAlone: showAlone,
           onError: onError,
           videoCompressor: true,
-          onSelected: onSelected),
+          onSelected: onSelected,
+          modelName: modelName),
       context);
 }
 
 void executedVideoPicker(
-    bool image,
-    bool audio,
-    bool video,
-    bool file,
-    BuildContext context,
-    bool showAlone,
-    ValueSetter<OutputFile> onSelected,
-    ValueSetter<int> onError,
-    bool? videoCompressor) {
+  bool image,
+  bool video,
+  bool file,
+  BuildContext context,
+  bool showAlone,
+  ValueSetter<OutputFile> onSelected,
+  ValueSetter<int> onError,
+  bool? videoCompressor,
+  String modelName,
+) {
   if (!showAlone) Navigator.of(context).pop();
   showSheet(
       SheetImageOrVideo(
           image: image,
-          audio: audio,
           video: video,
           file: file,
           context: context,
@@ -248,39 +223,26 @@ void executedVideoPicker(
           showAlone: showAlone,
           onError: onError,
           videoCompressor: videoCompressor,
-          onSelected: onSelected),
+          onSelected: onSelected,
+          modelName: modelName),
       context);
 }
 
-void executedAudioPicker(
-    bool image,
-    bool audio,
-    bool video,
-    bool file,
-    BuildContext context,
-    bool showAlone,
-    ValueSetter<OutputFile> onSelected,
-    ValueSetter<int> onError) {
-  if (!showAlone) Navigator.of(context).pop();
-
-  showSheet(
-      SheetAudio(image, audio, video, file,
+void executedFilePicker(
+    {required BuildContext context,
+    required bool showAlone,
+    required ValueSetter<OutputFile> onSelected,
+    required ValueSetter<int> onError,
+    required PickerFileType fileType,
+    required String firstPartFileName,
+    required bool allowMultiple}) {
+  getFiles(
           context: context,
-          showAlone: showAlone,
-          onError: onError,
-          onSelected: onSelected),
-      context);
-}
-
-void executedFilePicker(BuildContext context, bool showAlone,
-    ValueSetter<OutputFile> onSelected, ValueSetter<int> onError) {
-  getFile(context, FileType.any, "FG").then((value) => {
-        if (value!.path == '')
-          {onError.call(1)}
-        else
-          {
-            onSelected.call(OutputFile(value, PickerFileType.FILE)),
-            Navigator.of(context).pop()
-          }
-      });
+          fileType: FileType.any,
+          pickerFileType: fileType,
+          firstPartFileName: firstPartFileName,
+          allowMultiple: allowMultiple)
+      .then((value) => {
+            if (value == null) {onError.call(1)} else {onSelected.call(value), Navigator.of(context).pop()}
+          });
 }
