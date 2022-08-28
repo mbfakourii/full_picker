@@ -315,7 +315,7 @@ Future<Uint8List?> videoCompress({
     return byte;
   }
 
-  File mainFile = await File(file.path!);
+  File mainFile = File(file.path!);
   ValueNotifier<double> onProgress = ValueNotifier<double>(0);
   final LightCompressor _lightCompressor = LightCompressor();
   String destinationFile = await _destinationFile(isImage: false);
