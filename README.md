@@ -35,7 +35,7 @@ FullPicker(
 );
 ```
 
-and use ```minSdkVersion 21```
+and use ```minSdkVersion 21``` in your Module-level build.gradle file
 
 ### Video Compressor
 If you need to compress the video, add the following
