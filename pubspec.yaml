@@ -1,6 +1,6 @@
 name: full_picker
 description: A flutter package that helps you in selecting files
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/mbfakourii/full_picker
 issue_tracker: https://github.com/mbfakourii/full_picker/issues
 repository: https://github.com/mbfakourii/full_picker
@@ -18,9 +18,6 @@ dependencies:
 
   path_provider: ^2.0.11
   fluttertoast: ^8.0.9
-
-  # Permission Handler
-  permission_handler: ^9.2.0
 
   # Crop
   image_cropper: ^3.0.0
