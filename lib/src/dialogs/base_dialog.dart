@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class BaseDialog {
-  late var context;
+  late BuildContext context;
   late Dialog _dialog;
   late bool touchOutside;
   late double height;
@@ -11,16 +11,13 @@ abstract class BaseDialog {
 
   late bool _isOpen;
 
-  BaseDialog(context,
+  BaseDialog(this.context,
       {bool? touchOutside,
       double? width,
       double? height,
       Color? backgroundColor,
-      ValueSetter<void>? onClose,
-      required bool autoHeight}) {
-    this.context = context;
-    this.onClose = onClose;
-    this.autoHeight = autoHeight;
+      this.onClose,
+      required this.autoHeight}) {
     _isOpen = true;
 
     if (touchOutside == null) {
@@ -51,12 +48,12 @@ abstract class BaseDialog {
   Future<void> show() async {
     Widget child;
     if (autoHeight) {
-      child = Container(
+      child = SizedBox(
           width: width,
           child: Column(
               mainAxisSize: MainAxisSize.min, children: [build(context)]));
     } else {
-      child = Container(
+      child = SizedBox(
           height: height,
           width: width,
           child: Column(

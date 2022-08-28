@@ -12,13 +12,15 @@ class Camera extends StatefulWidget {
   final bool imageCamera;
   final String firstPartFileName;
 
-  const Camera({Key? key, required this.imageCamera, required this.videoCamera, required this.firstPartFileName})
+  const Camera(
+      {Key? key,
+      required this.imageCamera,
+      required this.videoCamera,
+      required this.firstPartFileName})
       : super(key: key);
 
   @override
-  _CameraState createState() {
-    return _CameraState();
-  }
+  State<Camera> createState() => _CameraState();
 }
 
 class _CameraState extends State<Camera> with WidgetsBindingObserver {
@@ -80,7 +82,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     if (cameras.isEmpty) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(
@@ -99,13 +101,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   // Main Widget for Camera
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller!.value.isInitialized) {
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.back));
     }
 
     // Set aspectRatio Camera
     double scale;
     try {
-      scale = 1 / (controller!.value.aspectRatio * MediaQuery.of(context).size.aspectRatio);
+      scale = 1 /
+          (controller!.value.aspectRatio *
+              MediaQuery.of(context).size.aspectRatio);
     } catch (e) {
       scale = 1.0;
     }
@@ -141,8 +146,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     takePicture().then((String? filePath) {
       if (filePath == "") return;
       if (mounted) {
-        Navigator.pop(context,
-            OutputFile([File(filePath!).readAsBytesSync()], PickerFileType.IMAGE, [widget.firstPartFileName + ".jpg"]));
+        Navigator.pop(
+            context,
+            OutputFile([File(filePath!).readAsBytesSync()],
+                PickerFileType.image, ["${widget.firstPartFileName}.jpg"]));
       }
     });
   }
@@ -151,11 +158,12 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   Future<void> onStopButtonPressed() async {
     stopVideoClick = true;
     stopVideoRecording().then((file) {
-      if (mounted)
+      if (mounted) {
         Navigator.pop(
             context,
-            OutputFile(
-                [File(file!.path).readAsBytesSync()], PickerFileType.VIDEO, [widget.firstPartFileName + ".mp4"]));
+            OutputFile([File(file!.path).readAsBytesSync()],
+                PickerFileType.video, ["${widget.firstPartFileName}.mp4"]));
+      }
     });
   }
 
@@ -184,13 +192,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       return null;
     }
 
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     try {
       return controller!.stopVideoRecording();
-    } catch (e) {
-      Navigator.pop(context);
-    }
+    } catch (_) {}
     return null;
   }
 
@@ -219,7 +225,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       Navigator.pop(context);
       Navigator.pop(context, 1);
 
-      Fluttertoast.showToast(msg: language.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
+      Fluttertoast.showToast(
+          msg: language.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
     }
   }
 
@@ -259,8 +266,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            visible: (widget.imageCamera && widget.videoCamera) && toggleCameraAndTextVisibility,
-            child: Text(language.tapForPhotoHoldForVideo, style: TextStyle(color: Color(0xa3ffffff), fontSize: 21.sp)),
+            visible: (widget.imageCamera && widget.videoCamera) &&
+                toggleCameraAndTextVisibility,
+            child: Text(language.tapForPhotoHoldForVideo,
+                style:
+                    TextStyle(color: const Color(0xa3ffffff), fontSize: 21.sp)),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 15),
@@ -300,9 +310,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void changeCamera() {
     if (firstCamera) {
       firstCamera = false;
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.front));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.front));
     } else {
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.back));
       firstCamera = true;
     }
   }

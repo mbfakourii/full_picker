@@ -17,7 +17,7 @@ class SelectSheet extends StatefulWidget {
   final bool multiFile;
   final String firstPartFileName;
 
-  SelectSheet(
+  const SelectSheet(
       {Key? key,
       required this.videoCompressor,
       required this.firstPartFileName,
@@ -34,10 +34,10 @@ class SelectSheet extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SheetSelectState2 createState() => _SheetSelectState2();
+  State<SelectSheet> createState() => _SheetSelectState();
 }
 
-class _SheetSelectState2 extends State<SelectSheet> {
+class _SheetSelectState extends State<SelectSheet> {
   late List<ItemSheet> itemList = [];
   bool userClose = true;
 
@@ -71,45 +71,48 @@ class _SheetSelectState2 extends State<SelectSheet> {
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return ClipRRect(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
           child: Container(
               color: Colors.white,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
-                topSheet(language.selectFile, context),
-                Container(
-                  child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                      ),
-                      itemCount: itemList.length,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          width: 2.w,
-                          height: 2.h,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                                customBorder: new CircleBorder(),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(itemList[index].icon, size: 9.h),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 2.h),
-                                      child: Text(itemList[index].name),
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  goPage(itemList[index]);
-                                }),
-                          ),
-                        );
-                      }),
-                )
-              ])));
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    topSheet(language.selectFile, context),
+                    GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                        ),
+                        itemCount: itemList.length,
+                        itemBuilder: (context, index) {
+                          return SizedBox(
+                            width: 2.w,
+                            height: 2.h,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  customBorder: const CircleBorder(),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(itemList[index].icon, size: 9.h),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 2.h),
+                                        child: Text(itemList[index].name),
+                                      )
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    goPage(itemList[index]);
+                                  }),
+                            ),
+                          );
+                        })
+                  ])));
     });
   }
 

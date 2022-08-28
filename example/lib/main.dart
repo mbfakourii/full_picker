@@ -45,7 +45,9 @@ class _ExonFilePicker extends State<FilePickerTest> {
             height: 30,
           ),
           ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey)),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blueGrey)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: const Text(
@@ -143,7 +145,8 @@ class _ExonFilePicker extends State<FilePickerTest> {
       return "${(_size / divider / divider / divider).toStringAsFixed(round)} GB";
     }
 
-    if (_size < divider * divider * divider * divider * divider && _size % divider == 0) {
+    if (_size < divider * divider * divider * divider * divider &&
+        _size % divider == 0) {
       num r = _size / divider / divider / divider / divider;
       return "${r.toStringAsFixed(0)} TB";
     }
@@ -153,7 +156,8 @@ class _ExonFilePicker extends State<FilePickerTest> {
       return "${r.toStringAsFixed(round)} TB";
     }
 
-    if (_size < divider * divider * divider * divider * divider * divider && _size % divider == 0) {
+    if (_size < divider * divider * divider * divider * divider * divider &&
+        _size % divider == 0) {
       num r = _size / divider / divider / divider / divider / divider;
       return "${r.toStringAsFixed(0)} PB";
     } else {

@@ -1,6 +1,7 @@
 name: full_picker_example
 description: A new Flutter project for full picker example
 version: 1.0.0
+publish_to: none
 
 environment:
   sdk: ">=2.17.6 <3.0.0"

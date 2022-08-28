@@ -18,11 +18,12 @@ import '../../full_picker.dart';
 topSheet(String title, BuildContext context) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Padding(
-      padding: EdgeInsets.only(top: 5, left: 5),
+      padding: const EdgeInsets.only(top: 5, left: 5),
       child: ClipOval(
         child: Material(
           child: InkWell(
-            child: SizedBox(width: 14.w, height: 15.h, child: Icon(Icons.arrow_back)),
+            child: SizedBox(
+                width: 14.w, height: 15.h, child: const Icon(Icons.arrow_back)),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -38,7 +39,7 @@ topSheet(String title, BuildContext context) {
       ),
     ),
     Padding(
-        padding: EdgeInsets.only(top: 5, right: 5),
+        padding: const EdgeInsets.only(top: 5, right: 5),
         child: Container(
           width: 56,
         )),
@@ -57,9 +58,9 @@ newItem(String title, IconData icon, GestureTapCallback onTap) {
   return Material(
     child: Ink(
       color: Colors.transparent,
-      child: new ListTile(
-        leading: new Icon(icon),
-        title: new Text(title),
+      child: ListTile(
+        leading: Icon(icon),
+        title: Text(title),
         onTap: () => onTap.call(),
       ),
     ),
@@ -95,7 +96,8 @@ Future<OutputFile?> getFiles(
     },
   )
       .catchError((error, stackTrace) {
-    Fluttertoast.showToast(msg: language.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
+    Fluttertoast.showToast(
+        msg: language.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
   });
 
   if (result != null) {
@@ -104,7 +106,7 @@ Future<OutputFile?> getFiles(
     List<String?> name = [];
 
     for (final file in result.files) {
-      name.add(firstPartFileName + "_" + (name.length + 1).toString() + "." + file.extension!);
+      name.add("${firstPartFileName}_${name.length + 1}.${file.extension!}");
       Uint8List byte;
 
       if (file.bytes == null) {
@@ -115,7 +117,8 @@ Future<OutputFile?> getFiles(
 
       // video compressor
       if (file.extension == "mp4" && videoCompressor) {
-        Uint8List? byteCompress = await videoCompress(context: context, byte: byte, file: file);
+        Uint8List? byteCompress =
+            await videoCompress(context: context, byte: byte, file: file);
 
         if (byteCompress == null) return null;
         byte = byteCompress;
@@ -123,7 +126,8 @@ Future<OutputFile?> getFiles(
 
       // image cropper
       if (file.extension == "jpg" && imageCropper) {
-        Uint8List? byteCrop = await cropImage(context: context, byte: byte, file: file);
+        Uint8List? byteCrop =
+            await cropImage(context: context, byte: byte, file: file);
 
         if (byteCrop == null) return null;
         byte = byteCrop;
@@ -199,7 +203,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.custom,
-          pickerFileType: PickerFileType.MIXED,
+          pickerFileType: PickerFileType.mixed,
           firstPartFileName: firstPartFileName,
           inSheet: inSheet,
           allowedExtensions: ["mp4", "avi", "mkv", "jpg", "jpeg", "png", "bmp"],
@@ -212,7 +216,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.image,
-          pickerFileType: PickerFileType.IMAGE,
+          pickerFileType: PickerFileType.image,
           firstPartFileName: firstPartFileName,
           multiFile: multiFile,
           inSheet: inSheet,
@@ -224,7 +228,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.video,
-          pickerFileType: PickerFileType.VIDEO,
+          pickerFileType: PickerFileType.video,
           firstPartFileName: firstPartFileName,
           imageCropper: imageCropper,
           inSheet: inSheet,
@@ -238,7 +242,7 @@ void getFullPicker({
       onError.call(1);
     } else {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
-      if (value.name.length != 0) onSelected.call(value);
+      if (value.name.isNotEmpty) onSelected.call(value);
     }
   } else if (id == 2) {
     // camera
@@ -265,7 +269,7 @@ void getFullPicker({
     value = await getFiles(
         context: context,
         fileType: FileType.any,
-        pickerFileType: PickerFileType.FILE,
+        pickerFileType: PickerFileType.file,
         firstPartFileName: firstPartFileName,
         multiFile: multiFile,
         inSheet: inSheet,
@@ -292,7 +296,8 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
 
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
-  final String fileName = '${DateTime.now().millisecondsSinceEpoch}.' + (isImage ? "jpg" : "mp4");
+  final String fileName =
+      '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
   if (Platform.isAndroid) {
     // Handle this part the way you want to save it in any directory you wish.
     final List<Directory>? dir = await path.getExternalCacheDirectories();
@@ -317,15 +322,16 @@ Future<Uint8List?> videoCompress({
 
   File mainFile = File(file.path!);
   ValueNotifier<double> onProgress = ValueNotifier<double>(0);
-  final LightCompressor _lightCompressor = LightCompressor();
+  final LightCompressor lightCompressor = LightCompressor();
   String destinationFile = await _destinationFile(isImage: false);
 
-  int _size = int.parse(File(mainFile.path).lengthSync().toString());
-  if (_size < 10000000) {
+  int size = int.parse(File(mainFile.path).lengthSync().toString());
+  if (size < 10000000) {
     return byte;
   }
 
-  PercentProgressDialog progressDialog = PercentProgressDialog(context, (dynamic) {
+  PercentProgressDialog progressDialog =
+      PercentProgressDialog(context, (dynamic) {
     if (onProgress.value.toString() != "1.0") {
       LightCompressor.cancelCompression();
     }
@@ -337,8 +343,11 @@ Future<Uint8List?> videoCompress({
 
   try {
     progressDialog.show();
-    final dynamic response = await _lightCompressor.compressVideo(
-        path: mainFile.path, destinationPath: destinationFile, videoQuality: VideoQuality.medium, frameRate: 24);
+    final dynamic response = await lightCompressor.compressVideo(
+        path: mainFile.path,
+        destinationPath: destinationFile,
+        videoQuality: VideoQuality.medium,
+        frameRate: 24);
 
     progressDialog.dismiss();
 
@@ -350,7 +359,6 @@ Future<Uint8List?> videoCompress({
       return outputByte;
     } else if (response is OnFailure) {
       // failure message
-      print(response.message);
       return byte;
     } else if (response is OnCancelled) {
       return null;

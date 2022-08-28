@@ -1,9 +1,8 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:full_picker/src/utils/language.dart';
 import '../../full_picker.dart';
 
-final Language language = Language();
+Language language = Language();
 
 class FullPicker {
   final bool image;
@@ -33,7 +32,6 @@ class FullPicker {
       this.multiFile = false,
       required this.onSelected,
       required this.onError}) {
-
     int countTrue = 0;
 
     if (image && video == false) {
@@ -42,6 +40,10 @@ class FullPicker {
       countTrue++;
     } else if (image && video) {
       countTrue++;
+    }
+
+    if (languageLocal != null) {
+      language = languageLocal;
     }
 
     if (imageCamera && videoCamera == false) {
@@ -120,7 +122,7 @@ class OutputFile {
   OutputFile(this.bytes, this.fileType, this.name);
 }
 
-enum PickerFileType { IMAGE, VIDEO, FILE, MIXED }
+enum PickerFileType { image, video, file, mixed }
 
 class ItemSheet {
   late IconData icon;

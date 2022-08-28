@@ -10,12 +10,10 @@ class PercentProgressDialog extends BaseDialog {
   late int percent;
   late String title;
 
-  PercentProgressDialog(context, ValueSetter<void> onClose, ValueNotifier<double> onProgress, String title)
+  PercentProgressDialog(
+      context, ValueSetter<void> onClose, this.onProgress, this.title)
       : super(context, width: 0.6.w, autoHeight: true, onClose: onClose) {
-    this.onProgress = onProgress;
-    this.title = title;
-
-    this.onProgress.addListener(() {
+    onProgress.addListener(() {
       if (isOpenDialog) {
         streamController.sink.add(onProgress.value);
       }
@@ -32,46 +30,47 @@ class PercentProgressDialog extends BaseDialog {
   Widget build(BuildContext context) {
     return Card(
         child: Column(
-          children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: 20),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-              child: StreamBuilder<double>(
-                  stream: streamController.stream as Stream<double>,
-                  builder: (context, snapshot) {
-                    try {
-                      percent = (snapshot.data! * 100).toInt();
-                    } catch (error) {
-                      percent = 0;
-                    }
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontSize: 20),
+        ),
+        Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          child: StreamBuilder<double>(
+              stream: streamController.stream as Stream<double>,
+              builder: (context, snapshot) {
+                try {
+                  percent = (snapshot.data! * 100).toInt();
+                } catch (error) {
+                  percent = 0;
+                }
 
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        Text(
-                          percent.toString() + "%",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: LinearProgressIndicator(
-                            value: snapshot.data,
-                            minHeight: 8,
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
-            )
-          ],
-        ));
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Text(
+                      "$percent%",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: LinearProgressIndicator(
+                        value: snapshot.data,
+                        minHeight: 8,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+        )
+      ],
+    ));
   }
 }
