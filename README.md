@@ -38,7 +38,8 @@ FullPicker(
 and use ```minSdkVersion 21``` in your Module-level build.gradle file
 
 ### Video Compressor
-If you need to compress the video, add the following
+
+If you need to compress the video (only support Android And IOS), add the following
 
 #### iOS
 
@@ -86,7 +87,7 @@ implementation 'com.github.AbedElazizShe:LightCompressor:1.0.0
 ```
 
 ### Image Cropper
-If you need to crop the image, add the following
+If you need to crop the image (only support Android And IOS), add the following
 
 #### Android
 
