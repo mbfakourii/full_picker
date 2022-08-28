@@ -1,6 +1,6 @@
 # Full picker
 <a href="https://pub.dev/packages/full_picker"><img src="https://img.shields.io/pub/v/full_picker.svg" alt="Pub"></a></br>
-A flutter package that helps you in selecting files
+A Flutter package that helps you select files in different modes
 
 
 ## Features
