@@ -104,7 +104,7 @@ If you need to crop the image, add the following
 
 
 ## Example App
-<img src="https://raw.githubusercontent.com/mbfakourii/full_picker/master/example/images/a.gif" width="300" height="550" />
+<img src="https://raw.githubusercontent.com/mbfakourii/full_picker/master/example/screenshots/example.gif" width="300" height="550" />
 
 ## Getting Started
 
