@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../full_picker.dart';
 
+// Custom Camera for Image and Video
 class Camera extends StatefulWidget {
   final bool videoCamera;
   final bool imageCamera;
@@ -39,6 +40,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
+  // init Camera
   Future<void> _init() async {
     try {
       WidgetsFlutterBinding.ensureInitialized();
@@ -94,11 +96,13 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     );
   }
 
+  // Main Widget for Camera
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller!.value.isInitialized) {
       onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
     }
 
+    // Set aspectRatio Camera
     double scale;
     try {
       scale = 1 / (controller!.value.aspectRatio * MediaQuery.of(context).size.aspectRatio);
@@ -113,6 +117,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     );
   }
 
+  // initialize Camera Controller
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     controller = CameraController(
       cameraDescription,
@@ -131,6 +136,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
+  // Take Picture
   void onTakePictureButtonPressed() {
     takePicture().then((String? filePath) {
       if (filePath == "") return;
@@ -141,12 +147,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     });
   }
 
-  Future<void> onVideoRecordButtonPressed() async {
-    startVideoRecording().then((value) {
-      if (mounted) setState(() {});
-    });
-  }
-
+  // Stop Video Recording
   Future<void> onStopButtonPressed() async {
     stopVideoClick = true;
     stopVideoRecording().then((file) {
@@ -158,6 +159,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     });
   }
 
+  // Start Video Recording
   Future<void> startVideoRecording() async {
     if (!controller!.value.isInitialized) {
       return;
@@ -176,6 +178,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
+  // Stop Video Recording
   Future<XFile?> stopVideoRecording() async {
     if (!controller!.value.isRecordingVideo) {
       return null;
@@ -191,6 +194,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     return null;
   }
 
+  // Take Picture
   Future<String?> takePicture() async {
     if (!controller!.value.isInitialized) {
       return "";
@@ -209,15 +213,17 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
+  // show Camera Exception
   void _showCameraException(CameraException e) {
     if (e.code == "cameraPermission") {
       Navigator.pop(context);
       Navigator.pop(context, 1);
 
-      Fluttertoast.showToast(msg: language.deny_access_permission, toastLength: Toast.LENGTH_SHORT);
+      Fluttertoast.showToast(msg: language.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
     }
   }
 
+  // struct buttons in main page
   buttons() {
     return Container(
       // remove this height
@@ -254,8 +260,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             maintainAnimation: true,
             maintainState: true,
             visible: (widget.imageCamera && widget.videoCamera) && toggleCameraAndTextVisibility,
-            child: Text(language.tap_for_photo_hold_for_video,
-                style: TextStyle(color: Color(0xa3ffffff), fontSize: 21.sp)),
+            child: Text(language.tapForPhotoHoldForVideo, style: TextStyle(color: Color(0xa3ffffff), fontSize: 21.sp)),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 15),
@@ -291,6 +296,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     );
   }
 
+  // change Camera
   void changeCamera() {
     if (firstCamera) {
       firstCamera = false;
@@ -301,6 +307,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
+  // Video Recording
   void videoRecord() {
     if (stopVideoClick) return;
     setState(() {
@@ -312,7 +319,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     } else {
       if (recordVideoClick) return;
       recordVideoClick = true;
-      onVideoRecordButtonPressed();
+
+      startVideoRecording().then((value) {
+        if (mounted) setState(() {});
+      });
     }
   }
 }

@@ -95,7 +95,7 @@ Future<OutputFile?> getFiles(
     },
   )
       .catchError((error, stackTrace) {
-    Fluttertoast.showToast(msg: language.deny_access_permission, toastLength: Toast.LENGTH_SHORT);
+    Fluttertoast.showToast(msg: language.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
   });
 
   if (result != null) {
@@ -329,7 +329,7 @@ Future<Uint8List?> videoCompress({
     if (onProgress.value.toString() != "1.0") {
       LightCompressor.cancelCompression();
     }
-  }, onProgress, language.on_compressing);
+  }, onProgress, language.onCompressing);
 
   LightCompressor().onProgressUpdated.listen((event) {
     onProgress.value = event / 100;
@@ -372,7 +372,7 @@ Future<Uint8List?> cropImage({
     return byte;
   }
 
-  CroppedFile? croppedFile = await await ImageCropper().cropImage(
+  CroppedFile? croppedFile = await ImageCropper().cropImage(
     sourcePath: file.path!,
     compressQuality: 20,
     aspectRatioPresets: Platform.isAndroid
