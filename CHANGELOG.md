@@ -1,3 +1,6 @@
+## 1.0.6
+* add files
+
 ## 0.0.3
 * add files
 
