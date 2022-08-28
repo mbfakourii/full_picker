@@ -3,18 +3,15 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'dart:io' as io;
-
 import '../../full_picker.dart';
 
 class Camera extends StatefulWidget {
-  final ValueSetter<OutputFile> onSelected;
-  final ValueSetter<int> onError;
-  final bool isTakeImage;
+  final bool videoCamera;
+  final bool imageCamera;
+  final String firstPartFileName;
 
-  const Camera({Key? key, required this.onSelected, required this.onError, required this.isTakeImage})
+  const Camera({Key? key, required this.imageCamera, required this.videoCamera, required this.firstPartFileName})
       : super(key: key);
 
   @override
@@ -27,13 +24,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   Color colorCameraButton = Colors.white;
   List<CameraDescription> cameras = [];
   CameraController? controller;
-  String? videoPath;
 
   bool toggleCameraAndTextVisibility = true;
   bool stopVideoClick = false;
   bool recordVideoClick = false;
   bool firstCamera = true;
-  bool userClose = true;
 
   @override
   void initState() {
@@ -50,31 +45,33 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       try {
         cameras = await availableCameras();
         setState(() {});
-      } catch (_) {}
-    } on CameraException {}
+      } catch (_) {
+        Navigator.of(context).pop();
+      }
+    } on CameraException {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    if (userClose) {
-      widget.onError.call(1);
-    }
+
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (controller == null || !controller!.value.isInitialized) {
+    final CameraController? cameraController = controller;
+
+    if (cameraController == null || !cameraController.value.isInitialized) {
       return;
     }
 
     if (state == AppLifecycleState.inactive) {
-      controller?.dispose();
+      cameraController.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      if (controller != null) {
-        onNewCameraSelected(controller!.description);
-      }
+      onNewCameraSelected(cameraController.description);
     }
   }
 
@@ -83,6 +80,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     if (cameras.isEmpty) {
       return Center(child: CircularProgressIndicator());
     }
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -115,8 +113,6 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     );
   }
 
-  String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
-
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     controller = CameraController(
       cameraDescription,
@@ -139,11 +135,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     takePicture().then((String? filePath) {
       if (filePath == "") return;
       if (mounted) {
-        setState(() {
-          Navigator.pop(context);
-        });
-        userClose = false;
-        widget.onSelected.call(OutputFile([File(filePath!).readAsBytesSync()], PickerFileType.IMAGE, [filePath]));
+        Navigator.pop(context,
+            OutputFile([File(filePath!).readAsBytesSync()], PickerFileType.IMAGE, [widget.firstPartFileName + ".jpg"]));
       }
     });
   }
@@ -158,11 +151,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     stopVideoClick = true;
     stopVideoRecording().then((file) {
       if (mounted)
-        setState(() {
-          Navigator.pop(context);
-        });
-      userClose = false;
-      widget.onSelected.call(OutputFile([File(file!.path).readAsBytesSync()], PickerFileType.VIDEO, [file.path]));
+        Navigator.pop(
+            context,
+            OutputFile(
+                [File(file!.path).readAsBytesSync()], PickerFileType.VIDEO, [widget.firstPartFileName + ".mp4"]));
     });
   }
 
@@ -171,24 +163,12 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       return;
     }
 
-    Directory extDir;
-
-    if (io.Platform.isIOS) {
-      extDir = await getApplicationDocumentsDirectory();
-    } else {
-      extDir = (await getExternalStorageDirectory())!;
-    }
-    final String dirPath = '${extDir.path}/Video';
-    await Directory(dirPath).create(recursive: true);
-    final String filePath = '$dirPath/${timestamp()}.mp4';
-
     if (controller!.value.isRecordingVideo) {
       // A recording is already started, do nothing.
       return;
     }
 
     try {
-      videoPath = filePath;
       await controller!.startVideoRecording();
     } on CameraException catch (e) {
       _showCameraException(e);
@@ -215,9 +195,6 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     if (!controller!.value.isInitialized) {
       return "";
     }
-    final Directory extDir = await getApplicationDocumentsDirectory();
-    final String dirPath = '${extDir.path}/Pictures';
-    await Directory(dirPath).create(recursive: true);
 
     if (controller!.value.isTakingPicture) {
       return "";
@@ -235,7 +212,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void _showCameraException(CameraException e) {
     if (e.code == "cameraPermission") {
       Navigator.pop(context);
-      widget.onError.call(1);
+      Navigator.pop(context, 1);
 
       Fluttertoast.showToast(msg: language.deny_access_permission, toastLength: Toast.LENGTH_SHORT);
     }
@@ -272,29 +249,33 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
               height: 15,
             ),
           ),
-          Expanded(
+          Visibility(
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            visible: (widget.imageCamera && widget.videoCamera) && toggleCameraAndTextVisibility,
+            child: Text(language.tap_for_photo_hold_for_video,
+                style: TextStyle(color: Color(0xa3ffffff), fontSize: 21.sp)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 15),
             child: SizedBox(
               width: double.infinity,
               child: GestureDetector(
-                onLongPress: () {
-                  if (stopVideoClick) return;
-                  setState(() {
-                    toggleCameraAndTextVisibility = false;
-                    colorCameraButton = Colors.green;
-                  });
-                  if (controller!.value.isRecordingVideo) {
-                    onStopButtonPressed();
-                  } else {
-                    if (recordVideoClick) return;
-                    recordVideoClick = true;
-                    onVideoRecordButtonPressed();
-                  }
-                },
+                onLongPress: widget.videoCamera && widget.imageCamera
+                    ? () {
+                        videoRecord();
+                      }
+                    : null,
                 onTap: () {
-                  if (controller!.value.isRecordingVideo) {
-                    onStopButtonPressed();
+                  if (widget.imageCamera) {
+                    if (controller!.value.isRecordingVideo) {
+                      onStopButtonPressed();
+                    } else {
+                      onTakePictureButtonPressed();
+                    }
                   } else {
-                    onTakePictureButtonPressed();
+                    videoRecord();
                   }
                 },
                 child: Icon(
@@ -303,14 +284,6 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                   size: 15.w,
                 ),
               ),
-            ),
-          ),
-          Visibility(
-            visible: toggleCameraAndTextVisibility,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 9),
-              child: Text(language.tap_for_photo_hold_for_video,
-                  style: TextStyle(color: Color(0xa3ffffff), fontSize: 18.sp)),
             ),
           )
         ],
@@ -325,6 +298,21 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     } else {
       onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
       firstCamera = true;
+    }
+  }
+
+  void videoRecord() {
+    if (stopVideoClick) return;
+    setState(() {
+      toggleCameraAndTextVisibility = false;
+      colorCameraButton = Colors.green;
+    });
+    if (controller!.value.isRecordingVideo) {
+      onStopButtonPressed();
+    } else {
+      if (recordVideoClick) return;
+      recordVideoClick = true;
+      onVideoRecordButtonPressed();
     }
   }
 }

@@ -1,17 +1,16 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:full_picker/src/sheets/sheet_select2.dart';
 import 'package:full_picker/src/utils/language.dart';
 import '../../full_picker.dart';
 
 final Language language = Language();
 
 class FullPicker {
-  final bool? image;
-  final bool? video;
-  final bool? imageCamera;
-  final bool? videoCamera;
-  final bool? file;
+  final bool image;
+  final bool video;
+  final bool imageCamera;
+  final bool videoCamera;
+  final bool file;
   final String firstPartFileName;
   final bool videoCompressor;
   final bool imageCropper;
@@ -23,50 +22,60 @@ class FullPicker {
   FullPicker(
       {required this.context,
       Language? languageLocal,
-      this.image,
-      this.video,
-      this.file,
-      this.imageCamera,
-      this.videoCamera,
+      this.image = true,
+      this.video = false,
+      this.file = false,
+      this.imageCamera = false,
+      this.videoCamera = false,
       this.firstPartFileName = "File",
       this.videoCompressor = false,
       this.imageCropper = false,
       this.multiFile = false,
       required this.onSelected,
       required this.onError}) {
+
     int countTrue = 0;
 
-    if (image!) countTrue++;
-    if (video!) countTrue++;
-    if (file!) countTrue++;
+    if (image && video == false) {
+      countTrue++;
+    } else if (image == false && video) {
+      countTrue++;
+    } else if (image && video) {
+      countTrue++;
+    }
+
+    if (imageCamera && videoCamera == false) {
+      countTrue++;
+    } else if (imageCamera == false && videoCamera) {
+      countTrue++;
+    } else if (imageCamera && videoCamera) {
+      countTrue++;
+    }
+
+    if (file) countTrue++;
 
     if (countTrue == 1) {
-      if (file!) {
-        executedFilePicker(
-            context: context,
-            showAlone: true,
-            onSelected: onSelected,
-            onError: onError,
-            fileType: PickerFileType.FILE,
-            firstPartFileName: firstPartFileName,
-            allowMultiple: multiFile);
+      if (image || video) {
+        openAloneFullPicker(1);
       }
 
-      if (video!) {
-        executedVideoPicker(false, false, true, context, true, onSelected, onError, videoCompressor, firstPartFileName);
+      if (file) {
+        openAloneFullPicker(3);
       }
 
-      if (image!) {
-        executedImagePicker(true, false, false, context, true, onSelected, onError, firstPartFileName);
+      if (imageCamera || videoCamera) {
+        openAloneFullPicker(2);
       }
+    } else if (countTrue == 0) {
+      onError.call(1);
     } else {
       showSheet(
-          SheetSelect2(
-            video: video ?? false,
-            file: file ?? false,
-            image: image ?? false,
-            imageCamera: imageCamera ?? false,
-            videoCamera: videoCamera ?? false,
+          SelectSheet(
+            video: video,
+            file: file,
+            image: image,
+            imageCamera: imageCamera,
+            videoCamera: videoCamera,
             context: context,
             videoCompressor: videoCompressor,
             onError: onError,
@@ -74,10 +83,29 @@ class FullPicker {
             firstPartFileName: firstPartFileName,
             imageCropper: imageCropper,
             multiFile: multiFile,
-            allowMultiple: multiFile,
           ),
           context);
     }
+  }
+
+  void openAloneFullPicker(id) {
+    getFullPicker(
+      id: id,
+      context: context,
+      onIsUserCheng: (value) {},
+      video: video,
+      file: file,
+      image: image,
+      imageCamera: imageCamera,
+      videoCamera: videoCamera,
+      videoCompressor: videoCompressor,
+      onError: onError,
+      onSelected: onSelected,
+      firstPartFileName: firstPartFileName,
+      imageCropper: imageCropper,
+      multiFile: multiFile,
+      inSheet: false,
+    );
   }
 }
 

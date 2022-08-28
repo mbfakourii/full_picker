@@ -184,6 +184,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4"
+  light_compressor:
+    dependency: "direct main"
+    description:
+      name: light_compressor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.2"
   matcher:
     dependency: transitive
     description:
@@ -399,13 +406,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  video_compress:
-    dependency: "direct main"
-    description:
-      name: video_compress
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.1"
   win32:
     dependency: transitive
     description:
