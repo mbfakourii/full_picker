@@ -13,10 +13,16 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # responsive size
   responsive_sizer: ^3.1.0
+
+  # Camera
   camera: ^0.10.0+1
 
+  # Path
   path_provider: ^2.0.11
+
+  # Toast
   fluttertoast: ^8.0.9
 
   # Crop
@@ -24,15 +30,14 @@ dependencies:
 
   # File Picker
   file_picker: ^5.0.1
-  light_compressor: ^1.2.2
 
+  # Compressor
+  light_compressor: ^1.2.2
 
 dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-
-
 
 flutter:
   plugin:

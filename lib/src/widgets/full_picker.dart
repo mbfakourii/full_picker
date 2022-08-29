@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../../full_picker.dart';
 
-Language language = Language();
+Language globalLanguage = Language();
 
 class FullPicker {
   final bool image;
@@ -20,7 +20,7 @@ class FullPicker {
 
   FullPicker(
       {required this.context,
-      Language? languageLocal,
+      Language? language,
       this.image = true,
       this.video = false,
       this.file = false,
@@ -42,8 +42,8 @@ class FullPicker {
       countTrue++;
     }
 
-    if (languageLocal != null) {
-      language = languageLocal;
+    if (language != null) {
+      globalLanguage = language;
     }
 
     if (imageCamera && videoCamera == false) {

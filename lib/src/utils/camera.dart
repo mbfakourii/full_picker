@@ -226,7 +226,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       Navigator.pop(context, 1);
 
       Fluttertoast.showToast(
-          msg: language.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
+          msg: globalLanguage.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
     }
   }
 
@@ -268,7 +268,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             maintainState: true,
             visible: (widget.imageCamera && widget.videoCamera) &&
                 toggleCameraAndTextVisibility,
-            child: Text(language.tapForPhotoHoldForVideo,
+            child: Text(globalLanguage.tapForPhotoHoldForVideo,
                 style:
                     TextStyle(color: const Color(0xa3ffffff), fontSize: 21.sp)),
           ),

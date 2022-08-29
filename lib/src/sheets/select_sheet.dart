@@ -46,15 +46,15 @@ class _SheetSelectState extends State<SelectSheet> {
     super.initState();
 
     if (widget.image || widget.video) {
-      itemList.add(ItemSheet(language.gallery, Icons.image, 1));
+      itemList.add(ItemSheet(globalLanguage.gallery, Icons.image, 1));
     }
 
     if (widget.imageCamera || widget.videoCamera) {
-      if (!kIsWeb) itemList.add(ItemSheet(language.camera, Icons.camera, 2));
+      if (!kIsWeb) itemList.add(ItemSheet(globalLanguage.camera, Icons.camera, 2));
     }
 
     if (widget.file) {
-      itemList.add(ItemSheet(language.file, Icons.insert_drive_file, 3));
+      itemList.add(ItemSheet(globalLanguage.file, Icons.insert_drive_file, 3));
     }
   }
 
@@ -79,7 +79,7 @@ class _SheetSelectState extends State<SelectSheet> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    topSheet(language.selectFile, context),
+                    topSheet(globalLanguage.selectFile, context),
                     GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
