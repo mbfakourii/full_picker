@@ -50,7 +50,8 @@ class _SheetSelectState extends State<SelectSheet> {
     }
 
     if (widget.imageCamera || widget.videoCamera) {
-      if (!kIsWeb) itemList.add(ItemSheet(globalLanguage.camera, Icons.camera, 2));
+      if (!kIsWeb)
+        itemList.add(ItemSheet(globalLanguage.camera, Icons.camera, 2));
     }
 
     if (widget.file) {

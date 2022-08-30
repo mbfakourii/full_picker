@@ -1,4 +1,4 @@
-import 'dart:async';
+
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -226,7 +226,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       Navigator.pop(context, 1);
 
       Fluttertoast.showToast(
-          msg: globalLanguage.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
+          msg: globalLanguage.denyAccessPermission,
+          toastLength: Toast.LENGTH_SHORT);
     }
   }
 
