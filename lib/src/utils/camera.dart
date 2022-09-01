@@ -326,3 +326,4 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 }
 
 bool get isWeb => kIsWeb;
+
