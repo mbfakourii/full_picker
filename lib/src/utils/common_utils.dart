@@ -2,9 +2,7 @@
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:typed_data';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -165,7 +163,7 @@ Future<String> get destinationFile async {
 }
 
 Uint8List? getByte(FilePickerResult result) {
-  if (kIsWeb) {
+  if (isWeb) {
     return result.files.first.bytes;
   } else {
     File file = File(result.files.first.path!);
@@ -317,7 +315,7 @@ Future<Uint8List?> videoCompress({
   required Uint8List byte,
   required PlatformFile file,
 }) async {
-  if (kIsWeb) {
+  if (isWeb) {
     return byte;
   }
 
@@ -377,7 +375,7 @@ Future<Uint8List?> cropImage({
   required Uint8List byte,
   required PlatformFile file,
 }) async {
-  if (kIsWeb) {
+  if (isWeb) {
     return byte;
   }
 
