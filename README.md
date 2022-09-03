@@ -37,11 +37,11 @@ FullPicker(
 
 and use ```minSdkVersion 21``` in your Module-level build.gradle file
 
-### Video Compressor
+## Video Compressor
 
 If you need to compress the video (only support Android And IOS), add the following
 
-#### iOS
+### iOS
 
 Add the following to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
 
@@ -50,7 +50,7 @@ Add the following to your _Info.plist_ file, located in `<project root>/ios/Runn
 <string>${PRODUCT_NAME} library Usage</string>
 ```
 
-#### Android
+### Android
 
 Add the following permissions in AndroidManifest.xml:
 
@@ -86,10 +86,10 @@ Include this in your Module-level build.gradle file:
 implementation 'com.github.AbedElazizShe:LightCompressor:1.0.0
 ```
 
-### Image Cropper
+## Image Cropper
 If you need to crop the image (only support Android And IOS), add the following
 
-#### Android
+### Android
 
 - Add UCropActivity into your AndroidManifest.xml
 
@@ -100,12 +100,11 @@ If you need to crop the image (only support Android And IOS), add the following
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 ````
 
-#### iOS
+### iOS
 - No configuration required
 
-### Multi Language
+## Multi Language
 There is a possibility of customization for different languages in this package</br>
-```S For Intl Package```
 
 ```dart
 Language language = Language.copy(
@@ -124,6 +123,8 @@ FullPicker(
   ...
 );   
 ```
+
+```S``` For intl Package
 
 
     
