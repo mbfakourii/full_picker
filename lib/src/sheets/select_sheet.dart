@@ -15,12 +15,12 @@ class SelectSheet extends StatefulWidget {
   final bool videoCompressor;
   final bool imageCropper;
   final bool multiFile;
-  final String firstPartFileName;
+  final String prefixName;
 
   const SelectSheet(
       {Key? key,
       required this.videoCompressor,
-      required this.firstPartFileName,
+      required this.prefixName,
       required this.multiFile,
       required this.imageCropper,
       required this.context,
@@ -50,8 +50,9 @@ class _SheetSelectState extends State<SelectSheet> {
     }
 
     if (widget.imageCamera || widget.videoCamera) {
-      if (!kIsWeb)
+      if (!kIsWeb) {
         itemList.add(ItemSheet(globalLanguage.camera, Icons.camera, 2));
+      }
     }
 
     if (widget.file) {
@@ -132,7 +133,7 @@ class _SheetSelectState extends State<SelectSheet> {
       videoCompressor: widget.videoCompressor,
       onError: widget.onError,
       onSelected: widget.onSelected,
-      firstPartFileName: widget.firstPartFileName,
+      prefixName: widget.prefixName,
       imageCropper: widget.imageCropper,
       multiFile: widget.multiFile,
       inSheet: true,

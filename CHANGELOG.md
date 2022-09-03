@@ -1,3 +1,10 @@
+## 1.0.8
+* improve
+
+## 1.0.7
+* cheng firstPartFileName to prefixName
+* support multi language
+
 ## 1.0.6
 * add files
 

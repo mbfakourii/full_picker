@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:typed_data';
@@ -69,7 +68,7 @@ Future<OutputFile?> getFiles(
     {required BuildContext context,
     required FileType fileType,
     required PickerFileType pickerFileType,
-    required String firstPartFileName,
+    required String prefixName,
     required ValueSetter<bool> onIsUserCheng,
     required ValueSetter<int> onError,
     List<String>? allowedExtensions,
@@ -105,7 +104,7 @@ Future<OutputFile?> getFiles(
     List<String?> name = [];
 
     for (final file in result.files) {
-      name.add("${firstPartFileName}_${name.length + 1}.${file.extension!}");
+      name.add("${prefixName}_${name.length + 1}.${file.extension!}");
       Uint8List byte;
 
       if (file.bytes == null) {
@@ -188,7 +187,7 @@ void getFullPicker({
   required bool videoCompressor,
   required bool imageCropper,
   required bool multiFile,
-  required String firstPartFileName,
+  required String prefixName,
   required bool inSheet,
 }) async {
   onIsUserCheng.call(false);
@@ -203,7 +202,7 @@ void getFullPicker({
           videoCompressor: videoCompressor,
           fileType: FileType.custom,
           pickerFileType: PickerFileType.mixed,
-          firstPartFileName: firstPartFileName,
+          prefixName: prefixName,
           inSheet: inSheet,
           allowedExtensions: ["mp4", "avi", "mkv", "jpg", "jpeg", "png", "bmp"],
           multiFile: multiFile,
@@ -216,7 +215,7 @@ void getFullPicker({
           videoCompressor: videoCompressor,
           fileType: FileType.image,
           pickerFileType: PickerFileType.image,
-          firstPartFileName: firstPartFileName,
+          prefixName: prefixName,
           multiFile: multiFile,
           inSheet: inSheet,
           imageCropper: imageCropper,
@@ -228,7 +227,7 @@ void getFullPicker({
           videoCompressor: videoCompressor,
           fileType: FileType.video,
           pickerFileType: PickerFileType.video,
-          firstPartFileName: firstPartFileName,
+          prefixName: prefixName,
           imageCropper: imageCropper,
           inSheet: inSheet,
           multiFile: multiFile,
@@ -250,7 +249,7 @@ void getFullPicker({
         return Camera(
           imageCamera: imageCamera,
           videoCamera: videoCamera,
-          firstPartFileName: firstPartFileName,
+          prefixName: prefixName,
         );
       },
     ));
@@ -269,7 +268,7 @@ void getFullPicker({
         context: context,
         fileType: FileType.any,
         pickerFileType: PickerFileType.file,
-        firstPartFileName: firstPartFileName,
+        prefixName: prefixName,
         multiFile: multiFile,
         inSheet: inSheet,
         onError: onError,
