@@ -103,7 +103,30 @@ If you need to crop the image (only support Android And IOS), add the following
 #### iOS
 - No configuration required
 
+### Multi Language
+There is a possibility of customization for different languages in this package</br>
+```S For Intl Package```
 
+```dart
+Language language = Language.copy(
+    camera: S.current.camera,
+    file: S.current.file,
+    gallery: S.current.gallery,
+    cropper: S.current.cropper,
+    denyAccessPermission: S.current.denyAccessPermission,
+    onCompressing: S.current.onCompressing,
+    selectFile: S.current.selectFile,
+    tapForPhotoHoldForVideo: S.current.tapForPhotoHoldForVideo);
+    
+FullPicker(
+  ...
+  language: language,
+  ...
+);   
+```
+
+
+    
 ## Example App
 <img src="https://raw.githubusercontent.com/mbfakourii/full_picker/master/example/screenshots/example.gif" width="300" height="550" />
 
