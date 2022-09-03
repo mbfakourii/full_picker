@@ -10,9 +10,9 @@ import '../../full_picker.dart';
 class Camera extends StatefulWidget {
   final bool videoCamera;
   final bool imageCamera;
-  final String firstPartFileName;
+  final String prefixName;
 
-  const Camera({Key? key, required this.imageCamera, required this.videoCamera, required this.firstPartFileName})
+  const Camera({Key? key, required this.imageCamera, required this.videoCamera, required this.prefixName})
       : super(key: key);
 
   @override
@@ -140,7 +140,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       if (filePath == "") return;
       if (mounted) {
         Navigator.pop(context,
-            OutputFile([File(filePath!).readAsBytesSync()], PickerFileType.image, ["${widget.firstPartFileName}.jpg"]));
+            OutputFile([File(filePath!).readAsBytesSync()], PickerFileType.image, ["${widget.prefixName}.jpg"]));
       }
     });
   }
@@ -153,7 +153,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(
             context,
             OutputFile(
-                [File(file!.path).readAsBytesSync()], PickerFileType.video, ["${widget.firstPartFileName}.mp4"]));
+                [File(file!.path).readAsBytesSync()], PickerFileType.video, ["${widget.prefixName}.mp4"]));
       }
     });
   }

@@ -17,7 +17,7 @@ Quick simple usage example:
 ```dart
 FullPicker(
   context: context,
-  firstPartFileName: "test",
+  prefixName: "test",
   file: true,
   image: true,
   video: true,

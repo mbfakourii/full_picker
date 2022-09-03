@@ -10,7 +10,7 @@ class FullPicker {
   final bool imageCamera;
   final bool videoCamera;
   final bool file;
-  final String firstPartFileName;
+  final String prefixName;
   final bool videoCompressor;
   final bool imageCropper;
   final bool multiFile;
@@ -26,7 +26,7 @@ class FullPicker {
       this.file = false,
       this.imageCamera = false,
       this.videoCamera = false,
-      this.firstPartFileName = "File",
+      this.prefixName = "File",
       this.videoCompressor = false,
       this.imageCropper = false,
       this.multiFile = false,
@@ -82,7 +82,7 @@ class FullPicker {
             videoCompressor: videoCompressor,
             onError: onError,
             onSelected: onSelected,
-            firstPartFileName: firstPartFileName,
+            prefixName: prefixName,
             imageCropper: imageCropper,
             multiFile: multiFile,
           ),
@@ -103,7 +103,7 @@ class FullPicker {
       videoCompressor: videoCompressor,
       onError: onError,
       onSelected: onSelected,
-      firstPartFileName: firstPartFileName,
+      prefixName: prefixName,
       imageCropper: imageCropper,
       multiFile: multiFile,
       inSheet: false,

@@ -58,7 +58,7 @@ class _ExonFilePicker extends State<FilePickerTest> {
               onPressed: () {
                 FullPicker(
                   context: context,
-                  firstPartFileName: "test",
+                  prefixName: "test",
                   file: true,
                   image: true,
                   video: true,
