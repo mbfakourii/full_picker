@@ -10,7 +10,6 @@ A Flutter package that helps you select files in different modes
 * Custom Camera
 * Custom Name For Files
 
-
 ## Usage
 Quick simple usage example:
 
