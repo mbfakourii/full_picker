@@ -10,6 +10,8 @@ A Flutter package that helps you select files in different modes
 * Custom Camera
 * Custom Name For Files
 
+## Example App
+<img src="https://raw.githubusercontent.com/mbfakourii/full_picker/master/example/screenshots/example.gif" width="300" height="550" />
 
 ## Usage
 Quick simple usage example:
@@ -125,11 +127,6 @@ FullPicker(
 ```
 
 ```S``` For intl Package
-
-
-    
-## Example App
-<img src="https://raw.githubusercontent.com/mbfakourii/full_picker/master/example/screenshots/example.gif" width="300" height="550" />
 
 ## Getting Started
 
