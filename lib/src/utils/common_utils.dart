@@ -1,17 +1,15 @@
 import 'dart:io';
-import 'dart:io' as io;
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:light_compressor/light_compressor.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../full_picker.dart';
 
+// show top sheet title and back button
 topSheet(String title, BuildContext context) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Padding(
@@ -19,8 +17,8 @@ topSheet(String title, BuildContext context) {
       child: ClipOval(
         child: Material(
           child: InkWell(
-            child: SizedBox(
-                width: 14.w, height: 15.h, child: const Icon(Icons.arrow_back)),
+            child: const SizedBox(
+                width: 55, height: 55, child: Icon(Icons.arrow_back)),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -31,7 +29,7 @@ topSheet(String title, BuildContext context) {
     Flexible(
       child: Text(
         title,
-        style: TextStyle(fontSize: 22.sp),
+        style: const TextStyle(fontSize: 22),
         overflow: TextOverflow.ellipsis,
       ),
     ),
@@ -43,6 +41,7 @@ topSheet(String title, BuildContext context) {
   ]);
 }
 
+// show sheet
 void showSheet(Widget widget, BuildContext context) {
   showModalBottomSheet(
       context: context,
@@ -51,23 +50,11 @@ void showSheet(Widget widget, BuildContext context) {
       });
 }
 
-newItem(String title, IconData icon, GestureTapCallback onTap) {
-  return Material(
-    child: Ink(
-      color: Colors.transparent,
-      child: ListTile(
-        leading: Icon(icon),
-        title: Text(title),
-        onTap: () => onTap.call(),
-      ),
-    ),
-  );
-}
-
+// get files
 Future<OutputFile?> getFiles(
     {required BuildContext context,
     required FileType fileType,
-    required PickerFileType pickerFileType,
+    required FilePickerType pickerFileType,
     required String prefixName,
     required ValueSetter<bool> onIsUserCheng,
     required ValueSetter<int> onError,
@@ -77,7 +64,9 @@ Future<OutputFile?> getFiles(
     bool imageCropper = false,
     bool multiFile = false}) async {
   ProgressIndicatorDialog progressDialog = ProgressIndicatorDialog(context);
-  await FilePicker.platform.clearTemporaryFiles();
+  try {
+    await FilePicker.platform.clearTemporaryFiles();
+  } catch (_) {}
 
   FilePickerResult? result = await FilePicker.platform
       .pickFiles(
@@ -140,36 +129,7 @@ Future<OutputFile?> getFiles(
   }
 }
 
-Future<String> get destinationFile async {
-  String directory;
-  final String videoName = '${DateTime.now().millisecondsSinceEpoch}.mp4';
-  if (Platform.isAndroid) {
-    Directory extDir;
-
-    if (io.Platform.isIOS) {
-      extDir = await getApplicationDocumentsDirectory();
-    } else {
-      extDir = (await getExternalStorageDirectory())!;
-    }
-    String dirPAth = "${extDir.path}/Video";
-    await Directory(dirPAth).create(recursive: true);
-    return File('$dirPAth/$videoName').path;
-  } else {
-    final Directory dir = await path.getLibraryDirectory();
-    directory = dir.path;
-    return File('$directory/$videoName').path;
-  }
-}
-
-Uint8List? getByte(FilePickerResult result) {
-  if (isWeb) {
-    return result.files.first.bytes;
-  } else {
-    File file = File(result.files.first.path!);
-    return file.readAsBytesSync();
-  }
-}
-
+// re director for select file
 // 1 = Gallery
 // 2 = Camera
 // 3 = File
@@ -201,7 +161,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.custom,
-          pickerFileType: PickerFileType.mixed,
+          pickerFileType: FilePickerType.mixed,
           prefixName: prefixName,
           inSheet: inSheet,
           allowedExtensions: ["mp4", "avi", "mkv", "jpg", "jpeg", "png", "bmp"],
@@ -214,7 +174,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.image,
-          pickerFileType: PickerFileType.image,
+          pickerFileType: FilePickerType.image,
           prefixName: prefixName,
           multiFile: multiFile,
           inSheet: inSheet,
@@ -226,7 +186,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.video,
-          pickerFileType: PickerFileType.video,
+          pickerFileType: FilePickerType.video,
           prefixName: prefixName,
           imageCropper: imageCropper,
           inSheet: inSheet,
@@ -267,7 +227,7 @@ void getFullPicker({
     value = await getFiles(
         context: context,
         fileType: FileType.any,
-        pickerFileType: PickerFileType.file,
+        pickerFileType: FilePickerType.file,
         prefixName: prefixName,
         multiFile: multiFile,
         inSheet: inSheet,
@@ -292,6 +252,7 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
   }
 }
 
+// get destination File for save
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
   final String fileName =
@@ -309,6 +270,7 @@ Future<String> _destinationFile({required bool isImage}) async {
 }
 
 // web does not support video compression
+// video compressor
 Future<Uint8List?> videoCompress({
   required context,
   required Uint8List byte,
@@ -369,6 +331,7 @@ Future<Uint8List?> videoCompress({
 }
 
 // web does not support crop Image
+// crop image
 Future<Uint8List?> cropImage({
   required context,
   required Uint8List byte,

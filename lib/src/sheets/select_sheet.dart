@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../full_picker.dart';
 
+// show sheet for select models file picker
 class SelectSheet extends StatefulWidget {
   final BuildContext context;
   final ValueSetter<OutputFile> onSelected;
@@ -71,53 +71,45 @@ class _SheetSelectState extends State<SelectSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSizer(builder: (context, orientation, screenType) {
-      return ClipRRect(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-          child: Container(
-              color: Colors.white,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    topSheet(globalLanguage.selectFile, context),
-                    GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                        ),
-                        itemCount: itemList.length,
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                            width: 2.w,
-                            height: 2.h,
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                  customBorder: const CircleBorder(),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(itemList[index].icon, size: 9.h),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 2.h),
-                                        child: Text(itemList[index].name),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    goPage(itemList[index]);
-                                  }),
-                            ),
-                          );
-                        })
-                  ])));
-    });
+    return ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              topSheet(globalLanguage.selectFile, context),
+              GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  itemCount: itemList.length,
+                  itemBuilder: (context, index) {
+                    return Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                          customBorder: const CircleBorder(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(itemList[index].icon, size: 30),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text(itemList[index].name),
+                              )
+                            ],
+                          ),
+                          onTap: () {
+                            goPage(itemList[index]);
+                          }),
+                    );
+                  })
+            ]));
   }
 
+  // show file picker
   Future<void> goPage(ItemSheet mList) async {
     getFullPicker(
       id: mList.id,

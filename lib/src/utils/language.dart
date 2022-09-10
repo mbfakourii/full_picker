@@ -1,3 +1,4 @@
+// language texts
 class Language {
   String camera = "Camera";
   String selectFile = "Please select a file";
@@ -11,6 +12,7 @@ class Language {
 
   Language();
 
+  // help for cheng language texts
   Language.copy(
       {required this.camera,
       required this.file,
