@@ -19,8 +19,7 @@ topSheet(String title, BuildContext context) {
       child: ClipOval(
         child: Material(
           child: InkWell(
-            child: SizedBox(
-                width: 14.w, height: 15.h, child: const Icon(Icons.arrow_back)),
+            child: SizedBox(width: 14.w, height: 15.h, child: const Icon(Icons.arrow_back)),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -77,7 +76,9 @@ Future<OutputFile?> getFiles(
     bool imageCropper = false,
     bool multiFile = false}) async {
   ProgressIndicatorDialog progressDialog = ProgressIndicatorDialog(context);
-  await FilePicker.platform.clearTemporaryFiles();
+  try {
+    await FilePicker.platform.clearTemporaryFiles();
+  } catch (_) {}
 
   FilePickerResult? result = await FilePicker.platform
       .pickFiles(
@@ -93,9 +94,7 @@ Future<OutputFile?> getFiles(
     },
   )
       .catchError((error, stackTrace) {
-    Fluttertoast.showToast(
-        msg: globalLanguage.denyAccessPermission,
-        toastLength: Toast.LENGTH_SHORT);
+    Fluttertoast.showToast(msg: globalLanguage.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
   });
 
   if (result != null) {
@@ -115,8 +114,7 @@ Future<OutputFile?> getFiles(
 
       // video compressor
       if (file.extension == "mp4" && videoCompressor) {
-        Uint8List? byteCompress =
-            await videoCompress(context: context, byte: byte, file: file);
+        Uint8List? byteCompress = await videoCompress(context: context, byte: byte, file: file);
 
         if (byteCompress == null) return null;
         byte = byteCompress;
@@ -124,8 +122,7 @@ Future<OutputFile?> getFiles(
 
       // image cropper
       if (file.extension == "jpg" && imageCropper) {
-        Uint8List? byteCrop =
-            await cropImage(context: context, byte: byte, file: file);
+        Uint8List? byteCrop = await cropImage(context: context, byte: byte, file: file);
 
         if (byteCrop == null) return null;
         byte = byteCrop;
@@ -294,8 +291,7 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
 
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
-  final String fileName =
-      '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
+  final String fileName = '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
   if (Platform.isAndroid) {
     // Handle this part the way you want to save it in any directory you wish.
     final List<Directory>? dir = await path.getExternalCacheDirectories();
@@ -328,8 +324,7 @@ Future<Uint8List?> videoCompress({
     return byte;
   }
 
-  PercentProgressDialog progressDialog =
-      PercentProgressDialog(context, (dynamic) {
+  PercentProgressDialog progressDialog = PercentProgressDialog(context, (dynamic) {
     if (onProgress.value.toString() != "1.0") {
       LightCompressor.cancelCompression();
     }
@@ -342,10 +337,7 @@ Future<Uint8List?> videoCompress({
   try {
     progressDialog.show();
     final dynamic response = await lightCompressor.compressVideo(
-        path: mainFile.path,
-        destinationPath: destinationFile,
-        videoQuality: VideoQuality.medium,
-        frameRate: 24);
+        path: mainFile.path, destinationPath: destinationFile, videoQuality: VideoQuality.medium, frameRate: 24);
 
     progressDialog.dismiss();
 

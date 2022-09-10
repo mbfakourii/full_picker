@@ -75,46 +75,44 @@ class _SheetSelectState extends State<SelectSheet> {
       return ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-          child: Container(
-              color: Colors.white,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    topSheet(globalLanguage.selectFile, context),
-                    GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                topSheet(globalLanguage.selectFile, context),
+                GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                    ),
+                    itemCount: itemList.length,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        width: 2.w,
+                        height: 2.h,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                              customBorder: const CircleBorder(),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(itemList[index].icon, size: 9.h),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 2.h),
+                                    child: Text(itemList[index].name),
+                                  )
+                                ],
+                              ),
+                              onTap: () {
+                                goPage(itemList[index]);
+                              }),
                         ),
-                        itemCount: itemList.length,
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                            width: 2.w,
-                            height: 2.h,
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                  customBorder: const CircleBorder(),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(itemList[index].icon, size: 9.h),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 2.h),
-                                        child: Text(itemList[index].name),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    goPage(itemList[index]);
-                                  }),
-                            ),
-                          );
-                        })
-                  ])));
+                      );
+                    })
+              ]));
     });
   }
 
