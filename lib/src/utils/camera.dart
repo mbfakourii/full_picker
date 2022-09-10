@@ -11,7 +11,11 @@ class Camera extends StatefulWidget {
   final bool imageCamera;
   final String prefixName;
 
-  const Camera({Key? key, required this.imageCamera, required this.videoCamera, required this.prefixName})
+  const Camera(
+      {Key? key,
+      required this.imageCamera,
+      required this.videoCamera,
+      required this.prefixName})
       : super(key: key);
 
   @override
@@ -96,13 +100,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   // Main Widget for Camera
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller!.value.isInitialized) {
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.back));
     }
 
     // Set aspectRatio Camera
     double scale;
     try {
-      scale = 1 / (controller!.value.aspectRatio * MediaQuery.of(context).size.aspectRatio);
+      scale = 1 /
+          (controller!.value.aspectRatio *
+              MediaQuery.of(context).size.aspectRatio);
     } catch (e) {
       scale = 1.0;
     }
@@ -138,8 +145,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     takePicture().then((String? filePath) {
       if (filePath == "") return;
       if (mounted) {
-        Navigator.pop(context,
-            OutputFile([File(filePath!).readAsBytesSync()], FilePickerType.image, ["${widget.prefixName}.jpg"]));
+        Navigator.pop(
+            context,
+            OutputFile([File(filePath!).readAsBytesSync()],
+                FilePickerType.image, ["${widget.prefixName}.jpg"]));
       }
     });
   }
@@ -149,8 +158,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     stopVideoClick = true;
     stopVideoRecording().then((file) {
       if (mounted) {
-        Navigator.pop(context,
-            OutputFile([File(file!.path).readAsBytesSync()], FilePickerType.video, ["${widget.prefixName}.mp4"]));
+        Navigator.pop(
+            context,
+            OutputFile([File(file!.path).readAsBytesSync()],
+                FilePickerType.video, ["${widget.prefixName}.mp4"]));
       }
     });
   }
@@ -214,7 +225,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(context);
       }
 
-      Fluttertoast.showToast(msg: globalLanguage.denyAccessPermission, toastLength: Toast.LENGTH_SHORT);
+      Fluttertoast.showToast(
+          msg: globalLanguage.denyAccessPermission,
+          toastLength: Toast.LENGTH_SHORT);
     }
   }
 
@@ -254,7 +267,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            visible: (widget.imageCamera && widget.videoCamera) && toggleCameraAndTextVisibility,
+            visible: (widget.imageCamera && widget.videoCamera) &&
+                toggleCameraAndTextVisibility,
             child: Text(globalLanguage.tapForPhotoHoldForVideo,
                 style: const TextStyle(color: Color(0xa3ffffff), fontSize: 20)),
           ),
@@ -296,9 +310,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void changeCamera() {
     if (firstCamera) {
       firstCamera = false;
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.front));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.front));
     } else {
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.back));
       firstCamera = true;
     }
   }
