@@ -7,6 +7,7 @@ class Language {
   String cropper = "Photo cropping";
   String onCompressing = "Compressing...";
   String tapForPhotoHoldForVideo = "Tap for photo, hold for video";
+  String cameraNotFound = "Camera not found !";
   String denyAccessPermission =
       "Unfortunately, you denied access, so it is not possible to use this part";
 
@@ -18,6 +19,7 @@ class Language {
       required this.file,
       required this.gallery,
       required this.cropper,
+      required this.cameraNotFound,
       required this.denyAccessPermission,
       required this.onCompressing,
       required this.selectFile,

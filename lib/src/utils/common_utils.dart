@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -17,8 +18,7 @@ topSheet(String title, BuildContext context) {
       child: ClipOval(
         child: Material(
           child: InkWell(
-            child: const SizedBox(
-                width: 55, height: 55, child: Icon(Icons.arrow_back)),
+            child: const SizedBox(width: 55, height: 55, child: Icon(Icons.arrow_back)),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -82,9 +82,7 @@ Future<OutputFile?> getFiles(
     },
   )
       .catchError((error, stackTrace) {
-    Fluttertoast.showToast(
-        msg: globalLanguage.denyAccessPermission,
-        toastLength: Toast.LENGTH_SHORT);
+    showToast(globalLanguage.denyAccessPermission, context);
   });
 
   if (result != null) {
@@ -104,8 +102,7 @@ Future<OutputFile?> getFiles(
 
       // video compressor
       if (file.extension == "mp4" && videoCompressor) {
-        Uint8List? byteCompress =
-            await videoCompress(context: context, byte: byte, file: file);
+        Uint8List? byteCompress = await videoCompress(context: context, byte: byte, file: file);
 
         if (byteCompress == null) return null;
         byte = byteCompress;
@@ -113,11 +110,12 @@ Future<OutputFile?> getFiles(
 
       // image cropper
       if (file.extension == "jpg" && imageCropper) {
-        Uint8List? byteCrop =
-            await cropImage(context: context, byte: byte, file: file);
+        try {
+          Uint8List? byteCrop = await cropImage(context: context, byte: byte, file: file);
 
-        if (byteCrop == null) return null;
-        byte = byteCrop;
+          if (byteCrop == null) return null;
+          byte = byteCrop;
+        } catch (_) {}
       }
 
       bytes.add(byte);
@@ -248,15 +246,28 @@ void getFullPicker({
 checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
   if (inSheet) {
     onIsUserCheng.call(false);
-    if (isSelected) Navigator.of(context).pop();
+
+    if (kIsWeb) {
+      if (isSelected) {
+        Navigator.of(context).pop();
+      } else {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      }
+    } else {
+      if (Platform.isAndroid || Platform.isIOS) {
+        Navigator.of(context).pop();
+      } else {
+        if (isSelected == false) Navigator.of(context).pop();
+      }
+    }
   }
 }
 
 // get destination File for save
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
-  final String fileName =
-      '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
+  final String fileName = '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
   if (Platform.isAndroid) {
     // Handle this part the way you want to save it in any directory you wish.
     final List<Directory>? dir = await path.getExternalCacheDirectories();
@@ -290,8 +301,7 @@ Future<Uint8List?> videoCompress({
     return byte;
   }
 
-  PercentProgressDialog progressDialog =
-      PercentProgressDialog(context, (dynamic) {
+  PercentProgressDialog progressDialog = PercentProgressDialog(context, (dynamic) {
     if (onProgress.value.toString() != "1.0") {
       LightCompressor.cancelCompression();
     }
@@ -304,10 +314,7 @@ Future<Uint8List?> videoCompress({
   try {
     progressDialog.show();
     final dynamic response = await lightCompressor.compressVideo(
-        path: mainFile.path,
-        destinationPath: destinationFile,
-        videoQuality: VideoQuality.medium,
-        frameRate: 24);
+        path: mainFile.path, destinationPath: destinationFile, videoQuality: VideoQuality.medium, frameRate: 24);
 
     progressDialog.dismiss();
 
@@ -380,4 +387,20 @@ Future<Uint8List?> cropImage({
   } catch (e) {
     return null;
   }
+}
+
+showToast(String text, BuildContext context) {
+  Widget toast = Container(
+    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(25.0),
+      color: const Color(0xFF656565),
+    ),
+    child: Text(text, style: const TextStyle(color: Color(0xfffefefe))),
+  );
+
+  FToast().init(context).showToast(
+        child: toast,
+        gravity: ToastGravity.BOTTOM,
+      );
 }

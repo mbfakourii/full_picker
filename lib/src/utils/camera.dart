@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../../full_picker.dart';
 
 // Custom Camera for Image and Video
@@ -48,7 +47,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       try {
         cameras = await availableCameras();
         setState(() {});
-      } catch (_) {
+      } catch (e) {
+        showToast(globalLanguage.cameraNotFound, context);
+
         Navigator.of(context).pop();
       }
     } on CameraException {
@@ -225,9 +226,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(context);
       }
 
-      Fluttertoast.showToast(
-          msg: globalLanguage.denyAccessPermission,
-          toastLength: Toast.LENGTH_SHORT);
+      showToast(globalLanguage.denyAccessPermission, context);
     }
   }
 

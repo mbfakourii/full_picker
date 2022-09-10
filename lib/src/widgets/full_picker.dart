@@ -33,9 +33,8 @@ class FullPicker {
       this.multiFile = false,
       required this.onSelected,
       required this.onError}) {
-    int countTrue = 0;
-
     // show or not show sheet for single item or multi item
+    int countTrue = 0;
     if (image && video == false) {
       countTrue++;
     } else if (image == false && video) {
