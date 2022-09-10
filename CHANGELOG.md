@@ -1,3 +1,7 @@
+## 1.1.0
+* remove responsive_sizer lib has bug !
+* improve
+
 ## 1.0.9
 * update
 

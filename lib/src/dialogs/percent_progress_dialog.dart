@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import '../dialogs/base_dialog.dart';
 
+// Percent Progress Dialog help for show Progress
 class PercentProgressDialog extends BaseDialog {
   late ValueNotifier<double> onProgress;
   StreamController streamController = StreamController<double>();
@@ -12,7 +12,7 @@ class PercentProgressDialog extends BaseDialog {
 
   PercentProgressDialog(
       context, ValueSetter<void> onClose, this.onProgress, this.title)
-      : super(context, width: 0.6.w, autoHeight: true, onClose: onClose) {
+      : super(context, width: 2, autoHeight: true, onClose: onClose) {
     onProgress.addListener(() {
       if (isOpenDialog) {
         streamController.sink.add(onProgress.value);
@@ -49,15 +49,15 @@ class PercentProgressDialog extends BaseDialog {
 
                 return Column(
                   children: [
-                    SizedBox(
-                      height: 1.h,
+                    const SizedBox(
+                      height: 1,
                     ),
                     Text(
                       "$percent%",
                       style: const TextStyle(fontSize: 20),
                     ),
-                    SizedBox(
-                      height: 2.h,
+                    const SizedBox(
+                      height: 8,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8.0),

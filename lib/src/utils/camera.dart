@@ -3,7 +3,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../full_picker.dart';
 
 // Custom Camera for Image and Video
@@ -149,7 +148,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(
             context,
             OutputFile([File(filePath!).readAsBytesSync()],
-                PickerFileType.image, ["${widget.prefixName}.jpg"]));
+                FilePickerType.image, ["${widget.prefixName}.jpg"]));
       }
     });
   }
@@ -162,7 +161,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(
             context,
             OutputFile([File(file!.path).readAsBytesSync()],
-                PickerFileType.video, ["${widget.prefixName}.mp4"]));
+                FilePickerType.video, ["${widget.prefixName}.mp4"]));
       }
     });
   }
@@ -246,10 +245,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
               child: SizedBox(
                 width: double.infinity,
                 child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.flip_camera_android,
                       color: Colors.red,
-                      size: 15.w,
+                      size: 60,
                     ),
                     onPressed: () {
                       changeCamera();
@@ -270,8 +269,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             visible: (widget.imageCamera && widget.videoCamera) &&
                 toggleCameraAndTextVisibility,
             child: Text(globalLanguage.tapForPhotoHoldForVideo,
-                style:
-                    TextStyle(color: const Color(0xa3ffffff), fontSize: 21.sp)),
+                style: const TextStyle(color: Color(0xa3ffffff), fontSize: 20)),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 15),
@@ -297,7 +295,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                 child: Icon(
                   Icons.camera,
                   color: colorCameraButton,
-                  size: 15.w,
+                  size: 60,
                 ),
               ),
             ),

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../../full_picker.dart';
 
+// for cheng language
 Language globalLanguage = Language();
 
 class FullPicker {
@@ -34,6 +35,7 @@ class FullPicker {
       required this.onError}) {
     int countTrue = 0;
 
+    // show or not show sheet for single item or multi item
     if (image && video == false) {
       countTrue++;
     } else if (image == false && video) {
@@ -57,6 +59,7 @@ class FullPicker {
     if (file) countTrue++;
 
     if (countTrue == 1) {
+      // if single item select
       if (image || video) {
         openAloneFullPicker(1);
       }
@@ -69,8 +72,10 @@ class FullPicker {
         openAloneFullPicker(2);
       }
     } else if (countTrue == 0) {
+      // back error
       onError.call(1);
     } else {
+      // show sheet
       showSheet(
           SelectSheet(
             video: video,
@@ -90,6 +95,7 @@ class FullPicker {
     }
   }
 
+  // show file picker for single item
   void openAloneFullPicker(id) {
     getFullPicker(
       id: id,
@@ -111,19 +117,22 @@ class FullPicker {
   }
 }
 
+// main Output class
 class OutputFile {
   //main bytes
   late List<Uint8List?> bytes;
   late List<String?> name;
 
   //type file
-  late PickerFileType fileType;
+  late FilePickerType fileType;
 
   OutputFile(this.bytes, this.fileType, this.name);
 }
 
-enum PickerFileType { image, video, file, mixed }
+// File Picker Types
+enum FilePickerType { image, video, file, mixed }
 
+// item sheet model
 class ItemSheet {
   late IconData icon;
   late String name;

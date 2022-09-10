@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+// BaseDialog for help show dialog
 abstract class BaseDialog {
+  // context help show dialog
   late BuildContext context;
+
   late Dialog _dialog;
   late bool touchOutside;
   late double height;
@@ -39,12 +42,14 @@ abstract class BaseDialog {
     }
   }
 
+  // dismiss dialog
   void dismiss() {
     if (_isOpen == false) return;
     _isOpen = false;
     Navigator.of(context).pop();
   }
 
+  // show dialog
   Future<void> show() async {
     Widget child;
     if (autoHeight) {
@@ -73,8 +78,10 @@ abstract class BaseDialog {
             });
   }
 
+  // get dialog
   Dialog get dialog => _dialog;
 
+  // open dialog ?
   bool get isOpenDialog => _isOpen;
 
   @protected
