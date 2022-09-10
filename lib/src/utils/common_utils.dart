@@ -18,7 +18,8 @@ topSheet(String title, BuildContext context) {
       child: ClipOval(
         child: Material(
           child: InkWell(
-            child: const SizedBox(width: 55, height: 55, child: Icon(Icons.arrow_back)),
+            child: const SizedBox(
+                width: 55, height: 55, child: Icon(Icons.arrow_back)),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -102,7 +103,8 @@ Future<OutputFile?> getFiles(
 
       // video compressor
       if (file.extension == "mp4" && videoCompressor) {
-        Uint8List? byteCompress = await videoCompress(context: context, byte: byte, file: file);
+        Uint8List? byteCompress =
+            await videoCompress(context: context, byte: byte, file: file);
 
         if (byteCompress == null) return null;
         byte = byteCompress;
@@ -111,7 +113,8 @@ Future<OutputFile?> getFiles(
       // image cropper
       if (file.extension == "jpg" && imageCropper) {
         try {
-          Uint8List? byteCrop = await cropImage(context: context, byte: byte, file: file);
+          Uint8List? byteCrop =
+              await cropImage(context: context, byte: byte, file: file);
 
           if (byteCrop == null) return null;
           byte = byteCrop;
@@ -267,7 +270,8 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
 // get destination File for save
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
-  final String fileName = '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
+  final String fileName =
+      '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
   if (Platform.isAndroid) {
     // Handle this part the way you want to save it in any directory you wish.
     final List<Directory>? dir = await path.getExternalCacheDirectories();
@@ -301,7 +305,8 @@ Future<Uint8List?> videoCompress({
     return byte;
   }
 
-  PercentProgressDialog progressDialog = PercentProgressDialog(context, (dynamic) {
+  PercentProgressDialog progressDialog =
+      PercentProgressDialog(context, (dynamic) {
     if (onProgress.value.toString() != "1.0") {
       LightCompressor.cancelCompression();
     }
@@ -314,7 +319,10 @@ Future<Uint8List?> videoCompress({
   try {
     progressDialog.show();
     final dynamic response = await lightCompressor.compressVideo(
-        path: mainFile.path, destinationPath: destinationFile, videoQuality: VideoQuality.medium, frameRate: 24);
+        path: mainFile.path,
+        destinationPath: destinationFile,
+        videoQuality: VideoQuality.medium,
+        frameRate: 24);
 
     progressDialog.dismiss();
 
