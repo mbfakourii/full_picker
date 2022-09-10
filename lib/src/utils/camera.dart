@@ -48,7 +48,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         cameras = await availableCameras();
         setState(() {});
       } catch (e) {
-        showToast(globalLanguage.cameraNotFound, context);
+        showFullPickerToast(globalLanguage.cameraNotFound, context);
 
         Navigator.of(context).pop();
       }
@@ -226,7 +226,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(context);
       }
 
-      showToast(globalLanguage.denyAccessPermission, context);
+      showFullPickerToast(globalLanguage.denyAccessPermission, context);
     }
   }
 

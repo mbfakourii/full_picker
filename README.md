@@ -117,6 +117,7 @@ Language language = Language.copy(
     denyAccessPermission: S.current.denyAccessPermission,
     onCompressing: S.current.onCompressing,
     selectFile: S.current.selectFile,
+    cameraNotFound: S.current.cameraNotFound,
     tapForPhotoHoldForVideo: S.current.tapForPhotoHoldForVideo);
     
 FullPicker(

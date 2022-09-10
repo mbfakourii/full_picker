@@ -83,7 +83,7 @@ Future<OutputFile?> getFiles(
     },
   )
       .catchError((error, stackTrace) {
-    showToast(globalLanguage.denyAccessPermission, context);
+    showFullPickerToast(globalLanguage.denyAccessPermission, context);
   });
 
   if (result != null) {
@@ -397,7 +397,8 @@ Future<Uint8List?> cropImage({
   }
 }
 
-showToast(String text, BuildContext context) {
+// show custom sheet
+showFullPickerToast(String text, BuildContext context) {
   Widget toast = Container(
     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
     decoration: BoxDecoration(
