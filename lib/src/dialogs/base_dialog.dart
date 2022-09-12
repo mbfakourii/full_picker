@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-// BaseDialog for help show dialog
+/// BaseDialog for help show dialog
 abstract class BaseDialog {
-  // context help show dialog
+  /// context help show dialog
   late BuildContext context;
 
   late Dialog _dialog;
@@ -42,14 +42,14 @@ abstract class BaseDialog {
     }
   }
 
-  // dismiss dialog
+  /// dismiss dialog
   void dismiss() {
     if (_isOpen == false) return;
     _isOpen = false;
     Navigator.of(context).pop();
   }
 
-  // show dialog
+  /// show dialog
   Future<void> show() async {
     Widget child;
     if (autoHeight) {
@@ -67,7 +67,7 @@ abstract class BaseDialog {
     _dialog = Dialog(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-        //this right here
+        /// this right here
         child: child);
 
     await showDialog(
@@ -78,10 +78,10 @@ abstract class BaseDialog {
             });
   }
 
-  // get dialog
+  /// get dialog
   Dialog get dialog => _dialog;
 
-  // open dialog ?
+  /// open dialog ?
   bool get isOpenDialog => _isOpen;
 
   @protected

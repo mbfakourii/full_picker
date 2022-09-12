@@ -10,7 +10,7 @@ import 'package:light_compressor/light_compressor.dart';
 
 import '../../full_picker.dart';
 
-// show top sheet title and back button
+/// show top sheet title and back button
 topSheet(String title, BuildContext context) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Padding(
@@ -42,7 +42,7 @@ topSheet(String title, BuildContext context) {
   ]);
 }
 
-// show sheet
+/// show sheet
 void showSheet(Widget widget, BuildContext context) {
   showModalBottomSheet(
       context: context,
@@ -51,7 +51,7 @@ void showSheet(Widget widget, BuildContext context) {
       });
 }
 
-// get files
+/// get files
 Future<OutputFile?> getFiles(
     {required BuildContext context,
     required FileType fileType,
@@ -101,7 +101,7 @@ Future<OutputFile?> getFiles(
         byte = file.bytes!;
       }
 
-      // video compressor
+      /// video compressor
       if (file.extension == "mp4" && videoCompressor) {
         Uint8List? byteCompress =
             await videoCompress(context: context, byte: byte, file: file);
@@ -110,7 +110,7 @@ Future<OutputFile?> getFiles(
         byte = byteCompress;
       }
 
-      // image cropper
+      /// image cropper
       if (file.extension == "jpg" && imageCropper) {
         try {
           Uint8List? byteCrop =
@@ -130,10 +130,10 @@ Future<OutputFile?> getFiles(
   }
 }
 
-// re director for select file
-// 1 = Gallery
-// 2 = Camera
-// 3 = File
+/// re director for select file
+/// 1 = Gallery
+/// 2 = Camera
+/// 3 = File
 void getFullPicker({
   required id,
   required context,
@@ -155,7 +155,7 @@ void getFullPicker({
   OutputFile? value;
 
   if (id == 1) {
-    // gallery
+    /// gallery
 
     if (image && video) {
       value = await getFiles(
@@ -204,7 +204,7 @@ void getFullPicker({
       if (value.name.isNotEmpty) onSelected.call(value);
     }
   } else if (id == 2) {
-    // camera
+    /// camera
     dynamic value = await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
         return Camera(
@@ -245,7 +245,7 @@ void getFullPicker({
   }
 }
 
-// check for control close sheet
+/// check for control close sheet
 checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
   if (inSheet) {
     onIsUserCheng.call(false);
@@ -267,13 +267,13 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
   }
 }
 
-// get destination File for save
+/// get destination File for save
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
   final String fileName =
       '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
   if (Platform.isAndroid) {
-    // Handle this part the way you want to save it in any directory you wish.
+    /// Handle this part the way you want to save it in any directory you wish.
     final List<Directory>? dir = await path.getExternalCacheDirectories();
     directory = dir!.first.path;
     return File('$directory/$fileName').path;
@@ -284,8 +284,8 @@ Future<String> _destinationFile({required bool isImage}) async {
   }
 }
 
-// web does not support video compression
-// video compressor
+/// web does not support video compression
+/// video compressor
 Future<Uint8List?> videoCompress({
   required context,
   required Uint8List byte,
@@ -329,11 +329,11 @@ Future<Uint8List?> videoCompress({
     if (response is OnSuccess) {
       File outputFile = File(response.destinationPath);
       Uint8List outputByte = outputFile.readAsBytesSync();
-      // delete cash file
+      /// delete cash file
       await outputFile.delete();
       return outputByte;
     } else if (response is OnFailure) {
-      // failure message
+      /// failure message
       return byte;
     } else if (response is OnCancelled) {
       return null;
@@ -345,8 +345,8 @@ Future<Uint8List?> videoCompress({
   return byte;
 }
 
-// web does not support crop Image
-// crop image
+/// web does not support crop Image
+/// crop image
 Future<Uint8List?> cropImage({
   required context,
   required Uint8List byte,
@@ -397,7 +397,7 @@ Future<Uint8List?> cropImage({
   }
 }
 
-// show custom sheet
+/// show custom sheet
 showFullPickerToast(String text, BuildContext context) {
   Widget toast = Container(
     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),

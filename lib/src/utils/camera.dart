@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../full_picker.dart';
 
-// Custom Camera for Image and Video
+/// Custom Camera for Image and Video
 class Camera extends StatefulWidget {
   final bool videoCamera;
   final bool imageCamera;
@@ -40,7 +40,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
-  // init Camera
+  /// init Camera
   Future<void> _init() async {
     try {
       WidgetsFlutterBinding.ensureInitialized();
@@ -98,14 +98,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     );
   }
 
-  // Main Widget for Camera
+  /// Main Widget for Camera
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller!.value.isInitialized) {
       onNewCameraSelected(cameras.firstWhere((description) =>
           description.lensDirection == CameraLensDirection.back));
     }
 
-    // Set aspectRatio Camera
+    /// Set aspectRatio Camera
     double scale;
     try {
       scale = 1 /
@@ -122,7 +122,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     );
   }
 
-  // initialize Camera Controller
+  /// initialize Camera Controller
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     controller = CameraController(
       cameraDescription,
@@ -141,7 +141,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
-  // Take Picture
+  /// Take Picture
   void onTakePictureButtonPressed() {
     takePicture().then((String? filePath) {
       if (filePath == "") return;
@@ -154,7 +154,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     });
   }
 
-  // Stop Video Recording
+  /// Stop Video Recording
   Future<void> onStopButtonPressed() async {
     stopVideoClick = true;
     stopVideoRecording().then((file) {
@@ -167,14 +167,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     });
   }
 
-  // Start Video Recording
+  /// Start Video Recording
   Future<void> startVideoRecording() async {
     if (!controller!.value.isInitialized) {
       return;
     }
 
     if (controller!.value.isRecordingVideo) {
-      // A recording is already started, do nothing.
+      /// A recording is already started, do nothing.
       return;
     }
 
@@ -186,7 +186,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
-  // Stop Video Recording
+  /// Stop Video Recording
   Future<XFile?> stopVideoRecording() async {
     if (!controller!.value.isRecordingVideo) {
       return null;
@@ -200,7 +200,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     return null;
   }
 
-  // Take Picture
+  /// Take Picture
   Future<String?> takePicture() async {
     if (!controller!.value.isInitialized) {
       return "";
@@ -219,7 +219,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
-  // show Camera Exception
+  /// show Camera Exception
   void _showCameraException(CameraException e) {
     if (e.code == "cameraPermission" || e.code == "CameraAccessDenied") {
       if (mounted) {
@@ -230,7 +230,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
-  // struct buttons in main page
+  /// struct buttons in main page
   buttons() {
     return Container(
       // remove this height
@@ -305,7 +305,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     );
   }
 
-  // change Camera
+  /// change Camera
   void changeCamera() {
     if (firstCamera) {
       firstCamera = false;
@@ -318,7 +318,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
-  // Video Recording
+  /// Video Recording
   void videoRecord() {
     if (stopVideoClick) return;
     setState(() {

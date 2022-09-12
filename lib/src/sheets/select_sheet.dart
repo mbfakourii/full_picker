@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../full_picker.dart';
 
-// show sheet for select models file picker
+/// show sheet for select models file picker
 class SelectSheet extends StatefulWidget {
   final BuildContext context;
   final ValueSetter<OutputFile> onSelected;
@@ -108,7 +108,7 @@ class _SheetSelectState extends State<SelectSheet> {
             ]));
   }
 
-  // show file picker
+  /// show file picker
   Future<void> goPage(ItemSheet mList) async {
     getFullPicker(
       id: mList.id,

@@ -1,3 +1,7 @@
+## 1.1.1
+* add documents
+* and fix error in windows and web camera
+
 ## 1.1.0
 * remove responsive_sizer lib has bug !
 * improve

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../dialogs/base_dialog.dart';
 
-// Percent Progress Dialog help for show Progress
+/// Percent Progress Dialog help for show Progress
 class PercentProgressDialog extends BaseDialog {
   late ValueNotifier<double> onProgress;
   StreamController streamController = StreamController<double>();
