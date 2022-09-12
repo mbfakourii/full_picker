@@ -329,6 +329,7 @@ Future<Uint8List?> videoCompress({
     if (response is OnSuccess) {
       File outputFile = File(response.destinationPath);
       Uint8List outputByte = outputFile.readAsBytesSync();
+
       /// delete cash file
       await outputFile.delete();
       return outputByte;

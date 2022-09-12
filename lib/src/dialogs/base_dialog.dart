@@ -67,6 +67,7 @@ abstract class BaseDialog {
     _dialog = Dialog(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+
         /// this right here
         child: child);
 
