@@ -1,3 +1,6 @@
+## 1.1.2
+* improve
+
 ## 1.1.1
 * add documents
 * and fix error in windows and web camera

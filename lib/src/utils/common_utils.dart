@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -250,7 +249,7 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
   if (inSheet) {
     onIsUserCheng.call(false);
 
-    if (kIsWeb) {
+    if (isWeb) {
       if (isSelected) {
         Navigator.of(context).pop();
       } else {
