@@ -50,6 +50,35 @@ void showSheet(Widget widget, BuildContext context) {
       });
 }
 
+FileType extensionType(String extension) {
+  if (extension == "") {
+    return FileType.any;
+  } else if (extension == 'aac' ||
+      extension == 'midi' ||
+      extension == "mp3" ||
+      extension == "ogg" ||
+      extension == "wav") {
+    return FileType.audio;
+  } else if (extension == 'bmp' ||
+      extension == 'gif' ||
+      extension == "jpeg" ||
+      extension == "jpg" ||
+      extension == "png") {
+    return FileType.image;
+  } else if (extension == 'avi' ||
+      extension == 'flv' ||
+      extension == "mkv" ||
+      extension == "mov" ||
+      extension == "mp4" ||
+      extension == 'mpeg' ||
+      extension == 'webm' ||
+      extension == "wmv") {
+    return FileType.video;
+  } else {
+    return FileType.any;
+  }
+}
+
 /// get files
 Future<OutputFile?> getFiles(
     {required BuildContext context,
@@ -90,6 +119,8 @@ Future<OutputFile?> getFiles(
     List<Uint8List?> bytes = [];
     List<String?> name = [];
 
+    int numberVideo = 0;
+    int numberPicture = 0;
     for (final file in result.files) {
       name.add("${prefixName}_${name.length + 1}.${file.extension!}");
       Uint8List byte;
@@ -100,12 +131,22 @@ Future<OutputFile?> getFiles(
         byte = file.bytes!;
       }
 
+      // for counter
+      if (extensionType(file.extension!) == FileType.video) {
+        numberVideo = numberVideo + 1;
+      }
+
+      if (extensionType(file.extension!) == FileType.image) {
+        numberPicture = numberPicture + 1;
+      }
+
       /// video compressor
       if (file.extension == "mp4" && videoCompressor) {
         Uint8List? byteCompress =
             await videoCompress(context: context, byte: byte, file: file);
 
         if (byteCompress == null) return null;
+
         byte = byteCompress;
       }
 
@@ -116,6 +157,7 @@ Future<OutputFile?> getFiles(
               await cropImage(context: context, byte: byte, file: file);
 
           if (byteCrop == null) return null;
+
           byte = byteCrop;
         } catch (_) {}
       }
@@ -123,7 +165,18 @@ Future<OutputFile?> getFiles(
       bytes.add(byte);
     }
 
-    return OutputFile(bytes, pickerFileType, name);
+    if (pickerFileType == FilePickerType.mixed) {
+      if (numberPicture == 0 && numberVideo != 0) {
+        return OutputFile(bytes, FilePickerType.video, name);
+      } else if (numberPicture != 0 && numberVideo == 0) {
+        return OutputFile(bytes, FilePickerType.image, name);
+      } else {
+        // mixed
+        return OutputFile(bytes, pickerFileType, name);
+      }
+    } else {
+      return OutputFile(bytes, pickerFileType, name);
+    }
   } else {
     return null;
   }
