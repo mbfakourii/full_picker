@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.example.full_picker_example">
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Optional, you'll have to check this permission by yourself. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
    <application
         android:label="full_picker_example"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

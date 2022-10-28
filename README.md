@@ -9,6 +9,8 @@ A Flutter package that helps you select files in different modes
 * Image Cropper
 * Custom Camera
 * Custom Name For Files
+* Voice recorder
+* Support Material 1,2,3
 
 ## Example App
 <img src="https://raw.githubusercontent.com/mbfakourii/full_picker/master/example/screenshots/example.gif" width="300" height="550" />
@@ -25,6 +27,7 @@ FullPicker(
   video: true,
   videoCamera: true,
   imageCamera: true,
+  voiceRecorder: true,
   videoCompressor: false,
   imageCropper: false,
   multiFile: true,
@@ -105,6 +108,30 @@ If you need to crop the image (only support Android And IOS), add the following
 ### iOS
 - No configuration required
 
+## Voice Recorder
+If you need to voice recorder, add the following
+
+### Android
+```xml
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<!-- Optional, you'll have to check this permission by yourself. -->
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+```
+min SDK: 19 (maybe higher => encoder dependent)
+
+### iOS
+```xml
+<key>NSMicrophoneUsageDescription</key>
+<string>We need to access to the microphone to record audio file</string>
+```
+min SDK: 11.0
+
+### macOS
+```xml
+<key>NSMicrophoneUsageDescription</key>
+<string>We need to access to the microphone to record audio file</string>
+```
+
 ## Multi Language
 There is a possibility of customization for different languages in this package</br>
 
@@ -114,6 +141,8 @@ Language language = Language.copy(
     file: S.current.file,
     gallery: S.current.gallery,
     cropper: S.current.cropper,
+    voiceRecorder: S.current.voiceRecorder,
+    noVoiceRecorded: S.current.noVoiceRecorded,
     denyAccessPermission: S.current.denyAccessPermission,
     onCompressing: S.current.onCompressing,
     selectFile: S.current.selectFile,

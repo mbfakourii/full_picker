@@ -9,6 +9,7 @@ class SelectSheet extends StatefulWidget {
   final bool image;
   final bool video;
   final bool file;
+  final bool voiceRecorder;
   final bool imageCamera;
   final bool videoCamera;
   final bool videoCompressor;
@@ -29,6 +30,7 @@ class SelectSheet extends StatefulWidget {
       required this.videoCamera,
       required this.image,
       required this.video,
+      required this.voiceRecorder,
       required this.file})
       : super(key: key);
 
@@ -55,6 +57,11 @@ class _SheetSelectState extends State<SelectSheet> {
     if (widget.file) {
       itemList.add(ItemSheet(globalLanguage.file, Icons.insert_drive_file, 3));
     }
+
+    if (widget.voiceRecorder) {
+      itemList.add(ItemSheet(
+          globalLanguage.voiceRecorder, Icons.keyboard_voice_sharp, 4));
+    }
   }
 
   @override
@@ -75,7 +82,7 @@ class _SheetSelectState extends State<SelectSheet> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              topSheet(globalLanguage.selectFile, context),
+              topSheet(globalLanguage.selectFile, widget.context),
               GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -118,6 +125,7 @@ class _SheetSelectState extends State<SelectSheet> {
       },
       video: widget.video,
       file: widget.file,
+      voiceRecorder: widget.voiceRecorder,
       image: widget.image,
       imageCamera: widget.imageCamera,
       videoCamera: widget.videoCamera,

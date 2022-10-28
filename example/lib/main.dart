@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
+import 'package:full_picker_example/utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        useMaterial3: true,
+        brightness: Brightness.light,
       ),
       home: const FilePickerTest(),
     );
@@ -32,27 +36,23 @@ class _ExonFilePicker extends State<FilePickerTest> {
 
   String info = "Not Selected !";
 
+  Uint8List? audioTest;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white70,
       appBar: AppBar(title: Text('Full Picker Example')),
-      body: Container(
-          child: Center(
-              child: Column(
+      body: Column(
         children: [
-          SizedBox(
-            height: 30,
-          ),
           ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blueGrey)),
+                      MaterialStateProperty.all<Color>(Colors.black)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: const Text(
                   "Open Full Picker",
-                  style: TextStyle(fontSize: 30),
+                  style: TextStyle(fontSize: 25, color: Colors.white),
                 ),
               ),
               onPressed: () {
@@ -60,6 +60,7 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   context: context,
                   prefixName: "test",
                   file: true,
+                  voiceRecorder: true,
                   image: true,
                   video: true,
                   videoCamera: true,
@@ -83,86 +84,23 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   },
                 );
               }),
-          SizedBox(
-            height: 20,
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Output :\n\n$info",
-                  style: TextStyle(fontSize: 18),
+                padding: const EdgeInsets.all(2.0),
+                child: Row(
+                  children: [
+                    Text(
+                      "Output :\n\n$info",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
                 ),
               ),
             ),
           )
         ],
-      ))),
+      ),
     );
-  }
-
-  String fileSize(dynamic size, [int round = 2]) {
-    /**
-     * [size] can be passed as number or as string
-     *
-     * the optional parameter [round] specifies the number
-     * of digits after comma/point (default is 2)
-     */
-    int divider = 1024;
-    int _size;
-    try {
-      _size = size.length;
-    } catch (e) {
-      throw ArgumentError("Can not parse the size parameter: $e");
-    }
-
-    if (_size < divider) {
-      return "$_size B";
-    }
-
-    if (_size < divider * divider && _size % divider == 0) {
-      return "${(_size / divider).toStringAsFixed(0)} KB";
-    }
-
-    if (_size < divider * divider) {
-      return "${(_size / divider).toStringAsFixed(round)} KB";
-    }
-
-    if (_size < divider * divider * divider && _size % divider == 0) {
-      return "${(_size / (divider * divider)).toStringAsFixed(0)} MB";
-    }
-
-    if (_size < divider * divider * divider) {
-      return "${(_size / divider / divider).toStringAsFixed(round)} MB";
-    }
-
-    if (_size < divider * divider * divider * divider && _size % divider == 0) {
-      return "${(_size / (divider * divider * divider)).toStringAsFixed(0)} GB";
-    }
-
-    if (_size < divider * divider * divider * divider) {
-      return "${(_size / divider / divider / divider).toStringAsFixed(round)} GB";
-    }
-
-    if (_size < divider * divider * divider * divider * divider &&
-        _size % divider == 0) {
-      num r = _size / divider / divider / divider / divider;
-      return "${r.toStringAsFixed(0)} TB";
-    }
-
-    if (_size < divider * divider * divider * divider * divider) {
-      num r = _size / divider / divider / divider / divider;
-      return "${r.toStringAsFixed(round)} TB";
-    }
-
-    if (_size < divider * divider * divider * divider * divider * divider &&
-        _size % divider == 0) {
-      num r = _size / divider / divider / divider / divider / divider;
-      return "${r.toStringAsFixed(0)} PB";
-    } else {
-      num r = _size / divider / divider / divider / divider / divider;
-      return "${r.toStringAsFixed(round)} PB";
-    }
   }
 }

@@ -11,6 +11,7 @@ class FullPicker {
   final bool imageCamera;
   final bool videoCamera;
   final bool file;
+  final bool voiceRecorder;
   final String prefixName;
   final bool videoCompressor;
   final bool imageCropper;
@@ -25,6 +26,7 @@ class FullPicker {
       this.image = true,
       this.video = false,
       this.file = false,
+      this.voiceRecorder = false,
       this.imageCamera = false,
       this.videoCamera = false,
       this.prefixName = "File",
@@ -56,6 +58,7 @@ class FullPicker {
     }
 
     if (file) countTrue++;
+    if (voiceRecorder) countTrue++;
 
     if (countTrue == 1) {
       /// if single item select
@@ -65,6 +68,10 @@ class FullPicker {
 
       if (file) {
         openAloneFullPicker(3);
+      }
+
+      if (voiceRecorder) {
+        openAloneFullPicker(4);
       }
 
       if (imageCamera || videoCamera) {
@@ -79,6 +86,7 @@ class FullPicker {
           SelectSheet(
             video: video,
             file: file,
+            voiceRecorder: voiceRecorder,
             image: image,
             imageCamera: imageCamera,
             videoCamera: videoCamera,
@@ -102,6 +110,7 @@ class FullPicker {
       onIsUserCheng: (value) {},
       video: video,
       file: file,
+      voiceRecorder: voiceRecorder,
       image: image,
       imageCamera: imageCamera,
       videoCamera: videoCamera,
@@ -129,7 +138,7 @@ class OutputFile {
 }
 
 /// File Picker Types
-enum FilePickerType { image, video, file, mixed }
+enum FilePickerType { image, video, file, voiceRecorder, mixed }
 
 /// item sheet model
 class ItemSheet {

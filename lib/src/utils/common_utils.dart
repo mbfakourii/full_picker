@@ -3,48 +3,49 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:full_picker/src/sheets/voice_recorder_sheet.dart';
+import 'package:full_picker/src/utils/border_radius_m3.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:light_compressor/light_compressor.dart';
-
 import '../../full_picker.dart';
 
 /// show top sheet title and back button
 topSheet(String title, BuildContext context) {
-  return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+  return Column(children: [
+    // Drag handle
     Padding(
-      padding: const EdgeInsets.only(top: 5, left: 5),
-      child: ClipOval(
-        child: Material(
-          child: InkWell(
-            child: const SizedBox(
-                width: 55, height: 55, child: Icon(Icons.arrow_back)),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
+      padding: const EdgeInsets.only(top: 7),
+      child: Container(
+        width: 32,
+        height: 4,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(40),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
         ),
       ),
     ),
-    Flexible(
+    Padding(
+      padding: const EdgeInsets.only(top: 2, left: 5),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 22),
+        style: const TextStyle(fontSize: 20),
         overflow: TextOverflow.ellipsis,
       ),
     ),
-    Padding(
-        padding: const EdgeInsets.only(top: 5, right: 5),
-        child: Container(
-          width: 56,
-        )),
   ]);
 }
 
 /// show sheet
-void showSheet(Widget widget, BuildContext context) {
+void showSheet(Widget widget, BuildContext context,
+    {bool isDismissible = true}) {
   showModalBottomSheet(
       context: context,
+      isDismissible: isDismissible,
+      shape: RoundedRectangleBorder(
+          borderRadius: Theme.of(context).useMaterial3
+              ? BorderRadiusM3.extraLargeTop
+              : BorderRadius.zero),
       builder: (BuildContext context) {
         return widget;
       });
@@ -195,6 +196,7 @@ void getFullPicker({
   required bool image,
   required bool video,
   required bool file,
+  required bool voiceRecorder,
   required bool imageCamera,
   required bool videoCamera,
   required bool videoCompressor,
@@ -276,7 +278,7 @@ void getFullPicker({
       onSelected.call(value);
     }
   } else if (id == 3) {
-    // file
+    // File
     value = await getFiles(
         context: context,
         fileType: FileType.any,
@@ -294,6 +296,23 @@ void getFullPicker({
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
       onSelected.call(value);
     }
+  } else if (id == 4) {
+    // Voice Recorder and isDismissible is false because recording may be closed unintentionally!
+    showSheet(
+        VoiceRecorderSheet(
+            context: context,
+            voiceFileName: "${prefixName}_1.m4a",
+            onSelected: (value) {
+              checkError(inSheet, onIsUserCheng, context, isSelected: true);
+              onSelected.call(value);
+              Navigator.of(context).pop();
+            },
+            onError: (value) {
+              checkError(inSheet, onIsUserCheng, context, isSelected: true);
+              onError.call(1);
+            }),
+        context,
+        isDismissible: false);
   }
 }
 
