@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
 import 'package:full_picker_example/utils.dart';
@@ -35,8 +33,6 @@ class _ExonFilePicker extends State<FilePickerTest> {
   ValueNotifier<double> onProgress = ValueNotifier<double>(0);
 
   String info = "Not Selected !";
-
-  Uint8List? audioTest;
 
   @override
   Widget build(BuildContext context) {
