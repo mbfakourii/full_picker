@@ -126,7 +126,7 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
               Theme.of(widget.context).colorScheme.onSurface.withAlpha(10),
           backgroundColor: hasBackgroundColor
               ? Theme.of(widget.context).colorScheme.onSurface.withAlpha(50)
-              : null),
+              : Theme.of(widget.context).colorScheme.onSurface.withAlpha(10)),
       child: Icon(
         icon,
         color: Theme.of(widget.context).colorScheme.onSurface,
