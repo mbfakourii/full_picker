@@ -12,12 +12,13 @@ class FullPicker {
   final bool videoCamera;
   final bool file;
   final bool voiceRecorder;
+  final bool url;
   final String prefixName;
   final bool videoCompressor;
   final bool imageCropper;
   final bool multiFile;
-  final ValueSetter<OutputFile> onSelected;
-  final ValueSetter<int> onError;
+  final ValueSetter<FullOutput> onSelected;
+  final ValueSetter<int>? onError;
   final BuildContext context;
 
   FullPicker(
@@ -26,6 +27,7 @@ class FullPicker {
       this.image = true,
       this.video = false,
       this.file = false,
+      this.url = false,
       this.voiceRecorder = false,
       this.imageCamera = false,
       this.videoCamera = false,
@@ -33,8 +35,7 @@ class FullPicker {
       this.videoCompressor = false,
       this.imageCropper = false,
       this.multiFile = false,
-      required this.onSelected,
-      required this.onError}) {
+      required this.onSelected, this.onError}) {
     /// show or not show sheet for single item or multi item
     int countTrue = 0;
     if (image && video == false) {
@@ -59,6 +60,7 @@ class FullPicker {
 
     if (file) countTrue++;
     if (voiceRecorder) countTrue++;
+    if (url) countTrue++;
 
     if (countTrue == 1) {
       /// if single item select
@@ -73,13 +75,17 @@ class FullPicker {
       if (voiceRecorder) {
         openAloneFullPicker(4);
       }
+      if (url) {
+        openAloneFullPicker(5);
+      }
+
 
       if (imageCamera || videoCamera) {
         openAloneFullPicker(2);
       }
     } else if (countTrue == 0) {
       /// back error
-      onError.call(1);
+      onError?.call(1);
     } else {
       /// show sheet
       showSheet(
@@ -87,6 +93,7 @@ class FullPicker {
             video: video,
             file: file,
             voiceRecorder: voiceRecorder,
+            url: url,
             image: image,
             imageCamera: imageCamera,
             videoCamera: videoCamera,
@@ -111,6 +118,7 @@ class FullPicker {
       video: video,
       file: file,
       voiceRecorder: voiceRecorder,
+      url: url,
       image: image,
       imageCamera: imageCamera,
       videoCamera: videoCamera,
@@ -126,19 +134,23 @@ class FullPicker {
 }
 
 /// main Output class
-class OutputFile {
+class FullOutput {
   /// main bytes
   late List<Uint8List?> bytes;
   late List<String?> name;
 
-  /// type file
-  late FilePickerType fileType;
+  // datas like url
+  late dynamic data;
 
-  OutputFile(this.bytes, this.fileType, this.name);
+  /// type file
+  late FullPickerType fileType;
+
+  FullOutput(this.bytes, this.fileType, this.name);
+  FullOutput.data(this.data, this.fileType);
 }
 
 /// File Picker Types
-enum FilePickerType { image, video, file, voiceRecorder, mixed }
+enum FullPickerType { image, video, file, voiceRecorder, url,mixed }
 
 /// item sheet model
 class ItemSheet {

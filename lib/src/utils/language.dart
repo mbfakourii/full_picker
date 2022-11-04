@@ -4,6 +4,10 @@ class Language {
   String selectFile = "Please select a file";
   String file = "File";
   String voiceRecorder = "Voice Recorder";
+  String url = "URL";
+  String enterURL = "Enter the URL";
+  String cancel = "Cancel";
+  String ok = "OK";
   String gallery = "Gallery";
   String cropper = "Photo cropping";
   String onCompressing = "Compressing...";
@@ -22,6 +26,10 @@ class Language {
       required this.voiceRecorder,
       required this.gallery,
       required this.cropper,
+      required this.url,
+      required this.enterURL,
+      required this.ok,
+      required this.cancel,
       required this.cameraNotFound,
       required this.denyAccessPermission,
       required this.onCompressing,

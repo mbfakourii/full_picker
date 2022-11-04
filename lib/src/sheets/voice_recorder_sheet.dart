@@ -10,7 +10,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 class VoiceRecorderSheet extends StatefulWidget {
   final BuildContext context;
   final String voiceFileName;
-  final ValueSetter<OutputFile> onSelected;
+  final ValueSetter<FullOutput> onSelected;
   final ValueSetter<int> onError;
 
   const VoiceRecorderSheet(
@@ -98,9 +98,9 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
 
                       if (byte != null) {
                         userClose = false;
-                        widget.onSelected.call(OutputFile(
+                        widget.onSelected.call(FullOutput(
                             [byte],
-                            FilePickerType.voiceRecorder,
+                            FullPickerType.voiceRecorder,
                             [widget.voiceFileName]));
                       } else {
                         _showNotStartToast();

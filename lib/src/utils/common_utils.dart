@@ -9,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:light_compressor/light_compressor.dart';
 import '../../full_picker.dart';
+import '../dialogs/url_input_dialog.dart';
 
 /// show top sheet title and back button
 topSheet(String title, BuildContext context) {
@@ -37,15 +38,12 @@ topSheet(String title, BuildContext context) {
 }
 
 /// show sheet
-void showSheet(Widget widget, BuildContext context,
-    {bool isDismissible = true}) {
+void showSheet(Widget widget, BuildContext context, {bool isDismissible = true}) {
   showModalBottomSheet(
       context: context,
       isDismissible: isDismissible,
       shape: RoundedRectangleBorder(
-          borderRadius: Theme.of(context).useMaterial3
-              ? BorderRadiusM3.extraLargeTop
-              : BorderRadius.zero),
+          borderRadius: Theme.of(context).useMaterial3 ? BorderRadiusM3.extraLargeTop : BorderRadius.zero),
       builder: (BuildContext context) {
         return widget;
       });
@@ -81,13 +79,13 @@ FileType extensionType(String extension) {
 }
 
 /// get files
-Future<OutputFile?> getFiles(
+Future<FullOutput?> getFiles(
     {required BuildContext context,
     required FileType fileType,
-    required FilePickerType pickerFileType,
+    required FullPickerType pickerFileType,
     required String prefixName,
     required ValueSetter<bool> onIsUserCheng,
-    required ValueSetter<int> onError,
+    required ValueSetter<int>? onError,
     List<String>? allowedExtensions,
     bool videoCompressor = false,
     required bool inSheet,
@@ -143,8 +141,7 @@ Future<OutputFile?> getFiles(
 
       /// video compressor
       if (file.extension == "mp4" && videoCompressor) {
-        Uint8List? byteCompress =
-            await videoCompress(context: context, byte: byte, file: file);
+        Uint8List? byteCompress = await videoCompress(context: context, byte: byte, file: file);
 
         if (byteCompress == null) return null;
 
@@ -154,8 +151,7 @@ Future<OutputFile?> getFiles(
       /// image cropper
       if (file.extension == "jpg" && imageCropper) {
         try {
-          Uint8List? byteCrop =
-              await cropImage(context: context, byte: byte, file: file);
+          Uint8List? byteCrop = await cropImage(context: context, byte: byte, file: file);
 
           if (byteCrop == null) return null;
 
@@ -166,17 +162,17 @@ Future<OutputFile?> getFiles(
       bytes.add(byte);
     }
 
-    if (pickerFileType == FilePickerType.mixed) {
+    if (pickerFileType == FullPickerType.mixed) {
       if (numberPicture == 0 && numberVideo != 0) {
-        return OutputFile(bytes, FilePickerType.video, name);
+        return FullOutput(bytes, FullPickerType.video, name);
       } else if (numberPicture != 0 && numberVideo == 0) {
-        return OutputFile(bytes, FilePickerType.image, name);
+        return FullOutput(bytes, FullPickerType.image, name);
       } else {
         // mixed
-        return OutputFile(bytes, pickerFileType, name);
+        return FullOutput(bytes, pickerFileType, name);
       }
     } else {
-      return OutputFile(bytes, pickerFileType, name);
+      return FullOutput(bytes, pickerFileType, name);
     }
   } else {
     return null;
@@ -191,12 +187,13 @@ void getFullPicker({
   required id,
   required context,
   required ValueSetter<bool> onIsUserCheng,
-  required ValueSetter<OutputFile> onSelected,
-  required ValueSetter<int> onError,
+  required ValueSetter<FullOutput> onSelected,
+  required ValueSetter<int>? onError,
   required bool image,
   required bool video,
   required bool file,
   required bool voiceRecorder,
+  required bool url,
   required bool imageCamera,
   required bool videoCamera,
   required bool videoCompressor,
@@ -206,7 +203,7 @@ void getFullPicker({
   required bool inSheet,
 }) async {
   onIsUserCheng.call(false);
-  OutputFile? value;
+  FullOutput? value;
 
   if (id == 1) {
     /// gallery
@@ -216,7 +213,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.custom,
-          pickerFileType: FilePickerType.mixed,
+          pickerFileType: FullPickerType.mixed,
           prefixName: prefixName,
           inSheet: inSheet,
           allowedExtensions: ["mp4", "avi", "mkv", "jpg", "jpeg", "png", "bmp"],
@@ -229,7 +226,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.image,
-          pickerFileType: FilePickerType.image,
+          pickerFileType: FullPickerType.image,
           prefixName: prefixName,
           multiFile: multiFile,
           inSheet: inSheet,
@@ -241,7 +238,7 @@ void getFullPicker({
           context: context,
           videoCompressor: videoCompressor,
           fileType: FileType.video,
-          pickerFileType: FilePickerType.video,
+          pickerFileType: FullPickerType.video,
           prefixName: prefixName,
           imageCropper: imageCropper,
           inSheet: inSheet,
@@ -252,7 +249,7 @@ void getFullPicker({
 
     if (value == null) {
       checkError(inSheet, onIsUserCheng, context, isSelected: false);
-      onError.call(1);
+      onError?.call(1);
     } else {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
       if (value.name.isNotEmpty) onSelected.call(value);
@@ -272,7 +269,7 @@ void getFullPicker({
     if (value == 1 || value == null) {
       // Error
       checkError(inSheet, onIsUserCheng, context, isSelected: false);
-      onError.call(1);
+      onError?.call(1);
     } else {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
       onSelected.call(value);
@@ -282,7 +279,7 @@ void getFullPicker({
     value = await getFiles(
         context: context,
         fileType: FileType.any,
-        pickerFileType: FilePickerType.file,
+        pickerFileType: FullPickerType.file,
         prefixName: prefixName,
         multiFile: multiFile,
         inSheet: inSheet,
@@ -291,7 +288,7 @@ void getFullPicker({
 
     if (value == null) {
       checkError(inSheet, onIsUserCheng, context, isSelected: false);
-      onError.call(1);
+      onError?.call(1);
     } else {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
       onSelected.call(value);
@@ -309,10 +306,21 @@ void getFullPicker({
             },
             onError: (value) {
               checkError(inSheet, onIsUserCheng, context, isSelected: true);
-              onError.call(1);
+              onError?.call(1);
             }),
         context,
         isDismissible: false);
+  } else if (id == 5) {
+    // get url from URLInputDialog and convert to FullOutput
+    String? url = await showDialog(context: context, builder: (context) => URLInputDialog());
+
+    if (url != null) {
+      checkError(inSheet, onIsUserCheng, context, isSelected: true);
+      onSelected.call(FullOutput.data(url, FullPickerType.url));
+    } else {
+      checkError(inSheet, onIsUserCheng, context, isSelected: true);
+      onError?.call(1);
+    }
   }
 }
 
@@ -341,8 +349,7 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
 /// get destination File for save
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
-  final String fileName =
-      '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
+  final String fileName = '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
   if (Platform.isAndroid) {
     /// Handle this part the way you want to save it in any directory you wish.
     final List<Directory>? dir = await path.getExternalCacheDirectories();
@@ -376,8 +383,7 @@ Future<Uint8List?> videoCompress({
     return byte;
   }
 
-  PercentProgressDialog progressDialog =
-      PercentProgressDialog(context, (dynamic) {
+  PercentProgressDialog progressDialog = PercentProgressDialog(context, (dynamic) {
     if (onProgress.value.toString() != "1.0") {
       LightCompressor.cancelCompression();
     }
@@ -390,10 +396,7 @@ Future<Uint8List?> videoCompress({
   try {
     progressDialog.show();
     final dynamic response = await lightCompressor.compressVideo(
-        path: mainFile.path,
-        destinationPath: destinationFile,
-        videoQuality: VideoQuality.medium,
-        frameRate: 24);
+        path: mainFile.path, destinationPath: destinationFile, videoQuality: VideoQuality.medium, frameRate: 24);
 
     progressDialog.dismiss();
 

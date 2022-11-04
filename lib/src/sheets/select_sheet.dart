@@ -4,12 +4,13 @@ import '../../full_picker.dart';
 /// show sheet for select models file picker
 class SelectSheet extends StatefulWidget {
   final BuildContext context;
-  final ValueSetter<OutputFile> onSelected;
-  final ValueSetter<int> onError;
+  final ValueSetter<FullOutput> onSelected;
+  final ValueSetter<int>? onError;
   final bool image;
   final bool video;
   final bool file;
   final bool voiceRecorder;
+  final bool url;
   final bool imageCamera;
   final bool videoCamera;
   final bool videoCompressor;
@@ -31,6 +32,7 @@ class SelectSheet extends StatefulWidget {
       required this.image,
       required this.video,
       required this.voiceRecorder,
+      required this.url,
       required this.file})
       : super(key: key);
 
@@ -62,12 +64,17 @@ class _SheetSelectState extends State<SelectSheet> {
       itemList.add(ItemSheet(
           globalLanguage.voiceRecorder, Icons.keyboard_voice_sharp, 4));
     }
+    if (widget.url) {
+      itemList.add(ItemSheet(
+          globalLanguage.url, Icons.add_link_sharp, 5));
+    }
+
   }
 
   @override
   void dispose() {
     if (userClose) {
-      widget.onError.call(1);
+      widget.onError?.call(1);
     }
 
     super.dispose();
@@ -126,6 +133,7 @@ class _SheetSelectState extends State<SelectSheet> {
       video: widget.video,
       file: widget.file,
       voiceRecorder: widget.voiceRecorder,
+      url: widget.url,
       image: widget.image,
       imageCamera: widget.imageCamera,
       videoCamera: widget.videoCamera,

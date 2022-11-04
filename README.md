@@ -2,7 +2,6 @@
 <a href="https://pub.dev/packages/full_picker"><img src="https://img.shields.io/pub/v/full_picker.svg" alt="Pub"></a></br>
 A Flutter package that helps you select files in different modes
 
-
 ## Features
 * Multi File picker
 * Video Compressor
@@ -10,6 +9,7 @@ A Flutter package that helps you select files in different modes
 * Custom Camera
 * Custom Name For Files
 * Voice recorder
+* URL picker
 * Support Material 1,2,3
 
 ## Example App
@@ -31,6 +31,7 @@ FullPicker(
   videoCompressor: false,
   imageCropper: false,
   multiFile: true,
+  url: true,
   onError: (int value) {
     print(" ----  onError ----=$value");
   },
@@ -138,16 +139,20 @@ There is a possibility of customization for different languages in this package<
 ```dart
 Language language = Language.copy(
     camera: S.current.camera,
+    selectFile: S.current.selectFile,
     file: S.current.file,
+    voiceRecorder: S.current.voiceRecorder,
+    url: S.current.url,
+    enterURL: S.current.enterURL,
+    cancel: S.current.cancel,
+    ok: S.current.ok,
     gallery: S.current.gallery,
     cropper: S.current.cropper,
-    voiceRecorder: S.current.voiceRecorder,
-    noVoiceRecorded: S.current.noVoiceRecorded,
-    denyAccessPermission: S.current.denyAccessPermission,
     onCompressing: S.current.onCompressing,
-    selectFile: S.current.selectFile,
+    tapForPhotoHoldForVideo: S.current.tapForPhotoHoldForVideo,
     cameraNotFound: S.current.cameraNotFound,
-    tapForPhotoHoldForVideo: S.current.tapForPhotoHoldForVideo);
+    noVoiceRecorded: S.current.noVoiceRecorded,
+    denyAccessPermission: S.current.denyAccessPermission);
     
 FullPicker(
   ...

@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
+        colorScheme:ThemeData().colorScheme.copyWith(
+          primary: Colors.black,
+        ),
       ),
       home: const FilePickerTest(),
     );
@@ -41,9 +44,7 @@ class _ExonFilePicker extends State<FilePickerTest> {
       body: Column(
         children: [
           ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: const Text(
@@ -64,16 +65,21 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   videoCompressor: false,
                   imageCropper: false,
                   multiFile: true,
+                  url: true,
                   onError: (int value) {
                     print(" ----  onError ----=$value");
                   },
                   onSelected: (value) {
                     print(" ----  onSelected ----");
 
-                    info = "";
-                    for (int i = 0; i < value.name.length; i++) {
-                      info +=
-                          "File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :${fileSize(value.bytes[i])}\n--------\n";
+                    if (value.fileType != FullPickerType.url) {
+                      info = "";
+                      for (int i = 0; i < value.name.length; i++) {
+                        info +=
+                            "File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :${fileSize(value.bytes[i])}\n--------\n";
+                      }
+                    } else {
+                      info = value.data;
                     }
 
                     setState(() {});
