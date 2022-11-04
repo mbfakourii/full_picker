@@ -16,9 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
-        colorScheme:ThemeData().colorScheme.copyWith(
-          primary: Colors.black,
-        ),
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: Colors.black,
+            ),
       ),
       home: const FilePickerTest(),
     );
@@ -44,7 +44,9 @@ class _ExonFilePicker extends State<FilePickerTest> {
       body: Column(
         children: [
           ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: const Text(

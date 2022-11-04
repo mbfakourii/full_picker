@@ -65,10 +65,8 @@ class _SheetSelectState extends State<SelectSheet> {
           globalLanguage.voiceRecorder, Icons.keyboard_voice_sharp, 4));
     }
     if (widget.url) {
-      itemList.add(ItemSheet(
-          globalLanguage.url, Icons.add_link_sharp, 5));
+      itemList.add(ItemSheet(globalLanguage.url, Icons.add_link_sharp, 5));
     }
-
   }
 
   @override

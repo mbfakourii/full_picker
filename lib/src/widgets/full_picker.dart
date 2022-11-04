@@ -35,7 +35,8 @@ class FullPicker {
       this.videoCompressor = false,
       this.imageCropper = false,
       this.multiFile = false,
-      required this.onSelected, this.onError}) {
+      required this.onSelected,
+      this.onError}) {
     /// show or not show sheet for single item or multi item
     int countTrue = 0;
     if (image && video == false) {
@@ -78,7 +79,6 @@ class FullPicker {
       if (url) {
         openAloneFullPicker(5);
       }
-
 
       if (imageCamera || videoCamera) {
         openAloneFullPicker(2);
@@ -150,7 +150,7 @@ class FullOutput {
 }
 
 /// File Picker Types
-enum FullPickerType { image, video, file, voiceRecorder, url,mixed }
+enum FullPickerType { image, video, file, voiceRecorder, url, mixed }
 
 /// item sheet model
 class ItemSheet {

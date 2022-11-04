@@ -10,7 +10,8 @@ class URLInputDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(globalLanguage.enterURL, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 19)),
+      title: Text(globalLanguage.enterURL,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 19)),
       contentPadding: const EdgeInsets.only(
         left: 24.0,
         right: 24.0,
@@ -18,7 +19,8 @@ class URLInputDialog extends StatelessWidget {
       content: SingleChildScrollView(
         child: Container(
           constraints: BoxConstraints(
-              minWidth: MediaQuery.of(context).size.width /2.3, maxWidth: MediaQuery.of(context).size.width),
+              minWidth: MediaQuery.of(context).size.width / 2.3,
+              maxWidth: MediaQuery.of(context).size.width),
           child: Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 5),
             child: TextField(
