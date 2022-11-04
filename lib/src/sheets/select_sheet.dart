@@ -4,7 +4,7 @@ import '../../full_picker.dart';
 /// show sheet for select models file picker
 class SelectSheet extends StatefulWidget {
   final BuildContext context;
-  final ValueSetter<FullOutput> onSelected;
+  final ValueSetter<FullPickerOutput> onSelected;
   final ValueSetter<int>? onError;
   final bool image;
   final bool video;

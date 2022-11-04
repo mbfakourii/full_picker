@@ -17,7 +17,7 @@ class FullPicker {
   final bool videoCompressor;
   final bool imageCropper;
   final bool multiFile;
-  final ValueSetter<FullOutput> onSelected;
+  final ValueSetter<FullPickerOutput> onSelected;
   final ValueSetter<int>? onError;
   final BuildContext context;
 
@@ -134,7 +134,7 @@ class FullPicker {
 }
 
 /// main Output class
-class FullOutput {
+class FullPickerOutput {
   /// main bytes
   late List<Uint8List?> bytes;
   late List<String?> name;
@@ -145,8 +145,8 @@ class FullOutput {
   /// type file
   late FullPickerType fileType;
 
-  FullOutput(this.bytes, this.fileType, this.name);
-  FullOutput.data(this.data, this.fileType);
+  FullPickerOutput(this.bytes, this.fileType, this.name);
+  FullPickerOutput.data(this.data, this.fileType);
 }
 
 /// File Picker Types

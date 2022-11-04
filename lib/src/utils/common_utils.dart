@@ -82,7 +82,7 @@ FileType extensionType(String extension) {
 }
 
 /// get files
-Future<FullOutput?> getFiles(
+Future<FullPickerOutput?> getFiles(
     {required BuildContext context,
     required FileType fileType,
     required FullPickerType pickerFileType,
@@ -169,15 +169,15 @@ Future<FullOutput?> getFiles(
 
     if (pickerFileType == FullPickerType.mixed) {
       if (numberPicture == 0 && numberVideo != 0) {
-        return FullOutput(bytes, FullPickerType.video, name);
+        return FullPickerOutput(bytes, FullPickerType.video, name);
       } else if (numberPicture != 0 && numberVideo == 0) {
-        return FullOutput(bytes, FullPickerType.image, name);
+        return FullPickerOutput(bytes, FullPickerType.image, name);
       } else {
         // mixed
-        return FullOutput(bytes, pickerFileType, name);
+        return FullPickerOutput(bytes, pickerFileType, name);
       }
     } else {
-      return FullOutput(bytes, pickerFileType, name);
+      return FullPickerOutput(bytes, pickerFileType, name);
     }
   } else {
     return null;
@@ -192,7 +192,7 @@ void getFullPicker({
   required id,
   required context,
   required ValueSetter<bool> onIsUserCheng,
-  required ValueSetter<FullOutput> onSelected,
+  required ValueSetter<FullPickerOutput> onSelected,
   required ValueSetter<int>? onError,
   required bool image,
   required bool video,
@@ -208,7 +208,7 @@ void getFullPicker({
   required bool inSheet,
 }) async {
   onIsUserCheng.call(false);
-  FullOutput? value;
+  FullPickerOutput? value;
 
   if (id == 1) {
     /// gallery
@@ -322,7 +322,7 @@ void getFullPicker({
 
     if (url != null) {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
-      onSelected.call(FullOutput.data(url, FullPickerType.url));
+      onSelected.call(FullPickerOutput.data(url, FullPickerType.url));
     } else {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
       onError?.call(1);
