@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../../full_picker.dart';
 
 class URLInputDialog extends StatelessWidget {
-  final TextEditingController textfieldController = TextEditingController();
+  late final TextEditingController textfieldController;
 
-  URLInputDialog({super.key});
+  URLInputDialog({super.key, String? text}) {
+    textfieldController = TextEditingController(text: text);
+  }
 
   @override
   Widget build(BuildContext context) {
