@@ -16,6 +16,7 @@ class SelectSheet extends StatefulWidget {
   final bool videoCompressor;
   final bool imageCropper;
   final bool multiFile;
+  final String bodyTextUrl;
   final String prefixName;
 
   const SelectSheet(
@@ -33,6 +34,7 @@ class SelectSheet extends StatefulWidget {
       required this.video,
       required this.voiceRecorder,
       required this.url,
+      required this.bodyTextUrl,
       required this.file})
       : super(key: key);
 
@@ -141,7 +143,7 @@ class _SheetSelectState extends State<SelectSheet> {
       prefixName: widget.prefixName,
       imageCropper: widget.imageCropper,
       multiFile: widget.multiFile,
-      inSheet: true,
+      inSheet: true, bodyTextUrl: widget.bodyTextUrl,
     );
   }
 }

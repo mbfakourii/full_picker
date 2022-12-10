@@ -199,6 +199,7 @@ void getFullPicker({
   required bool file,
   required bool voiceRecorder,
   required bool url,
+  required String bodyTextUrl,
   required bool imageCamera,
   required bool videoCamera,
   required bool videoCompressor,
@@ -318,7 +319,7 @@ void getFullPicker({
   } else if (id == 5) {
     // get url from URLInputDialog and convert to FullOutput
     String? url = await showDialog(
-        context: context, builder: (context) => URLInputDialog());
+        context: context, builder: (context) => URLInputDialog(body: bodyTextUrl));
 
     if (url != null) {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);

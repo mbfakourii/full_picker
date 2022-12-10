@@ -13,6 +13,7 @@ class FullPicker {
   final bool file;
   final bool voiceRecorder;
   final bool url;
+  final String bodyTextUrl;
   final String prefixName;
   final bool videoCompressor;
   final bool imageCropper;
@@ -28,6 +29,7 @@ class FullPicker {
       this.video = false,
       this.file = false,
       this.url = false,
+      this.bodyTextUrl="",
       this.voiceRecorder = false,
       this.imageCamera = false,
       this.videoCamera = false,
@@ -94,6 +96,7 @@ class FullPicker {
             file: file,
             voiceRecorder: voiceRecorder,
             url: url,
+            bodyTextUrl: bodyTextUrl,
             image: image,
             imageCamera: imageCamera,
             videoCamera: videoCamera,
@@ -119,6 +122,7 @@ class FullPicker {
       file: file,
       voiceRecorder: voiceRecorder,
       url: url,
+      bodyTextUrl: bodyTextUrl,
       image: image,
       imageCamera: imageCamera,
       videoCamera: videoCamera,
