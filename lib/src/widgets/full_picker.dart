@@ -29,7 +29,7 @@ class FullPicker {
       this.video = false,
       this.file = false,
       this.url = false,
-      this.bodyTextUrl="",
+      this.bodyTextUrl = "",
       this.voiceRecorder = false,
       this.imageCamera = false,
       this.videoCamera = false,

@@ -319,7 +319,8 @@ void getFullPicker({
   } else if (id == 5) {
     // get url from URLInputDialog and convert to FullOutput
     String? url = await showDialog(
-        context: context, builder: (context) => URLInputDialog(body: bodyTextUrl));
+        context: context,
+        builder: (context) => URLInputDialog(body: bodyTextUrl));
 
     if (url != null) {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);

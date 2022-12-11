@@ -143,7 +143,8 @@ class _SheetSelectState extends State<SelectSheet> {
       prefixName: widget.prefixName,
       imageCropper: widget.imageCropper,
       multiFile: widget.multiFile,
-      inSheet: true, bodyTextUrl: widget.bodyTextUrl,
+      inSheet: true,
+      bodyTextUrl: widget.bodyTextUrl,
     );
   }
 }
