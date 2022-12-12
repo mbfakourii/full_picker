@@ -36,6 +36,9 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
   final Record _record = Record();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
+  File? lastFile;
+  Uint8List? lastUint8List;
+
   @override
   void initState() {
     super.initState();
@@ -94,14 +97,15 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
                         }, 40, true)),
                     _addButton(Icons.stop, () async {
                       /// get voice record data
-                      Uint8List? byte = await _stopRecord();
+                      await _stopRecord();
 
-                      if (byte != null) {
+                      if (lastUint8List != null) {
                         userClose = false;
                         widget.onSelected.call(FullPickerOutput(
-                            [byte],
+                            [lastUint8List],
                             FullPickerType.voiceRecorder,
-                            [widget.voiceFileName]));
+                            [widget.voiceFileName],
+                            [lastFile]));
                       } else {
                         _showNotStartToast();
                       }
@@ -150,18 +154,21 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
   }
 
   /// stop and return record data
-  Future<Uint8List?> _stopRecord() async {
-    if (started == false) return null;
+  Future<void> _stopRecord() async {
+    if (started == false) return;
     try {
       final value = await _record.stop();
       if (isWeb) {
         final result = await get(Uri.parse(value!));
-        return result.bodyBytes;
+
+        lastUint8List = result.bodyBytes;
       } else {
-        return File(value!).readAsBytesSync();
+        lastFile = File(value!);
+
+        lastUint8List = File(value).readAsBytesSync();
       }
     } catch (_) {
-      return null;
+      return;
     }
   }
 

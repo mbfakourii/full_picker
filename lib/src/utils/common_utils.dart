@@ -118,8 +118,9 @@ Future<FullPickerOutput?> getFiles(
 
   if (result != null) {
     progressDialog.dismiss();
-    List<Uint8List?> bytes = [];
+    List<File?> files = [];
     List<String?> name = [];
+    List<Uint8List?> bytes = [];
 
     int numberVideo = 0;
     int numberPicture = 0;
@@ -131,6 +132,12 @@ Future<FullPickerOutput?> getFiles(
         byte = File(file.path!).readAsBytesSync();
       } else {
         byte = file.bytes!;
+      }
+
+      if (!isWeb) {
+        if (file.path != null) {
+          files.add(File(file.path!));
+        }
       }
 
       // for counter
@@ -166,18 +173,21 @@ Future<FullPickerOutput?> getFiles(
 
       bytes.add(byte);
     }
-
+    print("flag 2");
     if (pickerFileType == FullPickerType.mixed) {
       if (numberPicture == 0 && numberVideo != 0) {
-        return FullPickerOutput(bytes, FullPickerType.video, name);
+        return FullPickerOutput(bytes, FullPickerType.video, name, files);
       } else if (numberPicture != 0 && numberVideo == 0) {
-        return FullPickerOutput(bytes, FullPickerType.image, name);
+        print("flag 771");
+        print(name.length);
+        return FullPickerOutput(
+            bytes, FullPickerType.image, [name.first], files);
       } else {
         // mixed
-        return FullPickerOutput(bytes, pickerFileType, name);
+        return FullPickerOutput(bytes, pickerFileType, name, files);
       }
     } else {
-      return FullPickerOutput(bytes, pickerFileType, name);
+      return FullPickerOutput(bytes, pickerFileType, name, files);
     }
   } else {
     return null;

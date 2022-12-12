@@ -148,8 +148,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       if (mounted) {
         Navigator.pop(
             context,
-            FullPickerOutput([File(filePath!).readAsBytesSync()],
-                FullPickerType.image, ["${widget.prefixName}.jpg"]));
+            FullPickerOutput(
+                [File(filePath!).readAsBytesSync()],
+                FullPickerType.image,
+                ["${widget.prefixName}.jpg"],
+                [File(filePath)]));
       }
     });
   }
@@ -161,8 +164,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       if (mounted) {
         Navigator.pop(
             context,
-            FullPickerOutput([File(file!.path).readAsBytesSync()],
-                FullPickerType.video, ["${widget.prefixName}.mp4"]));
+            FullPickerOutput(
+                [File(file!.path).readAsBytesSync()],
+                FullPickerType.video,
+                ["${widget.prefixName}.mp4"],
+                [File(file.path)]));
       }
     });
   }
