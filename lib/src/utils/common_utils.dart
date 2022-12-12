@@ -173,13 +173,10 @@ Future<FullPickerOutput?> getFiles(
 
       bytes.add(byte);
     }
-    print("flag 2");
     if (pickerFileType == FullPickerType.mixed) {
       if (numberPicture == 0 && numberVideo != 0) {
         return FullPickerOutput(bytes, FullPickerType.video, name, files);
       } else if (numberPicture != 0 && numberVideo == 0) {
-        print("flag 771");
-        print(name.length);
         return FullPickerOutput(
             bytes, FullPickerType.image, [name.first], files);
       } else {
