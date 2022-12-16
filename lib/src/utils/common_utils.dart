@@ -38,12 +38,15 @@ topSheet(String title, BuildContext context) {
 }
 
 /// show sheet
-void showSheet(Widget widget, BuildContext context, {bool isDismissible = true}) {
+void showSheet(Widget widget, BuildContext context,
+    {bool isDismissible = true}) {
   showModalBottomSheet(
       context: context,
       isDismissible: isDismissible,
       shape: RoundedRectangleBorder(
-          borderRadius: Theme.of(context).useMaterial3 ? BorderRadiusM3.extraLargeTop : BorderRadius.zero),
+          borderRadius: Theme.of(context).useMaterial3
+              ? BorderRadiusM3.extraLargeTop
+              : BorderRadius.zero),
       builder: (BuildContext context) {
         return widget;
       });
@@ -145,7 +148,8 @@ Future<FullPickerOutput?> getFiles(
 
       /// video compressor
       if (file.extension == "mp4" && videoCompressor) {
-        Uint8List? byteCompress = await videoCompress(context: context, byte: byte, file: file);
+        Uint8List? byteCompress =
+            await videoCompress(context: context, byte: byte, file: file);
 
         if (byteCompress == null) return null;
 
@@ -155,7 +159,8 @@ Future<FullPickerOutput?> getFiles(
       /// image cropper
       if (file.extension == "jpg" && imageCropper) {
         try {
-          Uint8List? byteCrop = await cropImage(context: context, byte: byte, file: file);
+          Uint8List? byteCrop =
+              await cropImage(context: context, byte: byte, file: file);
 
           if (byteCrop == null) return null;
 
@@ -169,7 +174,8 @@ Future<FullPickerOutput?> getFiles(
       if (numberPicture == 0 && numberVideo != 0) {
         return FullPickerOutput(bytes, FullPickerType.video, name, files);
       } else if (numberPicture != 0 && numberVideo == 0) {
-        return FullPickerOutput(bytes, FullPickerType.image, [name.first], files);
+        return FullPickerOutput(
+            bytes, FullPickerType.image, [name.first], files);
       } else {
         // mixed
         return FullPickerOutput(bytes, pickerFileType, name, files);
@@ -322,7 +328,9 @@ void getFullPicker({
         isDismissible: false);
   } else if (id == 5) {
     // get url from URLInputDialog and convert to FullOutput
-    String? url = await showDialog(context: context, builder: (context) => URLInputDialog(body: bodyTextUrl));
+    String? url = await showDialog(
+        context: context,
+        builder: (context) => URLInputDialog(body: bodyTextUrl));
 
     if (url != null) {
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
@@ -359,7 +367,8 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
 /// get destination File for save
 Future<String> _destinationFile({required bool isImage}) async {
   String directory;
-  final String fileName = '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
+  final String fileName =
+      '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
   if (Platform.isAndroid) {
     /// Handle this part the way you want to save it in any directory you wish.
     final List<Directory>? dir = await path.getExternalCacheDirectories();
@@ -393,7 +402,8 @@ Future<Uint8List?> videoCompress({
     return byte;
   }
 
-  PercentProgressDialog progressDialog = PercentProgressDialog(context, (dynamic) {
+  PercentProgressDialog progressDialog =
+      PercentProgressDialog(context, (dynamic) {
     if (onProgress.value.toString() != "1.0") {
       LightCompressor.cancelCompression();
     }
@@ -406,7 +416,10 @@ Future<Uint8List?> videoCompress({
   try {
     progressDialog.show();
     final dynamic response = await lightCompressor.compressVideo(
-        path: mainFile.path, destinationPath: destinationFile, videoQuality: VideoQuality.medium, frameRate: 24);
+        path: mainFile.path,
+        destinationPath: destinationFile,
+        videoQuality: VideoQuality.medium,
+        frameRate: 24);
 
     progressDialog.dismiss();
 
