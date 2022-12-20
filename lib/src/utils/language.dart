@@ -14,8 +14,10 @@ class Language {
   String tapForPhotoHoldForVideo = "Tap for photo, hold for video";
   String cameraNotFound = "Camera not found !";
   String noVoiceRecorded = "No voice recorded";
-  String denyAccessPermission =
-      "Unfortunately, you denied access, so it is not possible to use this part";
+  String off = "Off";
+  String on = "On";
+  String auto = "Auto";
+  String denyAccessPermission = "Unfortunately, you denied access, so it is not possible to use this part";
 
   Language();
 
@@ -29,6 +31,9 @@ class Language {
       required this.url,
       required this.enterURL,
       required this.ok,
+      required this.on,
+      required this.off,
+      required this.auto,
       required this.cancel,
       required this.cameraNotFound,
       required this.denyAccessPermission,
