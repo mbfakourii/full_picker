@@ -10,7 +10,11 @@ class Camera extends StatefulWidget {
   final bool imageCamera;
   final String prefixName;
 
-  const Camera({Key? key, required this.imageCamera, required this.videoCamera, required this.prefixName})
+  const Camera(
+      {Key? key,
+      required this.imageCamera,
+      required this.videoCamera,
+      required this.prefixName})
       : super(key: key);
 
   @override
@@ -104,17 +108,19 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   /// Main Widget for Camera
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller!.value.isInitialized) {
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.back));
     }
 
     /// Set aspectRatio Camera
     double scale;
     try {
-      scale = 1 / (controller!.value.aspectRatio * MediaQuery.of(context).size.aspectRatio);
+      scale = 1 /
+          (controller!.value.aspectRatio *
+              MediaQuery.of(context).size.aspectRatio);
     } catch (e) {
       scale = 1.0;
     }
-
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -164,7 +170,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       if (mounted) {
         Navigator.pop(
             context,
-            FullPickerOutput([File(filePath!).readAsBytesSync()], FullPickerType.image, ["${widget.prefixName}.jpg"],
+            FullPickerOutput(
+                [File(filePath!).readAsBytesSync()],
+                FullPickerType.image,
+                ["${widget.prefixName}.jpg"],
                 [File(filePath)]));
       }
     });
@@ -177,7 +186,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       if (mounted) {
         Navigator.pop(
             context,
-            FullPickerOutput([File(file!.path).readAsBytesSync()], FullPickerType.video, ["${widget.prefixName}.mp4"],
+            FullPickerOutput(
+                [File(file!.path).readAsBytesSync()],
+                FullPickerType.video,
+                ["${widget.prefixName}.mp4"],
                 [File(file.path)]));
       }
     });
@@ -265,7 +277,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            visible: (widget.imageCamera && widget.videoCamera) && toggleCameraAndTextVisibility,
+            visible: (widget.imageCamera && widget.videoCamera) &&
+                toggleCameraAndTextVisibility,
             child: Text(globalLanguage.tapForPhotoHoldForVideo,
                 style: const TextStyle(color: Color(0xa3ffffff), fontSize: 20)),
           ),
@@ -339,9 +352,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void changeCamera() {
     if (firstCamera) {
       firstCamera = false;
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.front));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.front));
     } else {
-      onNewCameraSelected(cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back));
+      onNewCameraSelected(cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.back));
       firstCamera = true;
     }
   }
