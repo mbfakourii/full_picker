@@ -1,3 +1,7 @@
+## 1.2.0
+* fix bugs
+* add file
+
 ## 1.1.5
 * support material 3
 * add voice recorder
