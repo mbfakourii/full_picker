@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:full_picker/src/sheets/voice_recorder_sheet.dart';
 import 'package:full_picker/src/utils/border_radius_m3.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:path_provider/path_provider.dart' as path;
 import 'package:light_compressor/light_compressor.dart';
 import '../../full_picker.dart';
 import '../dialogs/url_input_dialog.dart';
@@ -111,6 +110,7 @@ Future<FullPickerOutput?> getFiles(
   )
       .catchError((error, stackTrace) {
     showFullPickerToast(globalLanguage.denyAccessPermission, context);
+    return null;
   });
 
   if (result != null) {
@@ -364,23 +364,6 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
   }
 }
 
-/// get destination File for save
-Future<String> _destinationFile({required bool isImage}) async {
-  String directory;
-  final String fileName =
-      '${DateTime.now().millisecondsSinceEpoch}.${isImage ? "jpg" : "mp4"}';
-  if (Platform.isAndroid) {
-    /// Handle this part the way you want to save it in any directory you wish.
-    final List<Directory>? dir = await path.getExternalCacheDirectories();
-    directory = dir!.first.path;
-    return File('$directory/$fileName').path;
-  } else {
-    final Directory dir = await path.getLibraryDirectory();
-    directory = dir.path;
-    return File('$directory/$fileName').path;
-  }
-}
-
 /// web does not support video compression
 /// video compressor
 Future<Uint8List?> videoCompress({
@@ -395,7 +378,6 @@ Future<Uint8List?> videoCompress({
   File mainFile = File(file.path!);
   ValueNotifier<double> onProgress = ValueNotifier<double>(0);
   final LightCompressor lightCompressor = LightCompressor();
-  String destinationFile = await _destinationFile(isImage: false);
 
   int size = int.parse(File(mainFile.path).lengthSync().toString());
   if (size < 10000000) {
@@ -416,10 +398,14 @@ Future<Uint8List?> videoCompress({
   try {
     progressDialog.show();
     final dynamic response = await lightCompressor.compressVideo(
-        path: mainFile.path,
-        destinationPath: destinationFile,
-        videoQuality: VideoQuality.medium,
-        frameRate: 24);
+      path: mainFile.path,
+      videoQuality: VideoQuality.medium,
+      android: AndroidConfig(isSharedStorage: false),
+      ios: IOSConfig(saveInGallery: false),
+      video: Video(
+          videoName: '${DateTime.now().millisecondsSinceEpoch}."mp4"',
+          videoBitrateInMbps: 24),
+    );
 
     progressDialog.dismiss();
 

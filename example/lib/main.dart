@@ -16,9 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
-        colorScheme: ThemeData().colorScheme.copyWith(
-              primary: Colors.black,
-            ),
+        colorScheme: ThemeData()
+            .colorScheme
+            .copyWith(primary: Colors.black, background: Colors.white),
       ),
       home: const FilePickerTest(),
     );
@@ -65,7 +65,7 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   videoCamera: true,
                   imageCamera: true,
                   videoCompressor: false,
-                  imageCropper: false,
+                  imageCropper: true,
                   multiFile: true,
                   url: true,
                   onError: (int value) {
