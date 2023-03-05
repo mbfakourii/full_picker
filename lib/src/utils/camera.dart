@@ -293,6 +293,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                     child: IconButton(
                         icon: const Icon(
                           Icons.flip_camera_android,
+                          color: Colors.white,
                           size: 33,
                         ),
                         onPressed: () {
@@ -333,6 +334,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                     child: IconButton(
                         icon: Icon(
                           flashLightIcon,
+                          color: Colors.white,
                           size: 33,
                         ),
                         onPressed: () {
