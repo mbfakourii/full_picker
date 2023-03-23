@@ -9,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:light_compressor/light_compressor.dart';
 import '../../full_picker.dart';
 import '../dialogs/url_input_dialog.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 /// show top sheet title and back button
 topSheet(String title, BuildContext context) {
@@ -131,12 +132,6 @@ Future<FullPickerOutput?> getFiles(
         byte = file.bytes!;
       }
 
-      if (!isWeb) {
-        if (file.path != null) {
-          files.add(File(file.path!));
-        }
-      }
-
       // for counter
       if (extensionType(file.extension!) == FileType.video) {
         numberVideo = numberVideo + 1;
@@ -166,6 +161,15 @@ Future<FullPickerOutput?> getFiles(
 
           byte = byteCrop;
         } catch (_) {}
+      }
+
+      if (!isWeb) {
+        if (file.path != null) {
+          final appDir = await path_provider.getTemporaryDirectory();
+          File file = File('${appDir.path}/${name.last!}');
+          await file.writeAsBytes(byte);
+          files.add(file);
+        }
       }
 
       bytes.add(byte);
