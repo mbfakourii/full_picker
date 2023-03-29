@@ -384,7 +384,7 @@ Future<Uint8List?> videoCompress({
   final LightCompressor lightCompressor = LightCompressor();
 
   int size = int.parse(File(mainFile.path).lengthSync().toString());
-  if (size < 10000000) {
+  if (size < 50000000) {
     return byte;
   }
 
