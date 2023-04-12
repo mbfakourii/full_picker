@@ -12,7 +12,6 @@ A Flutter package that helps you select files in different modes
 * URL picker
 * Support Material 1,2,3
 
-
 ## Example App
 <img src="https://raw.githubusercontent.com/mbfakourii/full_picker/master/example/screenshots/example.gif" width="300" height="550" />
 
