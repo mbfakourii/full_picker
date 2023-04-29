@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
   # Camera
-  camera: ^0.10.3
+  camera: ^0.10.4
 
   # Path
   path_provider: ^2.0.12
@@ -24,6 +24,7 @@ dependencies:
 
   # Crop
   image_cropper: ^3.0.1
+  video_player: any
 
   # File Picker
   file_picker: ^5.2.5
@@ -39,6 +40,9 @@ dependencies:
 
   # Http
   http: ^0.13.5
+
+  # Uuid
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_lints: ^2.0.1

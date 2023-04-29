@@ -10,6 +10,7 @@ import 'package:light_compressor/light_compressor.dart';
 import '../../full_picker.dart';
 import '../dialogs/url_input_dialog.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:uuid/uuid.dart';
 
 /// show top sheet title and back button
 topSheet(String title, BuildContext context) {
@@ -81,6 +82,11 @@ FileType extensionType(String extension) {
   }
 }
 
+String generateRandomString() {
+  var uuid = Uuid();
+  return uuid.v4();
+}
+
 /// get files
 Future<FullPickerOutput?> getFiles(
     {required BuildContext context,
@@ -123,7 +129,8 @@ Future<FullPickerOutput?> getFiles(
     int numberVideo = 0;
     int numberPicture = 0;
     for (final file in result.files) {
-      name.add("${prefixName}_${name.length + 1}.${file.extension!}");
+      name.add(
+          "${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}");
       Uint8List byte;
 
       if (file.bytes == null) {

@@ -69,6 +69,21 @@ class _SheetSelectState extends State<SelectSheet> {
     if (widget.url) {
       itemList.add(ItemSheet(globalLanguage.url, Icons.add_link_sharp, 5));
     }
+
+    switch (itemList.length) {
+      case 1:
+        crossAxisCount = 1;
+        childAspectRatio = 6;
+        break;
+      case 2:
+        crossAxisCount = 2;
+        childAspectRatio = 3;
+        break;
+
+      default:
+        crossAxisCount = 3;
+        childAspectRatio = 2;
+    }
   }
 
   @override
@@ -79,6 +94,9 @@ class _SheetSelectState extends State<SelectSheet> {
 
     super.dispose();
   }
+
+  double childAspectRatio = 2;
+  int crossAxisCount = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +112,9 @@ class _SheetSelectState extends State<SelectSheet> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: crossAxisCount,
                     childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 2),
+                        (MediaQuery.of(context).size.height / childAspectRatio),
                   ),
                   itemCount: itemList.length,
                   itemBuilder: (context, index) {
