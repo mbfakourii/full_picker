@@ -67,3 +67,7 @@ flutter:
         default_package: full_picker
       windows:
         default_package: full_picker
+
+screenshots:
+  - description: Full Picker logo.
+    path: screenshots/logo.png
