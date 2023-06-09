@@ -1,6 +1,6 @@
 name: full_picker
 description: A Flutter package that helps you select files in different modes
-version: 1.3.0
+version: 1.3.1
 homepage: https://github.com/mbfakourii/full_picker
 issue_tracker: https://github.com/mbfakourii/full_picker/issues
 repository: https://github.com/mbfakourii/full_picker
@@ -50,3 +50,19 @@ dev_dependencies:
 
   flutter_test:
     sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: full_picker
+      ios:
+        default_package: full_picker
+      linux:
+        default_package: full_picker
+      macos:
+        default_package: full_picker
+      web:
+        default_package: full_picker
+      windows:
+        default_package: full_picker

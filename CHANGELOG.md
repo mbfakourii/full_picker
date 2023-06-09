@@ -1,3 +1,6 @@
+## 1.3.1
+* fix platforms support
+
 ## 1.3.0
 * update packages
 
