@@ -70,11 +70,10 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
         children: [
           Text(
             StopWatchTimer.getDisplayTime(recordTime),
-            style:
-                const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10,bottom: 20),
+            padding: const EdgeInsets.only(top: 10, bottom: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
