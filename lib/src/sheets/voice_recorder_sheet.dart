@@ -64,56 +64,52 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              topSheet(globalLanguage.voiceRecorder, widget.context),
-              Text(
-                StopWatchTimer.getDisplayTime(recordTime),
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _addButton(Icons.close, () {
-                      Navigator.pop(context);
-                    }, 30, false),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 30),
-                        child: _addButton(recordIcon, () {
-                          if (started) {
-                            _pausePlay();
-                          } else {
-                            _startRecord();
-                          }
-                        }, 40, true)),
-                    _addButton(Icons.stop, () async {
-                      /// get voice record data
-                      await _stopRecord();
-
-                      if (lastUint8List != null) {
-                        userClose = false;
-                        widget.onSelected.call(FullPickerOutput(
-                            [lastUint8List],
-                            FullPickerType.voiceRecorder,
-                            [widget.voiceFileName],
-                            [lastFile]));
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            StopWatchTimer.getDisplayTime(recordTime),
+            style:
+                const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10,bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _addButton(Icons.close, () {
+                  Navigator.pop(context);
+                }, 30, false),
+                Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    child: _addButton(recordIcon, () {
+                      if (started) {
+                        _pausePlay();
                       } else {
-                        _showNotStartToast();
+                        _startRecord();
                       }
-                    }, 30, false),
-                  ],
-                ),
-              ),
-            ]));
+                    }, 40, true)),
+                _addButton(Icons.stop, () async {
+                  /// get voice record data
+                  await _stopRecord();
+
+                  if (lastUint8List != null) {
+                    userClose = false;
+                    widget.onSelected.call(FullPickerOutput(
+                        [lastUint8List],
+                        FullPickerType.voiceRecorder,
+                        [widget.voiceFileName],
+                        [lastFile]));
+                  } else {
+                    _showNotStartToast();
+                  }
+                }, 30, false),
+              ],
+            ),
+          ),
+        ]);
   }
 
   /// add voice record buttons

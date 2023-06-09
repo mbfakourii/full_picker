@@ -100,44 +100,35 @@ class _SheetSelectState extends State<SelectSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              topSheet(globalLanguage.selectFile, widget.context),
-              GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / childAspectRatio),
-                  ),
-                  itemCount: itemList.length,
-                  itemBuilder: (context, index) {
-                    return Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                          customBorder: const CircleBorder(),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(itemList[index].icon, size: 30),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Text(itemList[index].name),
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            goPage(itemList[index]);
-                          }),
-                    );
-                  })
-            ]));
+    return GridView.builder(padding: EdgeInsets.only(bottom: 20),
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          childAspectRatio: MediaQuery.of(context).size.width /
+              (MediaQuery.of(context).size.height / childAspectRatio),
+        ),
+        itemCount: itemList.length,
+        itemBuilder: (context, index) {
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+                customBorder: const CircleBorder(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(itemList[index].icon, size: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(itemList[index].name),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  goPage(itemList[index]);
+                }),
+          );
+        });
   }
 
   /// show file picker

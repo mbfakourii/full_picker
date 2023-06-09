@@ -12,42 +12,13 @@ import '../dialogs/url_input_dialog.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uuid/uuid.dart';
 
-/// show top sheet title and back button
-topSheet(String title, BuildContext context) {
-  return Column(children: [
-    // Drag handle
-    Padding(
-      padding: const EdgeInsets.only(top: 7),
-      child: Container(
-        width: 32,
-        height: 4,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSurface.withAlpha(40),
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
-        ),
-      ),
-    ),
-    Padding(
-      padding: const EdgeInsets.only(top: 2, left: 5),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 20),
-        overflow: TextOverflow.ellipsis,
-      ),
-    ),
-  ]);
-}
-
 /// show sheet
 void showSheet(Widget widget, BuildContext context,
     {bool isDismissible = true}) {
   showModalBottomSheet(
       context: context,
+      showDragHandle: true,
       isDismissible: isDismissible,
-      shape: RoundedRectangleBorder(
-          borderRadius: Theme.of(context).useMaterial3
-              ? BorderRadiusM3.extraLargeTop
-              : BorderRadius.zero),
       builder: (BuildContext context) {
         return widget;
       });
@@ -185,8 +156,7 @@ Future<FullPickerOutput?> getFiles(
       if (numberPicture == 0 && numberVideo != 0) {
         return FullPickerOutput(bytes, FullPickerType.video, name, files);
       } else if (numberPicture != 0 && numberVideo == 0) {
-        return FullPickerOutput(
-            bytes, FullPickerType.image, [name.first], files);
+        return FullPickerOutput(bytes, FullPickerType.image, name, files);
       } else {
         // mixed
         return FullPickerOutput(bytes, pickerFileType, name, files);

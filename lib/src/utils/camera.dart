@@ -303,27 +303,32 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                 ),
                 Expanded(
                   flex: 3,
-                  child: GestureDetector(
-                    onLongPress: widget.videoCamera && widget.imageCamera
-                        ? () {
-                            videoRecord();
+                  child: Material(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(100),
+                      onLongPress: widget.videoCamera && widget.imageCamera
+                          ? () {
+                              videoRecord();
+                            }
+                          : null,
+                      onTap: () {
+                        if (widget.imageCamera) {
+                          if (controller!.value.isRecordingVideo) {
+                            onStopButtonPressed();
+                          } else {
+                            onTakePictureButtonPressed();
                           }
-                        : null,
-                    onTap: () {
-                      if (widget.imageCamera) {
-                        if (controller!.value.isRecordingVideo) {
-                          onStopButtonPressed();
                         } else {
-                          onTakePictureButtonPressed();
+                          videoRecord();
                         }
-                      } else {
-                        videoRecord();
-                      }
-                    },
-                    child: Icon(
-                      Icons.camera,
-                      color: colorCameraButton,
-                      size: 60,
+                      },
+                      child: Icon(
+                        Icons.camera,
+                        color: colorCameraButton,
+                        size: 60,
+                      ),
                     ),
                   ),
                 ),
