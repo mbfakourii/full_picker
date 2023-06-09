@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://github.com/mbfakourii/full_picker/assets/20955005/8ea5172a-0eb2-4d0f-8328-e2778442e11c" />
-</p>
+![logo](https://github.com/mbfakourii/full_picker/assets/20955005/10d10dc4-31fe-47e5-86fe-48f91141af47)
 
 # Full picker
 <a href="https://pub.dev/packages/full_picker"><img src="https://img.shields.io/pub/v/full_picker.svg" alt="Pub"></a></br>
