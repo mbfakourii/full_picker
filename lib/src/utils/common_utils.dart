@@ -444,7 +444,9 @@ Future<Uint8List?> cropImage({
     uiSettings: [
       AndroidUiSettings(
           toolbarTitle: globalLanguage.cropper,
-          toolbarColor: Theme.of(context).colorScheme.secondary,
+          toolbarColor: Theme.of(context).colorScheme.surface,
+          statusBarColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           toolbarWidgetColor: Theme.of(context).colorScheme.primary,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false),
