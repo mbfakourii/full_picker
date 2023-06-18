@@ -148,7 +148,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     controller = CameraController(
       cameraDescription,
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
 

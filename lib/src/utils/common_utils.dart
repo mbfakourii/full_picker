@@ -131,8 +131,8 @@ Future<FullPickerOutput?> getFiles(
       /// image cropper
       if (file.extension == "jpg" && imageCropper) {
         try {
-          Uint8List? byteCrop =
-              await cropImage(context: context, byte: byte, file: file);
+          Uint8List? byteCrop = await cropImage(
+              context: context, byte: byte, sourcePath: file.path!);
 
           if (byteCrop == null) return null;
 
@@ -267,8 +267,19 @@ void getFullPicker({
       checkError(inSheet, onIsUserCheng, context, isSelected: false);
       onError?.call(1);
     } else {
+      // Uint8List? byteCrop = await cropImage(
+      //     context: context,
+      //     byte: (value as FullPickerOutput).bytes.first!,
+      //     sourcePath: value.file.first!.path);
+      //
+      // if(byteCrop==null){
+      //   // Error
+      //   checkError(inSheet, onIsUserCheng, context, isSelected: false);
+      //   onError?.call(1);
+      // }else{
       checkError(inSheet, onIsUserCheng, context, isSelected: true);
       onSelected.call(value);
+      // }
     }
   } else if (id == 3) {
     // File
@@ -414,14 +425,14 @@ Future<Uint8List?> videoCompress({
 Future<Uint8List?> cropImage({
   required context,
   required Uint8List byte,
-  required PlatformFile file,
+  required String sourcePath,
 }) async {
   if (isWeb) {
     return byte;
   }
 
   CroppedFile? croppedFile = await ImageCropper().cropImage(
-    sourcePath: file.path!,
+    sourcePath: sourcePath,
     compressQuality: 20,
     aspectRatioPresets: Platform.isAndroid
         ? [
