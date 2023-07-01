@@ -1,7 +1,7 @@
 ![logo](https://github.com/mbfakourii/full_picker/assets/20955005/10d10dc4-31fe-47e5-86fe-48f91141af47)
 
 # Full picker
-<a href="https://pub.dev/packages/full_picker"><img src="https://img.shields.io/pub/v/full_picker.svg" alt="Pub"></a></br>
+[![pub package](https://img.shields.io/pub/v/full_picker.svg)](https://pub.dev/packages/full_picker)</br>
 A Flutter package that helps you select files in different modes
 
 ## Features
