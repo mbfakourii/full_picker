@@ -118,7 +118,7 @@ class FullPicker {
     getFullPicker(
       id: id,
       context: context,
-      onIsUserCheng: (value) {},
+      onIsUserChange: (value) {},
       video: video,
       file: file,
       voiceRecorder: voiceRecorder,

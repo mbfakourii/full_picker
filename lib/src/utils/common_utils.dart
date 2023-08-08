@@ -63,7 +63,7 @@ Future<FullPickerOutput?> getFiles(
     required FileType fileType,
     required FullPickerType pickerFileType,
     required String prefixName,
-    required ValueSetter<bool> onIsUserCheng,
+    required ValueSetter<bool> onIsUserChange,
     required ValueSetter<int>? onError,
     List<String>? allowedExtensions,
     bool videoCompressor = false,
@@ -181,7 +181,7 @@ clearTempFiles() async {
 void getFullPicker({
   required id,
   required context,
-  required ValueSetter<bool> onIsUserCheng,
+  required ValueSetter<bool> onIsUserChange,
   required ValueSetter<FullPickerOutput> onSelected,
   required ValueSetter<int>? onError,
   required bool image,
@@ -198,7 +198,7 @@ void getFullPicker({
   required String prefixName,
   required bool inSheet,
 }) async {
-  onIsUserCheng.call(false);
+  onIsUserChange.call(false);
   FullPickerOutput? value;
 
   if (id == 1) {
@@ -216,7 +216,7 @@ void getFullPicker({
           multiFile: multiFile,
           onError: onError,
           imageCropper: imageCropper,
-          onIsUserCheng: onIsUserCheng);
+          onIsUserChange: onIsUserChange);
     } else if (image) {
       value = await getFiles(
           context: context,
@@ -228,7 +228,7 @@ void getFullPicker({
           inSheet: inSheet,
           imageCropper: imageCropper,
           onError: onError,
-          onIsUserCheng: onIsUserCheng);
+          onIsUserChange: onIsUserChange);
     } else if (video) {
       value = await getFiles(
           context: context,
@@ -240,14 +240,14 @@ void getFullPicker({
           inSheet: inSheet,
           multiFile: multiFile,
           onError: onError,
-          onIsUserCheng: onIsUserCheng);
+          onIsUserChange: onIsUserChange);
     }
 
     if (value == null) {
-      checkError(inSheet, onIsUserCheng, context, isSelected: false);
+      checkError(inSheet, onIsUserChange, context, isSelected: false);
       onError?.call(1);
     } else {
-      checkError(inSheet, onIsUserCheng, context, isSelected: true);
+      checkError(inSheet, onIsUserChange, context, isSelected: true);
       if (value.name.isNotEmpty) onSelected.call(value);
     }
   } else if (id == 2) {
@@ -264,7 +264,7 @@ void getFullPicker({
 
     if (value == 1 || value == null) {
       // Error
-      checkError(inSheet, onIsUserCheng, context, isSelected: false);
+      checkError(inSheet, onIsUserChange, context, isSelected: false);
       onError?.call(1);
     } else {
       // Uint8List? byteCrop = await cropImage(
@@ -274,10 +274,10 @@ void getFullPicker({
       //
       // if(byteCrop==null){
       //   // Error
-      //   checkError(inSheet, onIsUserCheng, context, isSelected: false);
+      //   checkError(inSheet, onIsUserChange, context, isSelected: false);
       //   onError?.call(1);
       // }else{
-      checkError(inSheet, onIsUserCheng, context, isSelected: true);
+      checkError(inSheet, onIsUserChange, context, isSelected: true);
       onSelected.call(value);
       // }
     }
@@ -291,13 +291,13 @@ void getFullPicker({
         multiFile: multiFile,
         inSheet: inSheet,
         onError: onError,
-        onIsUserCheng: onIsUserCheng);
+        onIsUserChange: onIsUserChange);
 
     if (value == null) {
-      checkError(inSheet, onIsUserCheng, context, isSelected: false);
+      checkError(inSheet, onIsUserChange, context, isSelected: false);
       onError?.call(1);
     } else {
-      checkError(inSheet, onIsUserCheng, context, isSelected: true);
+      checkError(inSheet, onIsUserChange, context, isSelected: true);
       onSelected.call(value);
     }
   } else if (id == 4) {
@@ -307,12 +307,12 @@ void getFullPicker({
             context: context,
             voiceFileName: "${prefixName}_1.m4a",
             onSelected: (value) {
-              checkError(inSheet, onIsUserCheng, context, isSelected: true);
+              checkError(inSheet, onIsUserChange, context, isSelected: true);
               onSelected.call(value);
               Navigator.of(context).pop();
             },
             onError: (value) {
-              checkError(inSheet, onIsUserCheng, context, isSelected: true);
+              checkError(inSheet, onIsUserChange, context, isSelected: true);
               onError?.call(1);
             }),
         context,
@@ -324,19 +324,19 @@ void getFullPicker({
         builder: (context) => URLInputDialog(body: bodyTextUrl));
 
     if (url != null) {
-      checkError(inSheet, onIsUserCheng, context, isSelected: true);
+      checkError(inSheet, onIsUserChange, context, isSelected: true);
       onSelected.call(FullPickerOutput.data(url, FullPickerType.url));
     } else {
-      checkError(inSheet, onIsUserCheng, context, isSelected: true);
+      checkError(inSheet, onIsUserChange, context, isSelected: true);
       onError?.call(1);
     }
   }
 }
 
-/// check for control close sheet
-checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
+/// Check for control close sheet
+checkError(inSheet, onIsUserChange, context, {required bool isSelected}) {
   if (inSheet) {
-    onIsUserCheng.call(false);
+    onIsUserChange.call(false);
 
     if (isWeb) {
       if (isSelected) {
@@ -355,8 +355,8 @@ checkError(inSheet, onIsUserCheng, context, {required bool isSelected}) {
   }
 }
 
-/// web does not support video compression
-/// video compressor
+/// Web does not support video compression
+/// Video compressor
 Future<Uint8List?> videoCompress({
   required context,
   required Uint8List byte,

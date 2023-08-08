@@ -137,7 +137,7 @@ class _SheetSelectState extends State<SelectSheet> {
     getFullPicker(
       id: mList.id,
       context: context,
-      onIsUserCheng: (value) {
+      onIsUserChange: (value) {
         userClose = value;
       },
       video: widget.video,
