@@ -129,7 +129,10 @@ Future<FullPickerOutput?> getFiles(
       }
 
       /// image cropper
-      if (file.extension == "jpg" && imageCropper) {
+      if ((file.extension == "jpg" ||
+              file.extension == "png" ||
+              file.extension == "jpeg") &&
+          imageCropper) {
         try {
           Uint8List? byteCrop = await cropImage(
               context: context, byte: byte, sourcePath: file.path!);
@@ -168,7 +171,7 @@ Future<FullPickerOutput?> getFiles(
   }
 }
 
-clearTempFiles() async {
+clearTemporaryFiles() async {
   try {
     await FilePicker.platform.clearTemporaryFiles();
   } catch (_) {}
@@ -267,19 +270,8 @@ void getFullPicker({
       checkError(inSheet, onIsUserChange, context, isSelected: false);
       onError?.call(1);
     } else {
-      // Uint8List? byteCrop = await cropImage(
-      //     context: context,
-      //     byte: (value as FullPickerOutput).bytes.first!,
-      //     sourcePath: value.file.first!.path);
-      //
-      // if(byteCrop==null){
-      //   // Error
-      //   checkError(inSheet, onIsUserChange, context, isSelected: false);
-      //   onError?.call(1);
-      // }else{
       checkError(inSheet, onIsUserChange, context, isSelected: true);
       onSelected.call(value);
-      // }
     }
   } else if (id == 3) {
     // File
