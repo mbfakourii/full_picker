@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
 import 'package:full_picker_example/utils.dart';
@@ -35,29 +36,29 @@ class FilePickerTest extends StatefulWidget {
 class _ExonFilePicker extends State<FilePickerTest> {
   ValueNotifier<double> onProgress = ValueNotifier<double>(0);
 
-  String info = "Not Selected !";
+  String info = 'Not Selected !';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Full Picker Example')),
+      appBar: AppBar(title: const Text('Full Picker Example')),
       body: Column(
         children: [
           ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.black)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
-                  "Open Full Picker",
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Open Full Picker',
                   style: TextStyle(fontSize: 25, color: Colors.white),
                 ),
               ),
               onPressed: () {
                 FullPicker(
                   context: context,
-                  prefixName: "test",
+                  prefixName: 'test',
                   file: true,
                   voiceRecorder: true,
                   image: true,
@@ -69,16 +70,20 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   multiFile: true,
                   url: true,
                   onError: (int value) {
-                    print(" ----  onError ----=$value");
+                    if (kDebugMode) {
+                      print(' ----  onError ----=$value');
+                    }
                   },
                   onSelected: (value) {
-                    print(" ----  onSelected ----");
+                    if (kDebugMode) {
+                      print(' ----  onSelected ----');
+                    }
 
                     if (value.fileType != FullPickerType.url) {
-                      info = "";
+                      info = '';
                       for (int i = 0; i < value.name.length; i++) {
                         info +=
-                            "File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :${fileSize(value.bytes[i])}\n--------\n";
+                            'File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :${fileSize(value.bytes[i])}\n--------\n';
                       }
                     } else {
                       info = value.data;
@@ -95,8 +100,8 @@ class _ExonFilePicker extends State<FilePickerTest> {
                 child: Row(
                   children: [
                     Text(
-                      "Output :\n\n$info",
-                      style: TextStyle(fontSize: 18),
+                      'Output :\n\n$info',
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ],
                 ),

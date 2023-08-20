@@ -1,24 +1,24 @@
 /// language texts
 class Language {
-  String camera = "Camera";
-  String selectFile = "Please select a file";
-  String file = "File";
-  String voiceRecorder = "Voice Recorder";
-  String url = "URL";
-  String enterURL = "Enter the URL";
-  String cancel = "Cancel";
-  String ok = "OK";
-  String gallery = "Gallery";
-  String cropper = "Photo cropping";
-  String onCompressing = "Compressing...";
-  String tapForPhotoHoldForVideo = "Tap for photo, hold for video";
-  String cameraNotFound = "Camera not found !";
-  String noVoiceRecorded = "No voice recorded";
-  String off = "Off";
-  String on = "On";
-  String auto = "Auto";
+  String camera = 'Camera';
+  String selectFile = 'Please select a file';
+  String file = 'File';
+  String voiceRecorder = 'Voice Recorder';
+  String url = 'URL';
+  String enterURL = 'Enter the URL';
+  String cancel = 'Cancel';
+  String ok = 'OK';
+  String gallery = 'Gallery';
+  String cropper = 'Photo cropping';
+  String onCompressing = 'Compressing...';
+  String tapForPhotoHoldForVideo = 'Tap for photo, hold for video';
+  String cameraNotFound = 'Camera not found !';
+  String noVoiceRecorded = 'No voice recorded';
+  String off = 'Off';
+  String on = 'On';
+  String auto = 'Auto';
   String denyAccessPermission =
-      "Unfortunately, you denied access, so it is not possible to use this part";
+      'Unfortunately, you denied access, so it is not possible to use this part';
 
   Language();
 

@@ -6,7 +6,7 @@ class URLInputDialog extends StatelessWidget {
   late final TextEditingController textfieldController;
   final String body;
 
-  URLInputDialog({super.key, String? text, this.body = ""}) {
+  URLInputDialog({super.key, String? text, this.body = ''}) {
     textfieldController = TextEditingController(text: text);
   }
 
@@ -47,7 +47,7 @@ class URLInputDialog extends StatelessWidget {
                       ),
                       controller: textfieldController,
                     ),
-                    if (body != "")
+                    if (body != '')
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Text(body),

@@ -1,7 +1,9 @@
 import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import '../../full_picker.dart';
 
 /// Custom Camera for Image and Video
@@ -50,11 +52,13 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         cameras = await availableCameras();
         setState(() {});
       } catch (e) {
+        if (!context.mounted) return;
         showFullPickerToast(globalLanguage.cameraNotFound, context);
 
         Navigator.of(context).pop();
       }
     } on CameraException {
+      if (!context.mounted) return;
       Navigator.of(context).pop();
     }
   }
@@ -168,14 +172,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   /// Take Picture
   void onTakePictureButtonPressed() {
     takePicture().then((String? filePath) {
-      if (filePath == "") return;
+      if (filePath == '') return;
       if (mounted) {
         Navigator.pop(
             context,
             FullPickerOutput(
                 [File(filePath!).readAsBytesSync()],
                 FullPickerType.image,
-                ["${widget.prefixName}.jpg"],
+                ['${widget.prefixName}.jpg'],
                 [File(filePath)]));
       }
     });
@@ -191,7 +195,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             FullPickerOutput(
                 [File(file!.path).readAsBytesSync()],
                 FullPickerType.video,
-                ["${widget.prefixName}.mp4"],
+                ['${widget.prefixName}.mp4'],
                 [File(file.path)]));
       }
     });
@@ -233,11 +237,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   /// Take Picture
   Future<String?> takePicture() async {
     if (!controller!.value.isInitialized) {
-      return "";
+      return '';
     }
 
     if (controller!.value.isTakingPicture) {
-      return "";
+      return '';
     }
 
     try {
@@ -251,7 +255,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   /// show Camera Exception
   void _showCameraException(CameraException e) {
-    if (e.code == "cameraPermission" || e.code == "CameraAccessDenied") {
+    if (e.code == 'cameraPermission' || e.code == 'CameraAccessDenied') {
       if (mounted) {
         Navigator.pop(context);
       }
@@ -261,7 +265,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   }
 
   /// struct buttons in main page
-  buttons(context) {
+  Container buttons(context) {
     return Container(
       // remove this height
       height: MediaQuery.of(context).size.height,

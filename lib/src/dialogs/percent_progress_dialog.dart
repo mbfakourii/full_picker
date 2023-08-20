@@ -53,7 +53,7 @@ class PercentProgressDialog extends BaseDialog {
                       height: 1,
                     ),
                     Text(
-                      "$percent%",
+                      '$percent%',
                       style: const TextStyle(fontSize: 20),
                     ),
                     const SizedBox(

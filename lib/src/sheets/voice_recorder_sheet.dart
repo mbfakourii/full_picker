@@ -1,10 +1,12 @@
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
-import '../../full_picker.dart';
-import 'package:record/record.dart';
-import 'package:http/http.dart';
 import 'dart:io' show File;
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:record/record.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+
+import '../../full_picker.dart';
 
 /// voice recorder sheet
 class VoiceRecorderSheet extends StatefulWidget {
@@ -112,7 +114,7 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
   }
 
   /// add voice record buttons
-  _addButton(IconData icon, VoidCallback onPressed, double size,
+  ElevatedButton _addButton(IconData icon, VoidCallback onPressed, double size,
       bool hasBackgroundColor) {
     return ElevatedButton(
       onPressed: onPressed,
@@ -135,7 +137,7 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
   }
 
   /// initialize and start record
-  _startRecord() async {
+  void _startRecord() async {
     started = true;
     if (await _record.hasPermission()) {
       _stopWatchTimer.onResetTimer();

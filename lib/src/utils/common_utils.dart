@@ -1,15 +1,17 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:full_picker/src/sheets/voice_recorder_sheet.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:light_compressor/light_compressor.dart';
-import '../../full_picker.dart';
-import '../dialogs/url_input_dialog.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uuid/uuid.dart';
+
+import '../../full_picker.dart';
+import '../dialogs/url_input_dialog.dart';
 
 /// show sheet
 void showSheet(Widget widget, BuildContext context,
@@ -24,28 +26,28 @@ void showSheet(Widget widget, BuildContext context,
 }
 
 FileType extensionType(String extension) {
-  if (extension == "") {
+  if (extension == '') {
     return FileType.any;
   } else if (extension == 'aac' ||
       extension == 'midi' ||
-      extension == "mp3" ||
-      extension == "ogg" ||
-      extension == "wav") {
+      extension == 'mp3' ||
+      extension == 'ogg' ||
+      extension == 'wav') {
     return FileType.audio;
   } else if (extension == 'bmp' ||
       extension == 'gif' ||
-      extension == "jpeg" ||
-      extension == "jpg" ||
-      extension == "png") {
+      extension == 'jpeg' ||
+      extension == 'jpg' ||
+      extension == 'png') {
     return FileType.image;
   } else if (extension == 'avi' ||
       extension == 'flv' ||
-      extension == "mkv" ||
-      extension == "mov" ||
-      extension == "mp4" ||
+      extension == 'mkv' ||
+      extension == 'mov' ||
+      extension == 'mp4' ||
       extension == 'mpeg' ||
       extension == 'webm' ||
-      extension == "wmv") {
+      extension == 'wmv') {
     return FileType.video;
   } else {
     return FileType.any;
@@ -53,7 +55,7 @@ FileType extensionType(String extension) {
 }
 
 String generateRandomString() {
-  var uuid = Uuid();
+  var uuid = const Uuid();
   return uuid.v4();
 }
 
@@ -100,7 +102,7 @@ Future<FullPickerOutput?> getFiles(
     int numberPicture = 0;
     for (final file in result.files) {
       name.add(
-          "${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}");
+          '${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}');
       Uint8List byte;
 
       if (file.bytes == null) {
@@ -119,7 +121,8 @@ Future<FullPickerOutput?> getFiles(
       }
 
       /// video compressor
-      if (file.extension == "mp4" && videoCompressor) {
+      if (file.extension == 'mp4' && videoCompressor) {
+        if (!context.mounted) return null;
         Uint8List? byteCompress =
             await videoCompress(context: context, byte: byte, file: file);
 
@@ -129,11 +132,12 @@ Future<FullPickerOutput?> getFiles(
       }
 
       /// image cropper
-      if ((file.extension == "jpg" ||
-              file.extension == "png" ||
-              file.extension == "jpeg") &&
+      if ((file.extension == 'jpg' ||
+              file.extension == 'png' ||
+              file.extension == 'jpeg') &&
           imageCropper) {
         try {
+          if (!context.mounted) return null;
           Uint8List? byteCrop = await cropImage(
               context: context, byte: byte, sourcePath: file.path!);
 
@@ -171,7 +175,7 @@ Future<FullPickerOutput?> getFiles(
   }
 }
 
-clearTemporaryFiles() async {
+void clearTemporaryFiles() async {
   try {
     await FilePicker.platform.clearTemporaryFiles();
   } catch (_) {}
@@ -215,7 +219,7 @@ void getFullPicker({
           pickerFileType: FullPickerType.mixed,
           prefixName: prefixName,
           inSheet: inSheet,
-          allowedExtensions: ["mp4", "avi", "mkv", "jpg", "jpeg", "png", "bmp"],
+          allowedExtensions: ['mp4', 'avi', 'mkv', 'jpg', 'jpeg', 'png', 'bmp'],
           multiFile: multiFile,
           onError: onError,
           imageCropper: imageCropper,
@@ -297,7 +301,7 @@ void getFullPicker({
     showSheet(
         VoiceRecorderSheet(
             context: context,
-            voiceFileName: "${prefixName}_1.m4a",
+            voiceFileName: '${prefixName}_1.m4a',
             onSelected: (value) {
               checkError(inSheet, onIsUserChange, context, isSelected: true);
               onSelected.call(value);
@@ -326,7 +330,7 @@ void getFullPicker({
 }
 
 /// Check for control close sheet
-checkError(inSheet, onIsUserChange, context, {required bool isSelected}) {
+void checkError(inSheet, onIsUserChange, context, {required bool isSelected}) {
   if (inSheet) {
     onIsUserChange.call(false);
 
@@ -369,7 +373,7 @@ Future<Uint8List?> videoCompress({
 
   PercentProgressDialog progressDialog =
       PercentProgressDialog(context, (dynamic) {
-    if (onProgress.value.toString() != "1.0") {
+    if (onProgress.value.toString() != '1.0') {
       LightCompressor.cancelCompression();
     }
   }, onProgress, globalLanguage.onCompressing);
@@ -467,7 +471,7 @@ Future<Uint8List?> cropImage({
 }
 
 /// show custom sheet
-showFullPickerToast(String text, BuildContext context) {
+void showFullPickerToast(String text, BuildContext context) {
   Widget toast = Container(
     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
     decoration: BoxDecoration(
