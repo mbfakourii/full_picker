@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+
 import '../../full_picker.dart';
 
 /// for cheng language
@@ -34,7 +36,7 @@ class FullPicker {
       this.voiceRecorder = false,
       this.imageCamera = false,
       this.videoCamera = false,
-      this.prefixName = 'File',
+      this.prefixName = '',
       this.videoCompressor = false,
       this.imageCropper = false,
       this.multiFile = false,
