@@ -92,87 +92,94 @@ Future<FullPickerOutput?> getFiles(
     return null;
   });
 
-  if (result != null) {
-    progressDialog.dismiss();
-    List<File?> files = [];
-    List<String?> name = [];
-    List<Uint8List?> bytes = [];
+  try {
+    if (result != null) {
+      List<File?> files = [];
+      List<String?> name = [];
+      List<Uint8List?> bytes = [];
 
-    int numberVideo = 0;
-    int numberPicture = 0;
-    for (final file in result.files) {
-      name.add(
-          '${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}');
-      Uint8List byte;
+      int numberVideo = 0;
+      int numberPicture = 0;
+      for (final file in result.files) {
+        name.add(
+            '${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}');
+        Uint8List byte;
 
-      if (file.bytes == null) {
-        byte = File(file.path!).readAsBytesSync();
-      } else {
-        byte = file.bytes!;
-      }
-
-      // for counter
-      if (extensionType(file.extension!) == FileType.video) {
-        numberVideo = numberVideo + 1;
-      }
-
-      if (extensionType(file.extension!) == FileType.image) {
-        numberPicture = numberPicture + 1;
-      }
-
-      /// video compressor
-      if (file.extension == 'mp4' && videoCompressor) {
-        if (!context.mounted) return null;
-        Uint8List? byteCompress =
-            await videoCompress(context: context, byte: byte, file: file);
-
-        if (byteCompress == null) return null;
-
-        byte = byteCompress;
-      }
-
-      /// image cropper
-      if ((file.extension == 'jpg' ||
-              file.extension == 'png' ||
-              file.extension == 'jpeg') &&
-          imageCropper) {
-        try {
-          if (!context.mounted) return null;
-          Uint8List? byteCrop = await cropImage(
-              context: context, byte: byte, sourcePath: file.path!);
-
-          if (byteCrop == null) return null;
-
-          byte = byteCrop;
-        } catch (_) {}
-      }
-
-      if (!isWeb) {
-        if (file.path != null) {
-          final appDir = await path_provider.getTemporaryDirectory();
-          File file = File('${appDir.path}/${name.last!}');
-          await file.writeAsBytes(byte);
-          files.add(file);
+        if (file.bytes == null) {
+          byte = File(file.path!).readAsBytesSync();
+        } else {
+          byte = file.bytes!;
         }
+
+        // for counter
+        if (extensionType(file.extension!) == FileType.video) {
+          numberVideo = numberVideo + 1;
+        }
+
+        if (extensionType(file.extension!) == FileType.image) {
+          numberPicture = numberPicture + 1;
+        }
+
+        /// video compressor
+        if (file.extension == 'mp4' && videoCompressor) {
+          if (!context.mounted) return null;
+          Uint8List? byteCompress =
+              await videoCompress(context: context, byte: byte, file: file);
+
+          if (byteCompress == null) return null;
+
+          byte = byteCompress;
+        }
+
+        /// image cropper
+        if ((file.extension == 'jpg' ||
+                file.extension == 'png' ||
+                file.extension == 'jpeg') &&
+            imageCropper) {
+          try {
+            if (!context.mounted) return null;
+            Uint8List? byteCrop = await cropImage(
+                context: context, byte: byte, sourcePath: file.path!);
+
+            if (byteCrop == null) return null;
+
+            byte = byteCrop;
+          } catch (_) {}
+        }
+
+        if (!isWeb) {
+          if (file.path != null) {
+            final appDir = await path_provider.getTemporaryDirectory();
+            File file = File('${appDir.path}/${name.last!}');
+            await file.writeAsBytes(byte);
+            files.add(file);
+          }
+        }
+
+        bytes.add(byte);
       }
 
-      bytes.add(byte);
-    }
-    if (pickerFileType == FullPickerType.mixed) {
-      if (numberPicture == 0 && numberVideo != 0) {
-        return FullPickerOutput(bytes, FullPickerType.video, name, files);
-      } else if (numberPicture != 0 && numberVideo == 0) {
-        return FullPickerOutput(bytes, FullPickerType.image, name, files);
+      progressDialog.dismiss();
+
+      if (pickerFileType == FullPickerType.mixed) {
+        if (numberPicture == 0 && numberVideo != 0) {
+          return FullPickerOutput(bytes, FullPickerType.video, name, files);
+        } else if (numberPicture != 0 && numberVideo == 0) {
+          return FullPickerOutput(bytes, FullPickerType.image, name, files);
+        } else {
+          // mixed
+          return FullPickerOutput(bytes, pickerFileType, name, files);
+        }
       } else {
-        // mixed
         return FullPickerOutput(bytes, pickerFileType, name, files);
       }
     } else {
-      return FullPickerOutput(bytes, pickerFileType, name, files);
+      return null;
     }
-  } else {
-    return null;
+  } catch (_) {
+    progressDialog.dismiss();
   }
+  return null;
 }
 
 void clearTemporaryFiles() async {
