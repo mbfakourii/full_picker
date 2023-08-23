@@ -324,6 +324,7 @@ void getFullPicker({
     // get url from URLInputDialog and convert to FullOutput
     String? url = await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) => URLInputDialog(body: bodyTextUrl));
 
     if (url != null) {

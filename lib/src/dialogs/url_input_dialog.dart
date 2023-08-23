@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../../full_picker.dart';
 
-class URLInputDialog extends StatelessWidget {
-  late final TextEditingController textfieldController;
+class URLInputDialog extends StatefulWidget {
+  const URLInputDialog({super.key, this.text = '', required this.body});
+  final String text;
   final String body;
+  @override
+  State<URLInputDialog> createState() => _URLInputDialogState();
+}
 
-  URLInputDialog({super.key, String? text, this.body = ''}) {
-    textfieldController = TextEditingController(text: text);
+class _URLInputDialogState extends State<URLInputDialog> {
+  late final TextEditingController textfieldController;
+  @override
+  void initState() {
+    textfieldController = TextEditingController(text: widget.text);
+    super.initState();
   }
 
   @override
@@ -31,7 +39,7 @@ class URLInputDialog extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
-                      keyboardType: TextInputType.url,
+                      keyboardType: TextInputType.text,
                       textDirection: TextDirection.ltr,
                       autofocus: true,
                       decoration: const InputDecoration(
@@ -47,10 +55,10 @@ class URLInputDialog extends StatelessWidget {
                       ),
                       controller: textfieldController,
                     ),
-                    if (body != '')
+                    if (widget.body != '')
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
-                        child: Text(body),
+                        child: Text(widget.body),
                       ),
                   ],
                 ),
