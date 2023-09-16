@@ -21,7 +21,7 @@ class _URLInputDialogState extends State<URLInputDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(globalLanguage.enterURL,
+      title: Text(globalLanguage.url,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 19)),
       contentPadding: const EdgeInsets.only(
         left: 24.0,
