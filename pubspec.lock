@@ -212,10 +212,10 @@ packages:
     dependency: "direct main"
     description:
       name: light_compressor
-      sha256: "9c4ac5bb6d651b8b00b5c9b6c7b542730895647b50927931161e164c4da82704"
+      sha256: "53165b7a6b79a5de4ad781d7de7d7bf49fe55ddfb67fa6d0cd97869c0b68e831"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.0.1"
   lints:
     dependency: transitive
     description:

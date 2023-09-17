@@ -29,7 +29,7 @@ dependencies:
   file_picker: ^5.3.3
 
   # Compressor Video
-  light_compressor: ^2.1.0
+  light_compressor: 2.0.1
 
   # Recorder
   record: ^4.4.4
