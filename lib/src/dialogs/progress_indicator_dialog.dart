@@ -1,18 +1,16 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'base_dialog.dart';
+import 'package:full_picker/src/dialogs/base_dialog.dart';
 
 /// Progress Indicator Dialog for keep waiting
 class ProgressIndicatorDialog extends BaseDialog {
-  ProgressIndicatorDialog(context)
-      : super(context, width: double.infinity, autoHeight: true);
+  ProgressIndicatorDialog(super.context)
+      : super(width: double.infinity, autoHeight: true);
 
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () {
-          return Future.value(false);
-        },
-        child: const Card(child: LinearProgressIndicator(minHeight: 8)));
-  }
+  Widget build(final BuildContext context) => WillPopScope(
+        onWillPop: () => Future<bool>.value(false),
+        child: const Card(child: LinearProgressIndicator(minHeight: 8)),
+      );
 }

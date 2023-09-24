@@ -2,51 +2,35 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
-import '../../full_picker.dart';
+import 'package:full_picker/full_picker.dart';
 
 /// for cheng language
 Language globalLanguage = Language();
 
 class FullPicker {
-  final bool image;
-  final bool video;
-  final bool imageCamera;
-  final bool videoCamera;
-  final bool file;
-  final bool voiceRecorder;
-  final bool url;
-  final String bodyTextUrl;
-  final String prefixName;
-  final bool videoCompressor;
-  final bool imageCropper;
-  final bool multiFile;
-  final ValueSetter<FullPickerOutput> onSelected;
-  final ValueSetter<int>? onError;
-  final BuildContext context;
-
-  FullPicker(
-      {required this.context,
-      Language? language,
-      this.image = true,
-      this.video = false,
-      this.file = false,
-      this.url = false,
-      this.bodyTextUrl = '',
-      this.voiceRecorder = false,
-      this.imageCamera = false,
-      this.videoCamera = false,
-      this.prefixName = '',
-      this.videoCompressor = false,
-      this.imageCropper = false,
-      this.multiFile = false,
-      required this.onSelected,
-      this.onError}) {
+  FullPicker({
+    required this.context,
+    required this.onSelected,
+    final Language? language,
+    this.image = true,
+    this.video = false,
+    this.file = false,
+    this.url = false,
+    this.bodyTextUrl = '',
+    this.voiceRecorder = false,
+    this.imageCamera = false,
+    this.videoCamera = false,
+    this.prefixName = '',
+    this.videoCompressor = false,
+    this.imageCropper = false,
+    this.multiFile = false,
+    this.onError,
+  }) {
     /// show or not show sheet for single item or multi item
     int countTrue = 0;
-    if (image && video == false) {
+    if (image && !video) {
       countTrue++;
-    } else if (image == false && video) {
+    } else if (!image && video) {
       countTrue++;
     } else if (image && video) {
       countTrue++;
@@ -56,17 +40,23 @@ class FullPicker {
       globalLanguage = language;
     }
 
-    if (imageCamera && videoCamera == false) {
+    if (imageCamera && !videoCamera) {
       countTrue++;
-    } else if (imageCamera == false && videoCamera) {
+    } else if (!imageCamera && videoCamera) {
       countTrue++;
     } else if (imageCamera && videoCamera) {
       countTrue++;
     }
 
-    if (file) countTrue++;
-    if (voiceRecorder) countTrue++;
-    if (url) countTrue++;
+    if (file) {
+      countTrue++;
+    }
+    if (voiceRecorder) {
+      countTrue++;
+    }
+    if (url) {
+      countTrue++;
+    }
 
     if (countTrue == 1) {
       /// if single item select
@@ -94,33 +84,49 @@ class FullPicker {
     } else {
       /// show sheet
       showSheet(
-          SelectSheet(
-            video: video,
-            file: file,
-            voiceRecorder: voiceRecorder,
-            url: url,
-            bodyTextUrl: bodyTextUrl,
-            image: image,
-            imageCamera: imageCamera,
-            videoCamera: videoCamera,
-            context: context,
-            videoCompressor: videoCompressor,
-            onError: onError,
-            onSelected: onSelected,
-            prefixName: prefixName,
-            imageCropper: imageCropper,
-            multiFile: multiFile,
-          ),
-          context);
+        SelectSheet(
+          video: video,
+          file: file,
+          voiceRecorder: voiceRecorder,
+          url: url,
+          bodyTextUrl: bodyTextUrl,
+          image: image,
+          imageCamera: imageCamera,
+          videoCamera: videoCamera,
+          context: context,
+          videoCompressor: videoCompressor,
+          onError: onError,
+          onSelected: onSelected,
+          prefixName: prefixName,
+          imageCropper: imageCropper,
+          multiFile: multiFile,
+        ),
+        context,
+      );
     }
   }
+  final bool image;
+  final bool video;
+  final bool imageCamera;
+  final bool videoCamera;
+  final bool file;
+  final bool voiceRecorder;
+  final bool url;
+  final String bodyTextUrl;
+  final String prefixName;
+  final bool videoCompressor;
+  final bool imageCropper;
+  final bool multiFile;
+  final ValueSetter<FullPickerOutput> onSelected;
+  final ValueSetter<int>? onError;
+  final BuildContext context;
 
   /// show file picker for single item
-  void openAloneFullPicker(id) {
+  void openAloneFullPicker(final int id) {
     getFullPicker(
       id: id,
       context: context,
-      onIsUserChange: (value) {},
+      onIsUserChange: (final bool value) {},
       video: video,
       file: file,
       voiceRecorder: voiceRecorder,
@@ -142,6 +148,10 @@ class FullPicker {
 
 /// main Output class
 class FullPickerOutput {
+  FullPickerOutput(this.bytes, this.fileType, this.name, this.file);
+
+  FullPickerOutput.data(this.data, this.fileType);
+
   /// main bytes
   late List<Uint8List?> bytes;
   late List<File?> file;
@@ -152,10 +162,6 @@ class FullPickerOutput {
 
   /// type file
   late FullPickerType fileType;
-
-  FullPickerOutput(this.bytes, this.fileType, this.name, this.file);
-
-  FullPickerOutput.data(this.data, this.fileType);
 }
 
 /// File Picker Types
@@ -163,9 +169,8 @@ enum FullPickerType { image, video, file, voiceRecorder, url, mixed }
 
 /// item sheet model
 class ItemSheet {
+  ItemSheet(this.name, this.icon, this.id);
   late IconData icon;
   late String name;
   late int id;
-
-  ItemSheet(this.name, this.icon, this.id);
 }

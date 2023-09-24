@@ -1,11 +1,13 @@
-String fileSize(dynamic size, [int round = 2]) {
+import 'dart:typed_data';
+
+String fileSize(final Uint8List size, [final int round = 2]) {
   /**
    * [size] can be passed as number or as string
    *
    * the optional parameter [round] specifies the number
    * of digits after comma/point (default is 2)
    */
-  int divider = 1024;
+  const int divider = 1024;
   int size0;
   try {
     size0 = size.length;
@@ -43,21 +45,21 @@ String fileSize(dynamic size, [int round = 2]) {
 
   if (size0 < divider * divider * divider * divider * divider &&
       size0 % divider == 0) {
-    num r = size0 / divider / divider / divider / divider;
+    final num r = size0 / divider / divider / divider / divider;
     return '${r.toStringAsFixed(0)} TB';
   }
 
   if (size0 < divider * divider * divider * divider * divider) {
-    num r = size0 / divider / divider / divider / divider;
+    final num r = size0 / divider / divider / divider / divider;
     return '${r.toStringAsFixed(round)} TB';
   }
 
   if (size0 < divider * divider * divider * divider * divider * divider &&
       size0 % divider == 0) {
-    num r = size0 / divider / divider / divider / divider / divider;
+    final num r = size0 / divider / divider / divider / divider / divider;
     return '${r.toStringAsFixed(0)} PB';
   } else {
-    num r = size0 / divider / divider / divider / divider / divider;
+    final num r = size0 / divider / divider / divider / divider / divider;
     return '${r.toStringAsFixed(round)} PB';
   }
 }

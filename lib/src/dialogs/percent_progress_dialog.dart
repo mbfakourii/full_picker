@@ -1,24 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../dialogs/base_dialog.dart';
+import 'package:full_picker/src/dialogs/base_dialog.dart';
 
 /// Percent Progress Dialog help for show Progress
 class PercentProgressDialog extends BaseDialog {
-  late ValueNotifier<double> onProgress;
-  StreamController streamController = StreamController<double>();
-  late int percent;
-  late String title;
-
   PercentProgressDialog(
-      context, ValueSetter<void> onClose, this.onProgress, this.title)
-      : super(context, width: 2, autoHeight: true, onClose: onClose) {
+    super.context,
+    final ValueSetter<void> onClose,
+    this.onProgress,
+    this.title,
+  ) : super(width: 2, autoHeight: true, onClose: onClose) {
     onProgress.addListener(() {
       if (isOpenDialog) {
         streamController.sink.add(onProgress.value);
       }
     });
   }
+  late ValueNotifier<double> onProgress;
+  StreamController<double> streamController = StreamController<double>();
+  late int percent;
+  late String title;
 
   @override
   void dismiss() {
@@ -27,50 +29,54 @@ class PercentProgressDialog extends BaseDialog {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
+  Widget build(final BuildContext context) => Card(
         child: Column(
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 20),
-        ),
-        Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-          child: StreamBuilder<double>(
-              stream: streamController.stream as Stream<double>,
-              builder: (context, snapshot) {
-                try {
-                  percent = (snapshot.data! * 100).toInt();
-                } catch (error) {
-                  percent = 0;
-                }
+          children: <Widget>[
+            Text(
+              title,
+              style: const TextStyle(fontSize: 20),
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: StreamBuilder<double>(
+                stream: streamController.stream,
+                builder: (
+                  final BuildContext context,
+                  final AsyncSnapshot<double> snapshot,
+                ) {
+                  try {
+                    percent = (snapshot.data! * 100).toInt();
+                  } catch (_) {
+                    percent = 0;
+                  }
 
-                return Column(
-                  children: [
-                    const SizedBox(
-                      height: 1,
-                    ),
-                    Text(
-                      '$percent%',
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: LinearProgressIndicator(
-                        value: snapshot.data,
-                        minHeight: 8,
+                  return Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 1,
                       ),
-                    ),
-                  ],
-                );
-              }),
-        )
-      ],
-    ));
-  }
+                      Text(
+                        '$percent%',
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: LinearProgressIndicator(
+                          value: snapshot.data,
+                          minHeight: 8,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
 }

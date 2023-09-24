@@ -4,28 +4,29 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:full_picker/full_picker.dart';
+import 'package:full_picker/src/dialogs/url_input_dialog.dart';
 import 'package:full_picker/src/sheets/voice_recorder_sheet.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:light_compressor/light_compressor.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uuid/uuid.dart';
 
-import '../../full_picker.dart';
-import '../dialogs/url_input_dialog.dart';
-
 /// show sheet
-void showSheet(Widget widget, BuildContext context,
-    {bool isDismissible = true}) {
-  showModalBottomSheet(
-      context: context,
-      showDragHandle: true,
-      isDismissible: isDismissible,
-      builder: (BuildContext context) {
-        return widget;
-      });
+void showSheet(
+  final Widget widget,
+  final BuildContext context, {
+  final bool isDismissible = true,
+}) {
+  showModalBottomSheet<void>(
+    context: context,
+    showDragHandle: true,
+    isDismissible: isDismissible,
+    builder: (final BuildContext context) => widget,
+  );
 }
 
-FileType extensionType(String extension) {
+FileType extensionType(final String extension) {
   if (extension == '') {
     return FileType.any;
   } else if (extension == 'aac' ||
@@ -55,31 +56,33 @@ FileType extensionType(String extension) {
 }
 
 String generateRandomString() {
-  var uuid = const Uuid();
+  const Uuid uuid = Uuid();
   return uuid.v4();
 }
 
 /// get files
-Future<FullPickerOutput?> getFiles(
-    {required BuildContext context,
-    required FileType fileType,
-    required FullPickerType pickerFileType,
-    required String prefixName,
-    required ValueSetter<bool> onIsUserChange,
-    required ValueSetter<int>? onError,
-    List<String>? allowedExtensions,
-    bool videoCompressor = false,
-    required bool inSheet,
-    bool imageCropper = false,
-    bool multiFile = false}) async {
-  ProgressIndicatorDialog progressDialog = ProgressIndicatorDialog(context);
+Future<FullPickerOutput?> getFiles({
+  required final BuildContext context,
+  required final FileType fileType,
+  required final FullPickerType pickerFileType,
+  required final String prefixName,
+  required final ValueSetter<bool> onIsUserChange,
+  required final ValueSetter<int>? onError,
+  required final bool inSheet,
+  final List<String>? allowedExtensions,
+  final bool videoCompressor = false,
+  final bool imageCropper = false,
+  final bool multiFile = false,
+}) async {
+  final ProgressIndicatorDialog progressDialog =
+      ProgressIndicatorDialog(context);
 
-  FilePickerResult? result = await FilePicker.platform
+  final FilePickerResult? result = await FilePicker.platform
       .pickFiles(
     allowMultiple: multiFile,
     type: fileType,
     allowedExtensions: allowedExtensions,
-    onFileLoading: (value) {
+    onFileLoading: (final FilePickerStatus value) {
       if (value == FilePickerStatus.picking) {
         progressDialog.show();
       } else {
@@ -87,22 +90,23 @@ Future<FullPickerOutput?> getFiles(
       }
     },
   )
-      .catchError((error, stackTrace) {
+      .catchError((final _, final __) {
     showFullPickerToast(globalLanguage.denyAccessPermission, context);
     return null;
   });
 
   try {
     if (result != null) {
-      List<File?> files = [];
-      List<String?> name = [];
-      List<Uint8List?> bytes = [];
+      final List<File?> files = <File?>[];
+      final List<String?> name = <String?>[];
+      final List<Uint8List?> bytes = <Uint8List?>[];
 
       int numberVideo = 0;
       int numberPicture = 0;
-      for (final file in result.files) {
+      for (final PlatformFile file in result.files) {
         name.add(
-            '${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}');
+          '${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}',
+        );
         Uint8List byte;
 
         if (file.bytes == null) {
@@ -122,11 +126,15 @@ Future<FullPickerOutput?> getFiles(
 
         /// video compressor
         if (file.extension == 'mp4' && videoCompressor) {
-          if (!context.mounted) return null;
-          Uint8List? byteCompress =
+          if (!context.mounted) {
+            return null;
+          }
+          final Uint8List? byteCompress =
               await videoCompress(context: context, byte: byte, file: file);
 
-          if (byteCompress == null) return null;
+          if (byteCompress == null) {
+            return null;
+          }
 
           byte = byteCompress;
         }
@@ -137,11 +145,18 @@ Future<FullPickerOutput?> getFiles(
                 file.extension == 'jpeg') &&
             imageCropper) {
           try {
-            if (!context.mounted) return null;
-            Uint8List? byteCrop = await cropImage(
-                context: context, byte: byte, sourcePath: file.path!);
+            if (!context.mounted) {
+              return null;
+            }
+            final Uint8List? byteCrop = await cropImage(
+              context: context,
+              byte: byte,
+              sourcePath: file.path!,
+            );
 
-            if (byteCrop == null) return null;
+            if (byteCrop == null) {
+              return null;
+            }
 
             byte = byteCrop;
           } catch (_) {}
@@ -149,8 +164,9 @@ Future<FullPickerOutput?> getFiles(
 
         if (!isWeb) {
           if (file.path != null) {
-            final appDir = await path_provider.getTemporaryDirectory();
-            File file = File('${appDir.path}/${name.last!}');
+            final Directory appDir =
+                await path_provider.getTemporaryDirectory();
+            final File file = File('${appDir.path}/${name.last!}');
             await file.writeAsBytes(byte);
             files.add(file);
           }
@@ -182,7 +198,7 @@ Future<FullPickerOutput?> getFiles(
   return null;
 }
 
-void clearTemporaryFiles() async {
+Future<void> clearTemporaryFiles() async {
   try {
     await FilePicker.platform.clearTemporaryFiles();
   } catch (_) {}
@@ -192,25 +208,25 @@ void clearTemporaryFiles() async {
 /// 1 = Gallery
 /// 2 = Camera
 /// 3 = File
-void getFullPicker({
-  required id,
-  required context,
-  required ValueSetter<bool> onIsUserChange,
-  required ValueSetter<FullPickerOutput> onSelected,
-  required ValueSetter<int>? onError,
-  required bool image,
-  required bool video,
-  required bool file,
-  required bool voiceRecorder,
-  required bool url,
-  required String bodyTextUrl,
-  required bool imageCamera,
-  required bool videoCamera,
-  required bool videoCompressor,
-  required bool imageCropper,
-  required bool multiFile,
-  required String prefixName,
-  required bool inSheet,
+Future<void> getFullPicker({
+  required final int id,
+  required final BuildContext context,
+  required final ValueSetter<bool> onIsUserChange,
+  required final ValueSetter<FullPickerOutput> onSelected,
+  required final ValueSetter<int>? onError,
+  required final bool image,
+  required final bool video,
+  required final bool file,
+  required final bool voiceRecorder,
+  required final bool url,
+  required final String bodyTextUrl,
+  required final bool imageCamera,
+  required final bool videoCamera,
+  required final bool videoCompressor,
+  required final bool imageCropper,
+  required final bool multiFile,
+  required final String prefixName,
+  required final bool inSheet,
 }) async {
   onIsUserChange.call(false);
   FullPickerOutput? value;
@@ -220,125 +236,189 @@ void getFullPicker({
 
     if (image && video) {
       value = await getFiles(
-          context: context,
-          videoCompressor: videoCompressor,
-          fileType: FileType.custom,
-          pickerFileType: FullPickerType.mixed,
-          prefixName: prefixName,
-          inSheet: inSheet,
-          allowedExtensions: ['mp4', 'avi', 'mkv', 'jpg', 'jpeg', 'png', 'bmp'],
-          multiFile: multiFile,
-          onError: onError,
-          imageCropper: imageCropper,
-          onIsUserChange: onIsUserChange);
+        context: context,
+        videoCompressor: videoCompressor,
+        fileType: FileType.custom,
+        pickerFileType: FullPickerType.mixed,
+        prefixName: prefixName,
+        inSheet: inSheet,
+        allowedExtensions: <String>[
+          'mp4',
+          'avi',
+          'mkv',
+          'jpg',
+          'jpeg',
+          'png',
+          'bmp',
+        ],
+        multiFile: multiFile,
+        onError: onError,
+        imageCropper: imageCropper,
+        onIsUserChange: onIsUserChange,
+      );
     } else if (image) {
       value = await getFiles(
-          context: context,
-          videoCompressor: videoCompressor,
-          fileType: FileType.image,
-          pickerFileType: FullPickerType.image,
-          prefixName: prefixName,
-          multiFile: multiFile,
-          inSheet: inSheet,
-          imageCropper: imageCropper,
-          onError: onError,
-          onIsUserChange: onIsUserChange);
+        context: context,
+        videoCompressor: videoCompressor,
+        fileType: FileType.image,
+        pickerFileType: FullPickerType.image,
+        prefixName: prefixName,
+        multiFile: multiFile,
+        inSheet: inSheet,
+        imageCropper: imageCropper,
+        onError: onError,
+        onIsUserChange: onIsUserChange,
+      );
     } else if (video) {
       value = await getFiles(
-          context: context,
-          videoCompressor: videoCompressor,
-          fileType: FileType.video,
-          pickerFileType: FullPickerType.video,
-          prefixName: prefixName,
-          imageCropper: imageCropper,
-          inSheet: inSheet,
-          multiFile: multiFile,
-          onError: onError,
-          onIsUserChange: onIsUserChange);
+        context: context,
+        videoCompressor: videoCompressor,
+        fileType: FileType.video,
+        pickerFileType: FullPickerType.video,
+        prefixName: prefixName,
+        imageCropper: imageCropper,
+        inSheet: inSheet,
+        multiFile: multiFile,
+        onError: onError,
+        onIsUserChange: onIsUserChange,
+      );
     }
 
     if (value == null) {
-      checkError(inSheet, onIsUserChange, context, isSelected: false);
+      if (context.mounted) {
+        checkError(
+          inSheet: inSheet,
+          onIsUserChange,
+          context,
+          isSelected: false,
+        );
+      }
       onError?.call(1);
     } else {
-      checkError(inSheet, onIsUserChange, context, isSelected: true);
-      if (value.name.isNotEmpty) onSelected.call(value);
+      if (context.mounted) {
+        checkError(inSheet: inSheet, onIsUserChange, context, isSelected: true);
+      }
+      if (value.name.isNotEmpty) {
+        onSelected.call(value);
+      }
     }
   } else if (id == 2) {
     /// camera
-    dynamic value = await Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-        return Camera(
+    final dynamic value = await Navigator.of(context).push(
+      MaterialPageRoute<dynamic>(
+        builder: (final BuildContext context) => Camera(
           imageCamera: imageCamera,
           videoCamera: videoCamera,
           prefixName: prefixName,
-        );
-      },
-    ));
+        ),
+      ),
+    );
 
     if (value == 1 || value == null) {
       // Error
-      checkError(inSheet, onIsUserChange, context, isSelected: false);
+      if (context.mounted) {
+        checkError(
+          inSheet: inSheet,
+          onIsUserChange,
+          context,
+          isSelected: false,
+        );
+      }
       onError?.call(1);
     } else {
-      checkError(inSheet, onIsUserChange, context, isSelected: true);
-      onSelected.call(value);
+      if (context.mounted) {
+        checkError(inSheet: inSheet, onIsUserChange, context, isSelected: true);
+      }
+      onSelected.call(value as FullPickerOutput);
     }
   } else if (id == 3) {
     // File
     value = await getFiles(
-        context: context,
-        fileType: FileType.any,
-        pickerFileType: FullPickerType.file,
-        prefixName: prefixName,
-        multiFile: multiFile,
-        inSheet: inSheet,
-        onError: onError,
-        onIsUserChange: onIsUserChange);
+      context: context,
+      fileType: FileType.any,
+      pickerFileType: FullPickerType.file,
+      prefixName: prefixName,
+      multiFile: multiFile,
+      inSheet: inSheet,
+      onError: onError,
+      onIsUserChange: onIsUserChange,
+    );
 
     if (value == null) {
-      checkError(inSheet, onIsUserChange, context, isSelected: false);
+      if (context.mounted) {
+        checkError(
+          inSheet: inSheet,
+          onIsUserChange,
+          context,
+          isSelected: false,
+        );
+      }
       onError?.call(1);
     } else {
-      checkError(inSheet, onIsUserChange, context, isSelected: true);
+      if (context.mounted) {
+        checkError(inSheet: inSheet, onIsUserChange, context, isSelected: true);
+      }
       onSelected.call(value);
     }
   } else if (id == 4) {
     // Voice Recorder and isDismissible is false because recording may be closed unintentionally!
     showSheet(
-        VoiceRecorderSheet(
-            context: context,
-            voiceFileName: '${prefixName}_1.m4a',
-            onSelected: (value) {
-              checkError(inSheet, onIsUserChange, context, isSelected: true);
-              onSelected.call(value);
-              Navigator.of(context).pop();
-            },
-            onError: (value) {
-              checkError(inSheet, onIsUserChange, context, isSelected: true);
-              onError?.call(1);
-            }),
-        context,
-        isDismissible: false);
+      VoiceRecorderSheet(
+        context: context,
+        voiceFileName: '${prefixName}_1.m4a',
+        onSelected: (final FullPickerOutput value) {
+          checkError(
+            inSheet: inSheet,
+            onIsUserChange,
+            context,
+            isSelected: true,
+          );
+          onSelected.call(value);
+          Navigator.of(context).pop();
+        },
+        onError: (final int value) {
+          checkError(
+            inSheet: inSheet,
+            onIsUserChange,
+            context,
+            isSelected: true,
+          );
+          onError?.call(1);
+        },
+      ),
+      context,
+      isDismissible: false,
+    );
   } else if (id == 5) {
     // get url from URLInputDialog and convert to FullOutput
-    String? url = await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => URLInputDialog(body: bodyTextUrl));
+    final String? url = await showDialog<String?>(
+      context: context,
+      barrierDismissible: false,
+      builder: (final BuildContext context) =>
+          URLInputDialog(body: bodyTextUrl),
+    );
 
     if (url != null) {
-      checkError(inSheet, onIsUserChange, context, isSelected: true);
-      onSelected.call(FullPickerOutput.data(url, FullPickerType.url));
+      if (context.mounted) {
+        checkError(inSheet: inSheet, onIsUserChange, context, isSelected: true);
+        onSelected.call(FullPickerOutput.data(url, FullPickerType.url));
+      }
     } else {
-      checkError(inSheet, onIsUserChange, context, isSelected: true);
-      onError?.call(1);
+      if (context.mounted) {
+        checkError(inSheet: inSheet, onIsUserChange, context, isSelected: true);
+        onError?.call(1);
+      }
     }
   }
 }
 
 /// Check for control close sheet
-void checkError(inSheet, onIsUserChange, context, {required bool isSelected}) {
+void checkError(
+  final ValueSetter<bool> onIsUserChange,
+  final BuildContext context, {
+  required final bool isSelected,
+  required final bool inSheet,
+}) {
   if (inSheet) {
     onIsUserChange.call(false);
 
@@ -353,7 +433,9 @@ void checkError(inSheet, onIsUserChange, context, {required bool isSelected}) {
       if (Platform.isAndroid || Platform.isIOS) {
         Navigator.of(context).pop();
       } else {
-        if (isSelected == false) Navigator.of(context).pop();
+        if (!isSelected) {
+          Navigator.of(context).pop();
+        }
       }
     }
   }
@@ -362,51 +444,56 @@ void checkError(inSheet, onIsUserChange, context, {required bool isSelected}) {
 /// Web does not support video compression
 /// Video compressor
 Future<Uint8List?> videoCompress({
-  required context,
-  required Uint8List byte,
-  required PlatformFile file,
+  required final BuildContext context,
+  required final Uint8List byte,
+  required final PlatformFile file,
 }) async {
   if (isWeb) {
     return byte;
   }
 
-  File mainFile = File(file.path!);
-  ValueNotifier<double> onProgress = ValueNotifier<double>(0);
+  final File mainFile = File(file.path!);
+  final ValueNotifier<double> onProgress = ValueNotifier<double>(0);
   final LightCompressor lightCompressor = LightCompressor();
 
-  int size = int.parse(File(mainFile.path).lengthSync().toString());
+  final int size = int.parse(File(mainFile.path).lengthSync().toString());
   if (size < 50000000) {
     return byte;
   }
 
-  PercentProgressDialog progressDialog =
-      PercentProgressDialog(context, (dynamic) {
-    if (onProgress.value.toString() != '1.0') {
-      LightCompressor.cancelCompression();
-    }
-  }, onProgress, globalLanguage.onCompressing);
+  final PercentProgressDialog progressDialog = PercentProgressDialog(
+    context,
+    (final void value) {
+      if (onProgress.value.toString() != '1.0') {
+        LightCompressor.cancelCompression();
+      }
+    },
+    onProgress,
+    globalLanguage.onCompressing,
+  );
 
-  LightCompressor().onProgressUpdated.listen((event) {
+  LightCompressor().onProgressUpdated.listen((final double event) {
     onProgress.value = event / 100;
   });
 
   try {
-    progressDialog.show();
+    await progressDialog.show();
     final dynamic response = await lightCompressor.compressVideo(
       path: mainFile.path,
       videoQuality: VideoQuality.medium,
       android: AndroidConfig(isSharedStorage: false),
       ios: IOSConfig(saveInGallery: false),
       video: Video(
-          videoName: '${DateTime.now().millisecondsSinceEpoch}."mp4"',
-          videoBitrateInMbps: 24),
+        videoName: '${DateTime.now().millisecondsSinceEpoch}."mp4"',
+        videoBitrateInMbps: 24,
+      ),
     );
 
     progressDialog.dismiss();
 
     if (response is OnSuccess) {
-      File outputFile = File(response.destinationPath);
-      Uint8List outputByte = outputFile.readAsBytesSync();
+      final File outputFile = File(response.destinationPath);
+      final Uint8List outputByte = outputFile.readAsBytesSync();
 
       /// delete cash file
       await outputFile.delete();
@@ -417,7 +504,7 @@ Future<Uint8List?> videoCompress({
     } else if (response is OnCancelled) {
       return null;
     }
-  } catch (e) {
+  } catch (_) {
     return byte;
   }
 
@@ -427,26 +514,26 @@ Future<Uint8List?> videoCompress({
 /// web does not support crop Image
 /// crop image
 Future<Uint8List?> cropImage({
-  required context,
-  required Uint8List byte,
-  required String sourcePath,
+  required final BuildContext context,
+  required final Uint8List byte,
+  required final String sourcePath,
 }) async {
   if (isWeb) {
     return byte;
   }
 
-  CroppedFile? croppedFile = await ImageCropper().cropImage(
+  final CroppedFile? croppedFile = await ImageCropper().cropImage(
     sourcePath: sourcePath,
     compressQuality: 20,
     aspectRatioPresets: Platform.isAndroid
-        ? [
+        ? <CropAspectRatioPreset>[
             CropAspectRatioPreset.square,
             CropAspectRatioPreset.ratio3x2,
             CropAspectRatioPreset.original,
             CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9
+            CropAspectRatioPreset.ratio16x9,
           ]
-        : [
+        : <CropAspectRatioPreset>[
             CropAspectRatioPreset.original,
             CropAspectRatioPreset.square,
             CropAspectRatioPreset.ratio3x2,
@@ -454,36 +541,37 @@ Future<Uint8List?> cropImage({
             CropAspectRatioPreset.ratio5x3,
             CropAspectRatioPreset.ratio5x4,
             CropAspectRatioPreset.ratio7x5,
-            CropAspectRatioPreset.ratio16x9
+            CropAspectRatioPreset.ratio16x9,
           ],
-    uiSettings: [
+    uiSettings: <PlatformUiSettings>[
       AndroidUiSettings(
-          toolbarTitle: globalLanguage.cropper,
-          toolbarColor: Theme.of(context).colorScheme.surface,
-          statusBarColor: Theme.of(context).colorScheme.surface,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          toolbarWidgetColor: Theme.of(context).colorScheme.primary,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false),
+        toolbarTitle: globalLanguage.cropper,
+        toolbarColor: Theme.of(context).colorScheme.surface,
+        statusBarColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        toolbarWidgetColor: Theme.of(context).colorScheme.primary,
+        initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false,
+      ),
       IOSUiSettings(
         title: globalLanguage.cropper,
-      )
+      ),
     ],
   );
 
   try {
     return await croppedFile!.readAsBytes();
-  } catch (e) {
+  } catch (_) {
     return null;
   }
 }
 
 /// show custom sheet
-void showFullPickerToast(String text, BuildContext context) {
-  Widget toast = Container(
-    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+void showFullPickerToast(final String text, final BuildContext context) {
+  final Widget toast = Container(
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(25.0),
+      borderRadius: BorderRadius.circular(25),
       color: const Color(0xFF656565),
     ),
     child: Text(text, style: const TextStyle(color: Color(0xfffefefe))),

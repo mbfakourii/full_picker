@@ -14,10 +14,10 @@ dependencies:
     sdk: flutter
 
   # Camera
-  camera: ^0.10.5+3
+  camera: ^0.10.5+4
 
   # Path
-  path_provider: ^2.1.0
+  path_provider: ^2.1.1
 
   # Toast
   fluttertoast: ^8.2.2
@@ -26,7 +26,7 @@ dependencies:
   image_cropper: ^5.0.0
 
   # File Picker
-  file_picker: ^5.3.3
+  file_picker: ^5.5.0
 
   # Compressor Video
   light_compressor: 2.0.1
@@ -35,7 +35,7 @@ dependencies:
   record: ^4.4.4
 
   # Stop watch timer
-  stop_watch_timer: ^3.0.1
+  stop_watch_timer: ^3.0.2
 
   # Http
   http: ^1.1.0
@@ -46,8 +46,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^2.0.2
 
 flutter:
   plugin:

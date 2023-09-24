@@ -1,5 +1,29 @@
 /// language texts
 class Language {
+  Language();
+
+  /// help for cheng language texts
+  Language.copy({
+    required this.camera,
+    required this.file,
+    required this.voiceRecorder,
+    required this.gallery,
+    required this.cropper,
+    required this.url,
+    required this.enterURL,
+    required this.ok,
+    required this.on,
+    required this.off,
+    required this.auto,
+    required this.cancel,
+    required this.cameraNotFound,
+    required this.denyAccessPermission,
+    required this.onCompressing,
+    required this.noVoiceRecorded,
+    required this.selectFile,
+    required this.tapForPhotoHoldForVideo,
+  });
+
   String camera = 'Camera';
   String selectFile = 'Please select a file';
   String file = 'File';
@@ -19,27 +43,4 @@ class Language {
   String auto = 'Auto';
   String denyAccessPermission =
       'Unfortunately, you denied access, so it is not possible to use this part';
-
-  Language();
-
-  /// help for cheng language texts
-  Language.copy(
-      {required this.camera,
-      required this.file,
-      required this.voiceRecorder,
-      required this.gallery,
-      required this.cropper,
-      required this.url,
-      required this.enterURL,
-      required this.ok,
-      required this.on,
-      required this.off,
-      required this.auto,
-      required this.cancel,
-      required this.cameraNotFound,
-      required this.denyAccessPermission,
-      required this.onCompressing,
-      required this.noVoiceRecorded,
-      required this.selectFile,
-      required this.tapForPhotoHoldForVideo});
 }

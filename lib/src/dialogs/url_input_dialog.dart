@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../full_picker.dart';
+import 'package:full_picker/full_picker.dart';
 
 class URLInputDialog extends StatefulWidget {
-  const URLInputDialog({super.key, this.text = '', required this.body});
+  const URLInputDialog({required this.body, super.key, this.text = ''});
   final String text;
   final String body;
   @override
@@ -19,72 +18,75 @@ class _URLInputDialogState extends State<URLInputDialog> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(globalLanguage.url,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 19)),
-      contentPadding: const EdgeInsets.only(
-        left: 24.0,
-        right: 24.0,
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              constraints: BoxConstraints(
+  Widget build(final BuildContext context) => AlertDialog(
+        title: Text(
+          globalLanguage.url,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+        ),
+        contentPadding: const EdgeInsets.only(
+          left: 24,
+          right: 24,
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                constraints: BoxConstraints(
                   minWidth: MediaQuery.of(context).size.width / 2.3,
-                  maxWidth: MediaQuery.of(context).size.width),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 5),
-                child: Column(
-                  children: [
-                    TextField(
-                      keyboardType: TextInputType.text,
-                      textDirection: TextDirection.ltr,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 2, right: 2),
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                            right: 10,
+                  maxWidth: MediaQuery.of(context).size.width,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 5),
+                  child: Column(
+                    children: <Widget>[
+                      TextField(
+                        keyboardType: TextInputType.text,
+                        textDirection: TextDirection.ltr,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 2, right: 2),
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                            ),
+                            child: Icon(Icons.add_link_sharp),
                           ),
-                          child: Icon(Icons.add_link_sharp),
+                          border: OutlineInputBorder(),
                         ),
-                        border: OutlineInputBorder(),
+                        controller: textfieldController,
                       ),
-                      controller: textfieldController,
-                    ),
-                    if (widget.body != '')
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(widget.body),
-                      ),
-                  ],
+                      if (widget.body != '')
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(widget.body),
+                        ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      actions: <Widget>[
-        TextButton(
+        actions: <Widget>[
+          TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
             child: Text(
               globalLanguage.cancel,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            )),
-        TextButton(
+            ),
+          ),
+          TextButton(
             onPressed: () {
               Navigator.pop(context, textfieldController.text);
             },
             child: Text(
               globalLanguage.ok,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            )),
-      ],
-    );
-  }
+            ),
+          ),
+        ],
+      );
 }

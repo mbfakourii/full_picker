@@ -8,26 +8,24 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorScheme: ThemeData()
-            .colorScheme
-            .copyWith(primary: Colors.black, background: Colors.white),
-      ),
-      home: const FilePickerTest(),
-    );
-  }
+  Widget build(final BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          colorScheme: ThemeData()
+              .colorScheme
+              .copyWith(primary: Colors.black, background: Colors.white),
+        ),
+        home: const FilePickerTest(),
+      );
 }
 
 class FilePickerTest extends StatefulWidget {
-  const FilePickerTest({Key? key}) : super(key: key);
+  const FilePickerTest({super.key});
 
   @override
   State<FilePickerTest> createState() => _ExonFilePicker();
@@ -39,17 +37,16 @@ class _ExonFilePicker extends State<FilePickerTest> {
   String info = 'Not Selected !';
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Full Picker Example')),
-      body: Column(
-        children: [
-          ElevatedButton(
+  Widget build(final BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Full Picker Example')),
+        body: Column(
+          children: <Widget>[
+            ElevatedButton(
               style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+              ),
               child: const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8),
                 child: Text(
                   'Open Full Picker',
                   style: TextStyle(fontSize: 25, color: Colors.white),
@@ -61,20 +58,18 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   prefixName: 'test',
                   file: true,
                   voiceRecorder: true,
-                  image: true,
                   video: true,
                   videoCamera: true,
                   imageCamera: true,
-                  videoCompressor: false,
                   imageCropper: true,
                   multiFile: true,
                   url: true,
-                  onError: (int value) {
+                  onError: (final int value) {
                     if (kDebugMode) {
                       print(' ----  onError ----=$value');
                     }
                   },
-                  onSelected: (value) {
+                  onSelected: (final FullPickerOutput value) {
                     if (kDebugMode) {
                       print(' ----  onSelected ----');
                     }
@@ -82,34 +77,34 @@ class _ExonFilePicker extends State<FilePickerTest> {
                     if (value.fileType != FullPickerType.url) {
                       info = '';
                       for (int i = 0; i < value.name.length; i++) {
-                        info +=
-                            'File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :${fileSize(value.bytes[i])}\n--------\n';
+                        info =
+                            '${info}File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :${fileSize(value.bytes[i]!)}\n--------\n';
                       }
                     } else {
-                      info = value.data;
+                      info = value.data as String;
                     }
 
                     setState(() {});
                   },
                 );
-              }),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Output :\n\n$info',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  ],
+              },
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'Output :\n\n$info',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          )
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }

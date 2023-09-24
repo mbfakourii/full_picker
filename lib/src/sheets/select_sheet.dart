@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
-import '../../full_picker.dart';
+import 'package:full_picker/full_picker.dart';
 
 /// show sheet for select models file picker
 class SelectSheet extends StatefulWidget {
+  const SelectSheet({
+    required this.videoCompressor,
+    required this.prefixName,
+    required this.multiFile,
+    required this.imageCropper,
+    required this.context,
+    required this.onSelected,
+    required this.onError,
+    required this.imageCamera,
+    required this.videoCamera,
+    required this.image,
+    required this.video,
+    required this.voiceRecorder,
+    required this.url,
+    required this.bodyTextUrl,
+    required this.file,
+    super.key,
+  });
   final BuildContext context;
   final ValueSetter<FullPickerOutput> onSelected;
   final ValueSetter<int>? onError;
@@ -19,31 +37,12 @@ class SelectSheet extends StatefulWidget {
   final String bodyTextUrl;
   final String prefixName;
 
-  const SelectSheet(
-      {Key? key,
-      required this.videoCompressor,
-      required this.prefixName,
-      required this.multiFile,
-      required this.imageCropper,
-      required this.context,
-      required this.onSelected,
-      required this.onError,
-      required this.imageCamera,
-      required this.videoCamera,
-      required this.image,
-      required this.video,
-      required this.voiceRecorder,
-      required this.url,
-      required this.bodyTextUrl,
-      required this.file})
-      : super(key: key);
-
   @override
   State<SelectSheet> createState() => _SheetSelectState();
 }
 
 class _SheetSelectState extends State<SelectSheet> {
-  late List<ItemSheet> itemList = [];
+  late List<ItemSheet> itemList = <ItemSheet>[];
   bool userClose = true;
 
   @override
@@ -63,8 +62,9 @@ class _SheetSelectState extends State<SelectSheet> {
     }
 
     if (widget.voiceRecorder) {
-      itemList.add(ItemSheet(
-          globalLanguage.voiceRecorder, Icons.keyboard_voice_sharp, 4));
+      itemList.add(
+        ItemSheet(globalLanguage.voiceRecorder, Icons.keyboard_voice_sharp, 4),
+      );
     }
     if (widget.url) {
       itemList.add(ItemSheet(globalLanguage.url, Icons.add_link_sharp, 5));
@@ -99,8 +99,7 @@ class _SheetSelectState extends State<SelectSheet> {
   int crossAxisCount = 2;
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
+  Widget build(final BuildContext context) => GridView.builder(
         padding: const EdgeInsets.only(bottom: 22),
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -110,34 +109,33 @@ class _SheetSelectState extends State<SelectSheet> {
               (MediaQuery.of(context).size.height / childAspectRatio),
         ),
         itemCount: itemList.length,
-        itemBuilder: (context, index) {
-          return Material(
-            color: Colors.transparent,
-            child: InkWell(
-                customBorder: const CircleBorder(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(itemList[index].icon, size: 30),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(itemList[index].name),
-                    )
-                  ],
+        itemBuilder: (final BuildContext context, final int index) => Material(
+          color: Colors.transparent,
+          child: InkWell(
+            customBorder: const CircleBorder(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(itemList[index].icon, size: 30),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(itemList[index].name),
                 ),
-                onTap: () {
-                  goPage(itemList[index]);
-                }),
-          );
-        });
-  }
+              ],
+            ),
+            onTap: () {
+              goPage(itemList[index]);
+            },
+          ),
+        ),
+      );
 
   /// show file picker
-  Future<void> goPage(ItemSheet mList) async {
-    getFullPicker(
+  Future<void> goPage(final ItemSheet mList) async {
+    await getFullPicker(
       id: mList.id,
       context: context,
-      onIsUserChange: (value) {
+      onIsUserChange: (final bool value) {
         userClose = value;
       },
       video: widget.video,
