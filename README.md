@@ -139,7 +139,7 @@ min SDK: 11.0
 There is a possibility of customization for different languages in this package</br>
 
 ```dart
-Language language = Language.copy(
+FullPickerLanguage language = FullPickerLanguage.copy(
     camera: S.current.camera,
     selectFile: S.current.selectFile,
     file: S.current.file,
@@ -163,7 +163,7 @@ FullPicker(
 );   
 ```
 
-```S``` For intl Package
+```S``` For [intl Package](https://pub.dev/packages/intl)
 
 ## Getting Started
 

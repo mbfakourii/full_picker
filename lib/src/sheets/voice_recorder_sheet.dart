@@ -214,6 +214,6 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
 
   /// show Not Start Voice Record Toast
   void _showNotStartToast() {
-    showFullPickerToast(globalLanguage.noVoiceRecorded, context);
+    showFullPickerToast(globalFullPickerLanguage.noVoiceRecorded, context);
   }
 }

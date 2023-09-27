@@ -20,7 +20,7 @@ class _URLInputDialogState extends State<URLInputDialog> {
   @override
   Widget build(final BuildContext context) => AlertDialog(
         title: Text(
-          globalLanguage.url,
+          globalFullPickerLanguage.url,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
         ),
         contentPadding: const EdgeInsets.only(
@@ -74,7 +74,7 @@ class _URLInputDialogState extends State<URLInputDialog> {
               Navigator.pop(context);
             },
             child: Text(
-              globalLanguage.cancel,
+              globalFullPickerLanguage.cancel,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
             ),
           ),
@@ -83,7 +83,7 @@ class _URLInputDialogState extends State<URLInputDialog> {
               Navigator.pop(context, textfieldController.text);
             },
             child: Text(
-              globalLanguage.ok,
+              globalFullPickerLanguage.ok,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
             ),
           ),

@@ -91,7 +91,7 @@ Future<FullPickerOutput?> getFiles({
     },
   )
       .catchError((final _, final __) {
-    showFullPickerToast(globalLanguage.denyAccessPermission, context);
+    showFullPickerToast(globalFullPickerLanguage.denyAccessPermission, context);
     return null;
   });
 
@@ -469,7 +469,7 @@ Future<Uint8List?> videoCompress({
       }
     },
     onProgress,
-    globalLanguage.onCompressing,
+    globalFullPickerLanguage.onCompressing,
   );
 
   LightCompressor().onProgressUpdated.listen((final double event) {
@@ -545,7 +545,7 @@ Future<Uint8List?> cropImage({
           ],
     uiSettings: <PlatformUiSettings>[
       AndroidUiSettings(
-        toolbarTitle: globalLanguage.cropper,
+        toolbarTitle: globalFullPickerLanguage.cropper,
         toolbarColor: Theme.of(context).colorScheme.surface,
         statusBarColor: Theme.of(context).colorScheme.surface,
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -554,7 +554,7 @@ Future<Uint8List?> cropImage({
         lockAspectRatio: false,
       ),
       IOSUiSettings(
-        title: globalLanguage.cropper,
+        title: globalFullPickerLanguage.cropper,
       ),
     ],
   );

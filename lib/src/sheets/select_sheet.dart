@@ -50,24 +50,27 @@ class _SheetSelectState extends State<SelectSheet> {
     super.initState();
 
     if (widget.image || widget.video) {
-      itemList.add(ItemSheet(globalLanguage.gallery, Icons.image, 1));
+      itemList.add(ItemSheet(globalFullPickerLanguage.gallery, Icons.image, 1));
     }
 
     if (widget.imageCamera || widget.videoCamera) {
-      itemList.add(ItemSheet(globalLanguage.camera, Icons.camera, 2));
+      itemList.add(ItemSheet(globalFullPickerLanguage.camera, Icons.camera, 2));
     }
 
     if (widget.file) {
-      itemList.add(ItemSheet(globalLanguage.file, Icons.insert_drive_file, 3));
+      itemList.add(
+          ItemSheet(globalFullPickerLanguage.file, Icons.insert_drive_file, 3));
     }
 
     if (widget.voiceRecorder) {
       itemList.add(
-        ItemSheet(globalLanguage.voiceRecorder, Icons.keyboard_voice_sharp, 4),
+        ItemSheet(globalFullPickerLanguage.voiceRecorder,
+            Icons.keyboard_voice_sharp, 4),
       );
     }
     if (widget.url) {
-      itemList.add(ItemSheet(globalLanguage.url, Icons.add_link_sharp, 5));
+      itemList.add(
+          ItemSheet(globalFullPickerLanguage.url, Icons.add_link_sharp, 5));
     }
 
     switch (itemList.length) {

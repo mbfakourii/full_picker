@@ -54,7 +54,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         if (!context.mounted) {
           return;
         }
-        showFullPickerToast(globalLanguage.cameraNotFound, context);
+        showFullPickerToast(globalFullPickerLanguage.cameraNotFound, context);
 
         Navigator.of(context).pop();
       }
@@ -275,7 +275,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(context);
       }
 
-      showFullPickerToast(globalLanguage.denyAccessPermission, context);
+      showFullPickerToast(
+          globalFullPickerLanguage.denyAccessPermission, context);
     }
   }
 
@@ -300,7 +301,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
               visible: (widget.imageCamera && widget.videoCamera) &&
                   toggleCameraAndTextVisibility,
               child: Text(
-                globalLanguage.tapForPhotoHoldForVideo,
+                globalFullPickerLanguage.tapForPhotoHoldForVideo,
                 style: const TextStyle(color: Color(0xa3ffffff), fontSize: 20),
               ),
             ),
@@ -423,15 +424,15 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   Future<void> _toggleFlashLight(final BuildContext context) async {
     if (controller!.value.flashMode == FlashMode.off) {
       flashLightIcon = Icons.flash_auto;
-      showFullPickerToast(globalLanguage.auto, context);
+      showFullPickerToast(globalFullPickerLanguage.auto, context);
       await controller!.setFlashMode(FlashMode.auto);
     } else if (controller!.value.flashMode == FlashMode.auto) {
       flashLightIcon = Icons.flash_on;
-      showFullPickerToast(globalLanguage.on, context);
+      showFullPickerToast(globalFullPickerLanguage.on, context);
       await controller!.setFlashMode(FlashMode.always);
     } else {
       flashLightIcon = Icons.flash_off;
-      showFullPickerToast(globalLanguage.off, context);
+      showFullPickerToast(globalFullPickerLanguage.off, context);
       await controller!.setFlashMode(FlashMode.off);
     }
 

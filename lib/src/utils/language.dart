@@ -1,9 +1,9 @@
 /// language texts
-class Language {
-  Language();
+class FullPickerLanguage {
+  FullPickerLanguage();
 
   /// help for cheng language texts
-  Language.copy({
+  FullPickerLanguage.copy({
     required this.camera,
     required this.file,
     required this.voiceRecorder,

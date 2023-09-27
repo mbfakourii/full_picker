@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
 
 /// for cheng language
-Language globalLanguage = Language();
+FullPickerLanguage globalFullPickerLanguage = FullPickerLanguage();
 
 class FullPicker {
   FullPicker({
     required this.context,
     required this.onSelected,
-    final Language? language,
+    final FullPickerLanguage? language,
     this.image = true,
     this.video = false,
     this.file = false,
@@ -37,7 +37,7 @@ class FullPicker {
     }
 
     if (language != null) {
-      globalLanguage = language;
+      globalFullPickerLanguage = language;
     }
 
     if (imageCamera && !videoCamera) {
