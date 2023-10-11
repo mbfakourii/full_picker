@@ -1,3 +1,7 @@
+## 1.3.6
+* Upgrade package dependencies
+* Fix bug in `cancelCompression`
+
 ## 1.3.5
 * upgrade packages
 
