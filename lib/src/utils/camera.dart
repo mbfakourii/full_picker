@@ -276,7 +276,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       }
 
       showFullPickerToast(
-          globalFullPickerLanguage.denyAccessPermission, context);
+        globalFullPickerLanguage.denyAccessPermission,
+        context,
+      );
     }
   }
 

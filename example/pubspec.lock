@@ -211,10 +211,10 @@ packages:
     dependency: transitive
     description:
       name: light_compressor
-      sha256: "53165b7a6b79a5de4ad781d7de7d7bf49fe55ddfb67fa6d0cd97869c0b68e831"
+      sha256: dfcbc94f55b3e5ca628f4994ece43fac40c7d6d58e9aaa3f66685cd91419b0cf
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "2.2.0"
   matcher:
     dependency: transitive
     description:

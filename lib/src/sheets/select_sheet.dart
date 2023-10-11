@@ -59,18 +59,23 @@ class _SheetSelectState extends State<SelectSheet> {
 
     if (widget.file) {
       itemList.add(
-          ItemSheet(globalFullPickerLanguage.file, Icons.insert_drive_file, 3));
+        ItemSheet(globalFullPickerLanguage.file, Icons.insert_drive_file, 3),
+      );
     }
 
     if (widget.voiceRecorder) {
       itemList.add(
-        ItemSheet(globalFullPickerLanguage.voiceRecorder,
-            Icons.keyboard_voice_sharp, 4),
+        ItemSheet(
+          globalFullPickerLanguage.voiceRecorder,
+          Icons.keyboard_voice_sharp,
+          4,
+        ),
       );
     }
     if (widget.url) {
       itemList.add(
-          ItemSheet(globalFullPickerLanguage.url, Icons.add_link_sharp, 5));
+        ItemSheet(globalFullPickerLanguage.url, Icons.add_link_sharp, 5),
+      );
     }
 
     switch (itemList.length) {

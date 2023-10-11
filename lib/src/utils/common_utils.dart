@@ -461,11 +461,13 @@ Future<Uint8List?> videoCompress({
     return byte;
   }
 
+  final LightCompressor compressor = LightCompressor();
+
   final PercentProgressDialog progressDialog = PercentProgressDialog(
     context,
     (final void value) {
       if (onProgress.value.toString() != '1.0') {
-        LightCompressor.cancelCompression();
+        compressor.cancelCompression();
       }
     },
     onProgress,

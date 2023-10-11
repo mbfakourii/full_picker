@@ -1,3 +1,6 @@
+/// full_picker Library
+library full_picker;
+
 export 'src/dialogs/base_dialog.dart';
 export 'src/dialogs/percent_progress_dialog.dart';
 export 'src/dialogs/progress_indicator_dialog.dart';
