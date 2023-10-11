@@ -208,8 +208,14 @@ linter:
     no_wildcard_variable_uses: true
     use_raw_strings: true
     unawaited_futures: true
-    prefer_final_locals: true
-    always_use_package_imports: true
-    prefer_final_parameters: true
-    prefer_single_quotes: true
-    always_specify_types: true
+    avoid_dynamic_calls: true
+
+    prefer_final_locals: true # selected
+    always_use_package_imports: true # selected
+    prefer_final_parameters: true # selected
+    prefer_single_quotes: true # selected
+    always_specify_types: true # selected
+
+#    public_member_api_docs: true
+#    avoid_catches_without_on_clauses: true
+#    discarded_futures: true
