@@ -27,13 +27,13 @@ dependencies:
   path_provider: ^2.1.1
 
   # Toast
-  fluttertoast: ^8.2.2
+  fluttertoast: ^8.2.3
 
   # Crop
   image_cropper: ^5.0.0
 
   # File Picker
-  file_picker: ^5.5.0
+  file_picker: ^6.1.1
 
   # Compressor Video
   light_compressor: ^2.2.0
@@ -48,7 +48,7 @@ dependencies:
   http: ^1.1.0
 
   # Uuid
-  uuid: ^4.1.0
+  uuid: ^4.2.1
 
 dev_dependencies:
   flutter_test:
