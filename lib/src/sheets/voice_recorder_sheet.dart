@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
 import 'package:http/http.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:record/record.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -35,7 +34,7 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
 
   IconData recordIcon = Icons.keyboard_voice_sharp;
 
-  final AudioRecorder _record = AudioRecorder();
+  final Record _record = Record();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
   File? lastFile;
@@ -167,10 +166,7 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
         recordIcon = Icons.pause;
       });
 
-      await _record.start(
-        const RecordConfig(),
-        path: '${(await path_provider.getTemporaryDirectory()).path}/audio.mp3',
-      );
+      await _record.start();
     }
   }
 
