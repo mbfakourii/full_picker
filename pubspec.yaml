@@ -13,24 +13,24 @@ topics:
   - record
 
 environment:
-  sdk: ">=2.17.0 <4.0.0"
-  flutter: ">=1.20.0"
+  sdk: ">=2.19.6 <4.0.0"
+  flutter: ">=3.3.10"
 
 dependencies:
   flutter:
     sdk: flutter
 
   # Camera
-  camera: ^0.10.5+5
+  camera: ^0.10.5+9
 
   # Path
-  path_provider: ^2.1.1
+  path_provider: ^2.1.2
 
   # Toast
-  fluttertoast: ^8.2.3
+  fluttertoast: ^8.2.4
 
   # Crop
-  image_cropper: ^5.0.0
+  image_cropper: ^5.0.1
 
   # File Picker
   file_picker: ^6.1.1
@@ -39,13 +39,13 @@ dependencies:
   light_compressor: ^2.2.0
 
   # Recorder
-  record: ^4.4.4
+  record: ^5.0.4
 
   # Stop watch timer
   stop_watch_timer: ^3.0.2
 
   # Http
-  http: ^1.1.0
+  http: ^1.1.2
 
   # Uuid
   uuid: ^4.2.1
