@@ -6,18 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:full_picker/full_picker.dart';
 import 'package:full_picker/src/dialogs/url_input_dialog.dart';
-import 'package:full_picker/src/utils/pl.dart';
 import 'package:full_picker/src/sheets/voice_recorder_sheet.dart';
+import 'package:full_picker/src/utils/pl.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:light_compressor/light_compressor.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uuid/uuid.dart';
 
 /// show sheet
-void showSheet(final Widget widget,
-    final BuildContext context, {
-      final bool isDismissible = true,
-    }) {
+void showSheet(
+  final Widget widget,
+  final BuildContext context, {
+  final bool isDismissible = true,
+}) {
   showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
@@ -75,7 +76,7 @@ Future<FullPickerOutput?> getFiles({
   final bool multiFile = false,
 }) async {
   final ProgressIndicatorDialog progressDialog =
-  ProgressIndicatorDialog(context);
+      ProgressIndicatorDialog(context);
 
   final FilePickerResult? result = await FilePicker.platform
       .pickFiles(
@@ -105,8 +106,7 @@ Future<FullPickerOutput?> getFiles({
       int numberPicture = 0;
       for (final PlatformFile file in result.files) {
         name.add(
-          '${prefixName}_${generateRandomString()}_${name.length + 1}.${file
-              .extension!}',
+          '${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}',
         );
         Uint8List byte;
 
@@ -131,7 +131,7 @@ Future<FullPickerOutput?> getFiles({
             return null;
           }
           final Uint8List? byteCompress =
-          await videoCompress(context: context, byte: byte, file: file);
+              await videoCompress(context: context, byte: byte, file: file);
 
           if (byteCompress == null) {
             return null;
@@ -142,8 +142,8 @@ Future<FullPickerOutput?> getFiles({
 
         /// image cropper
         if ((file.extension == 'jpg' ||
-            file.extension == 'png' ||
-            file.extension == 'jpeg') &&
+                file.extension == 'png' ||
+                file.extension == 'jpeg') &&
             imageCropper) {
           try {
             if (!context.mounted) {
@@ -166,7 +166,7 @@ Future<FullPickerOutput?> getFiles({
         if (!isWeb) {
           if (file.path != null) {
             final Directory appDir =
-            await path_provider.getTemporaryDirectory();
+                await path_provider.getTemporaryDirectory();
             final File file = File('${appDir.path}/${name.last!}');
             await file.writeAsBytes(byte);
             files.add(file);
@@ -190,11 +190,7 @@ Future<FullPickerOutput?> getFiles({
           return FullPickerOutput(bytes, pickerFileType, name, files);
         }
       } else {
-        try {
-          return FullPickerOutput(bytes, pickerFileType, name, files);
-        } catch (e) {
-          print(":D");
-        }
+        return FullPickerOutput(bytes, pickerFileType, name, files);
       }
     } else {
       return null;
@@ -313,12 +309,11 @@ Future<void> getFullPicker({
     /// camera
     final dynamic value = await Navigator.of(context).push(
       MaterialPageRoute<dynamic>(
-        builder: (final BuildContext context) =>
-            Camera(
-              imageCamera: imageCamera,
-              videoCamera: videoCamera,
-              prefixName: prefixName,
-            ),
+        builder: (final BuildContext context) => Camera(
+          imageCamera: imageCamera,
+          videoCamera: videoCamera,
+          prefixName: prefixName,
+        ),
       ),
     );
 
@@ -421,11 +416,12 @@ Future<void> getFullPicker({
 }
 
 /// Check for control close sheet
-void checkError(final ValueSetter<bool> onIsUserChange,
-    final BuildContext context, {
-      required final bool isSelected,
-      required final bool inSheet,
-    }) {
+void checkError(
+  final ValueSetter<bool> onIsUserChange,
+  final BuildContext context, {
+  required final bool isSelected,
+  required final bool inSheet,
+}) {
   if (inSheet) {
     onIsUserChange.call(false);
 
@@ -472,7 +468,7 @@ Future<Uint8List?> videoCompress({
 
   final PercentProgressDialog progressDialog = PercentProgressDialog(
     context,
-        (final void value) {
+    (final void value) {
       if (onProgress.value.toString() != '1.0') {
         compressor.cancelCompression();
       }
@@ -493,9 +489,7 @@ Future<Uint8List?> videoCompress({
       android: AndroidConfig(isSharedStorage: false),
       ios: IOSConfig(saveInGallery: false),
       video: Video(
-        videoName: '${DateTime
-            .now()
-            .millisecondsSinceEpoch}."mp4"',
+        videoName: '${DateTime.now().millisecondsSinceEpoch}."mp4"',
         videoBitrateInMbps: 24,
       ),
     );
@@ -538,41 +532,29 @@ Future<Uint8List?> cropImage({
     compressQuality: 20,
     aspectRatioPresets: Platform.isAndroid
         ? <CropAspectRatioPreset>[
-      CropAspectRatioPreset.square,
-      CropAspectRatioPreset.ratio3x2,
-      CropAspectRatioPreset.original,
-      CropAspectRatioPreset.ratio4x3,
-      CropAspectRatioPreset.ratio16x9,
-    ]
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ]
         : <CropAspectRatioPreset>[
-      CropAspectRatioPreset.original,
-      CropAspectRatioPreset.square,
-      CropAspectRatioPreset.ratio3x2,
-      CropAspectRatioPreset.ratio4x3,
-      CropAspectRatioPreset.ratio5x3,
-      CropAspectRatioPreset.ratio5x4,
-      CropAspectRatioPreset.ratio7x5,
-      CropAspectRatioPreset.ratio16x9,
-    ],
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio5x3,
+            CropAspectRatioPreset.ratio5x4,
+            CropAspectRatioPreset.ratio7x5,
+            CropAspectRatioPreset.ratio16x9,
+          ],
     uiSettings: <PlatformUiSettings>[
       AndroidUiSettings(
         toolbarTitle: globalFullPickerLanguage.cropper,
-        toolbarColor: Theme
-            .of(context)
-            .colorScheme
-            .surface,
-        statusBarColor: Theme
-            .of(context)
-            .colorScheme
-            .surface,
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .surface,
-        toolbarWidgetColor: Theme
-            .of(context)
-            .colorScheme
-            .primary,
+        toolbarColor: Theme.of(context).colorScheme.surface,
+        statusBarColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        toolbarWidgetColor: Theme.of(context).colorScheme.primary,
         initAspectRatio: CropAspectRatioPreset.original,
         lockAspectRatio: false,
       ),
@@ -601,7 +583,7 @@ void showFullPickerToast(final String text, final BuildContext context) {
   );
 
   FToast().init(context).showToast(
-    child: toast,
-    gravity: ToastGravity.BOTTOM,
-  );
+        child: toast,
+        gravity: ToastGravity.BOTTOM,
+      );
 }
