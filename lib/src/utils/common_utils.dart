@@ -175,7 +175,9 @@ Future<FullPickerOutput?> getFiles({
         bytes.add(byte);
       }
 
-      progressDialog.dismiss();
+      try {
+        progressDialog.dismiss();
+      } catch (_) {}
 
       if (pickerFileType == FullPickerType.mixed) {
         if (numberPicture == 0 && numberVideo != 0) {

@@ -7,10 +7,10 @@ import Foundation
 
 import light_compressor
 import path_provider_foundation
-import record_macos
+import record_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   LightCompressorPlugin.register(with: registry.registrar(forPlugin: "LightCompressorPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
-  RecordMacosPlugin.register(with: registry.registrar(forPlugin: "RecordMacosPlugin"))
+  RecordPlugin.register(with: registry.registrar(forPlugin: "RecordPlugin"))
 }
