@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:full_picker/src/dialogs/base_dialog.dart';
 
@@ -9,8 +7,8 @@ class ProgressIndicatorDialog extends BaseDialog {
       : super(width: double.infinity, autoHeight: true);
 
   @override
-  Widget build(final BuildContext context) => WillPopScope(
-        onWillPop: () => Future<bool>.value(false),
-        child: const Card(child: LinearProgressIndicator(minHeight: 8)),
+  Widget build(final BuildContext context) => const PopScope(
+        canPop: false,
+        child: Card(child: LinearProgressIndicator(minHeight: 8)),
       );
 }
