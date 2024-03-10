@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -188,10 +189,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(
           context,
           FullPickerOutput(
-            <Uint8List?>[File(filePath!).readAsBytesSync()],
-            FullPickerType.image,
-            <String?>['${widget.prefixName}.jpg'],
-            <File?>[File(filePath)],
+            bytes: <Uint8List?>[File(filePath!).readAsBytesSync()],
+            fileType: FullPickerType.image,
+            name: <String?>['${widget.prefixName}.jpg'],
+            file: <File?>[File(filePath)],
+            xFile: <XFile?>[
+              getFillXFile(
+                file: File(filePath),
+                bytes: File(filePath).readAsBytesSync(),
+              ),
+            ],
           ),
         );
       }
@@ -206,10 +213,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         Navigator.pop(
           context,
           FullPickerOutput(
-            <Uint8List?>[File(file!.path).readAsBytesSync()],
-            FullPickerType.video,
-            <String?>['${widget.prefixName}.mp4'],
-            <File?>[File(file.path)],
+            bytes: <Uint8List?>[File(file!.path).readAsBytesSync()],
+            fileType: FullPickerType.video,
+            name: <String?>['${widget.prefixName}.mp4'],
+            file: <File?>[File(file.path)],
+            xFile: <XFile?>[
+              getFillXFile(
+                file: File(file.path),
+                bytes: File(file.path).readAsBytesSync(),
+              ),
+            ],
           ),
         );
       }

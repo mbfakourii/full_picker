@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
 
@@ -148,13 +149,20 @@ class FullPicker {
 
 /// main Output class
 class FullPickerOutput {
-  FullPickerOutput(this.bytes, this.fileType, this.name, this.file);
+  FullPickerOutput({
+    required this.bytes,
+    required this.file,
+    required this.xFile,
+    required this.fileType,
+    required this.name,
+  });
 
   FullPickerOutput.data(this.data, this.fileType);
 
   /// main bytes
   late List<Uint8List?> bytes;
   late List<File?> file;
+  late List<XFile?> xFile;
   late List<String?> name;
 
   // datas like url

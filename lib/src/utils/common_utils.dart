@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cross_file/cross_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -99,6 +100,7 @@ Future<FullPickerOutput?> getFiles({
   try {
     if (result != null) {
       final List<File?> files = <File?>[];
+      final List<XFile?> xFiles = <XFile?>[];
       final List<String?> name = <String?>[];
       final List<Uint8List?> bytes = <Uint8List?>[];
 
@@ -170,10 +172,12 @@ Future<FullPickerOutput?> getFiles({
             final File file = File('${appDir.path}/${name.last!}');
             await file.writeAsBytes(byte);
             files.add(file);
+            xFiles.add(XFile(file.path));
           }
         }
 
         bytes.add(byte);
+        xFiles.add(XFile.fromData(byte));
       }
 
       if (!Pl.isWindows) {
@@ -182,15 +186,39 @@ Future<FullPickerOutput?> getFiles({
 
       if (pickerFileType == FullPickerType.mixed) {
         if (numberPicture == 0 && numberVideo != 0) {
-          return FullPickerOutput(bytes, FullPickerType.video, name, files);
+          return FullPickerOutput(
+            bytes: bytes,
+            fileType: FullPickerType.video,
+            name: name,
+            file: files,
+            xFile: xFiles,
+          );
         } else if (numberPicture != 0 && numberVideo == 0) {
-          return FullPickerOutput(bytes, FullPickerType.image, name, files);
+          return FullPickerOutput(
+            bytes: bytes,
+            fileType: FullPickerType.image,
+            name: name,
+            file: files,
+            xFile: xFiles,
+          );
         } else {
           // mixed
-          return FullPickerOutput(bytes, pickerFileType, name, files);
+          return FullPickerOutput(
+            bytes: bytes,
+            fileType: pickerFileType,
+            name: name,
+            file: files,
+            xFile: xFiles,
+          );
         }
       } else {
-        return FullPickerOutput(bytes, pickerFileType, name, files);
+        return FullPickerOutput(
+          bytes: bytes,
+          fileType: pickerFileType,
+          name: name,
+          file: files,
+          xFile: xFiles,
+        );
       }
     } else {
       return null;
@@ -586,4 +614,12 @@ void showFullPickerToast(final String text, final BuildContext context) {
         child: toast,
         gravity: ToastGravity.BOTTOM,
       );
+}
+
+XFile getFillXFile({final Uint8List? bytes, final File? file}) {
+  if (bytes != null) {
+    return XFile.fromData(bytes);
+  } else {
+    return XFile(file!.path);
+  }
 }

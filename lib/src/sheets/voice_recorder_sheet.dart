@@ -1,6 +1,7 @@
 import 'dart:io' show File;
 import 'dart:typed_data';
 
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
 import 'package:http/http.dart';
@@ -110,10 +111,13 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
                       userClose = false;
                       widget.onSelected.call(
                         FullPickerOutput(
-                          <Uint8List?>[lastUint8List],
-                          FullPickerType.voiceRecorder,
-                          <String?>[widget.voiceFileName],
-                          <File?>[lastFile],
+                          bytes: <Uint8List?>[lastUint8List],
+                          fileType: FullPickerType.voiceRecorder,
+                          name: <String?>[widget.voiceFileName],
+                          file: <File?>[lastFile],
+                          xFile: <XFile?>[
+                            getFillXFile(file: lastFile, bytes: lastUint8List),
+                          ],
                         ),
                       );
                     } else {

@@ -6,15 +6,15 @@ import 'package:flutter/foundation.dart';
 class Pl {
   static final bool isWeb = kIsWeb;
 
-  static final bool isLinux = isWeb || Platform.isLinux;
+  static final bool isLinux = !isWeb && Platform.isLinux;
 
-  static final bool isMacOS = isWeb || Platform.isMacOS;
+  static final bool isMacOS = !isWeb && Platform.isMacOS;
 
-  static final bool isWindows = isWeb || Platform.isWindows;
+  static final bool isWindows = !isWeb && Platform.isWindows;
 
-  static final bool isAndroid = isWeb || Platform.isAndroid;
+  static final bool isAndroid = !isWeb && Platform.isAndroid;
 
-  static final bool isIOS = isWeb || Platform.isIOS;
+  static final bool isIOS = !isWeb && Platform.isIOS;
 
-  static final bool isFuchsia = isWeb || Platform.isFuchsia;
+  static final bool isFuchsia = !isWeb && Platform.isFuchsia;
 }
