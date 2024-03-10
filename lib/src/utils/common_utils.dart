@@ -172,7 +172,7 @@ Future<FullPickerOutput?> getFiles({
             final File file = File('${appDir.path}/${name.last!}');
             await file.writeAsBytes(byte);
             files.add(file);
-            xFiles.add(XFile(file.path));
+            xFiles.add(XFile(file.path, bytes: byte));
           }
         }
 
