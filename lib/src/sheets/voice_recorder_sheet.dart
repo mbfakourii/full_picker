@@ -116,7 +116,12 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
                           name: <String?>[widget.voiceFileName],
                           file: <File?>[lastFile],
                           xFile: <XFile?>[
-                            getFillXFile(file: lastFile, bytes: lastUint8List),
+                            getFillXFile(
+                              file: lastFile,
+                              bytes: lastUint8List,
+                              mime: 'audio/mpeg',
+                              name: widget.voiceFileName,
+                            ),
                           ],
                         ),
                       );

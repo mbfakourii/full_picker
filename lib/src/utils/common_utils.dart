@@ -11,6 +11,7 @@ import 'package:full_picker/src/sheets/voice_recorder_sheet.dart';
 import 'package:full_picker/src/utils/pl.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:light_compressor/light_compressor.dart';
+import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uuid/uuid.dart';
 
@@ -172,12 +173,25 @@ Future<FullPickerOutput?> getFiles({
             final File file = File('${appDir.path}/${name.last!}');
             await file.writeAsBytes(byte);
             files.add(file);
-            xFiles.add(XFile(file.path, bytes: byte));
+            xFiles.add(
+              XFile(
+                file.path,
+                bytes: byte,
+                name: name.last,
+                mimeType: lookupMimeType(name.last!, headerBytes: byte),
+              ),
+            );
           }
         }
 
         bytes.add(byte);
-        xFiles.add(XFile.fromData(byte));
+        xFiles.add(
+          XFile.fromData(
+            byte,
+            name: name.last,
+            mimeType: lookupMimeType(name.last!, headerBytes: byte),
+          ),
+        );
       }
 
       if (!Pl.isWindows) {
@@ -616,10 +630,15 @@ void showFullPickerToast(final String text, final BuildContext context) {
       );
 }
 
-XFile getFillXFile({final Uint8List? bytes, final File? file}) {
+XFile getFillXFile({
+  required final String name,
+  required final String mime,
+  final Uint8List? bytes,
+  final File? file,
+}) {
   if (bytes != null) {
-    return XFile.fromData(bytes);
+    return XFile.fromData(bytes, mimeType: mime, name: name);
   } else {
-    return XFile(file!.path);
+    return XFile(file!.path, mimeType: mime, name: name);
   }
 }

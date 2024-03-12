@@ -197,6 +197,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
               getFillXFile(
                 file: File(filePath),
                 bytes: File(filePath).readAsBytesSync(),
+                mime: 'image/jpeg',
+                name: '${widget.prefixName}.jpg',
               ),
             ],
           ),
@@ -221,6 +223,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
               getFillXFile(
                 file: File(file.path),
                 bytes: File(file.path).readAsBytesSync(),
+                mime: 'video/mp4',
+                name: '${widget.prefixName}.mp4',
               ),
             ],
           ),
