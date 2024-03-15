@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
+import 'package:full_picker/src/utils/pl.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:record/record.dart';
@@ -119,7 +120,7 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
                             getFillXFile(
                               file: lastFile,
                               bytes: lastUint8List,
-                              mime: 'audio/mpeg',
+                              mime: Pl.isWeb ? 'audio/wav' : 'audio/mpeg',
                               name: widget.voiceFileName,
                             ),
                           ],
@@ -177,8 +178,10 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
       });
 
       await _record.start(
-        const RecordConfig(),
-        path: '${(await path_provider.getTemporaryDirectory()).path}/audio.mp3',
+        RecordConfig(encoder: Pl.isWeb ? AudioEncoder.wav : AudioEncoder.aacLc),
+        path: Pl.isWeb
+            ? ''
+            : '${(await path_provider.getTemporaryDirectory()).path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a',
       );
     }
   }
