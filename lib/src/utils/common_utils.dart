@@ -191,6 +191,7 @@ Future<FullPickerOutput?> getFiles({
             byte,
             name: name.last,
             mimeType: lookupMimeType(name.last!, headerBytes: byte),
+            path: file.path,
           ),
         );
       }
@@ -633,7 +634,7 @@ XFile getFillXFile({
   final File? file,
 }) {
   if (bytes != null) {
-    return XFile.fromData(bytes, mimeType: mime, name: name);
+    return XFile.fromData(bytes, mimeType: mime, name: name, path: file?.path);
   } else {
     return XFile(file!.path, mimeType: mime, name: name);
   }
