@@ -469,12 +469,7 @@ void checkError(
     onIsUserChange.call(false);
 
     if (isWeb) {
-      if (isSelected) {
-        Navigator.of(context).pop();
-      } else {
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-      }
+      Navigator.of(context).pop();
     } else {
       if (Platform.isAndroid || Platform.isIOS) {
         Navigator.of(context).pop();
