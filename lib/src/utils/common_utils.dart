@@ -191,7 +191,13 @@ Future<FullPickerOutput?> getFiles({
             byte,
             name: name.last,
             mimeType: lookupMimeType(name.last!, headerBytes: byte),
-            path: file.path,
+            path: () {
+              try {
+                return file.path;
+              } catch (_) {
+                return null;
+              }
+            }(),
           ),
         );
       }
@@ -239,7 +245,7 @@ Future<FullPickerOutput?> getFiles({
     } else {
       return null;
     }
-  } catch (_) {
+  } catch (e) {
     progressDialog.dismiss();
   }
   return null;
