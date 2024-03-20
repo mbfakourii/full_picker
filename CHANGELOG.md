@@ -1,3 +1,9 @@
+## 2.0.0
+
+* Upgrade package dependencies
+* Fix bug in `ProgressIndicatorDialog`
+* Support `XFile`
+
 ## 1.3.6
 
 * Upgrade package dependencies
