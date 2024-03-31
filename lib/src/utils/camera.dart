@@ -115,15 +115,33 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   double _zoom = 1;
   double _scaleFactor = 1;
 
+  bool hasBackFrontCamera = false;
+
   /// Main Widget for Camera
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller!.value.isInitialized) {
-      onNewCameraSelected(
-        cameras.firstWhere(
-          (final CameraDescription description) =>
-              description.lensDirection == CameraLensDirection.back,
-        ),
-      );
+      // Check has Back or Front Camera
+      for (final CameraDescription element in cameras) {
+        if (element.lensDirection == CameraLensDirection.front) {
+          hasBackFrontCamera = true;
+        }
+      }
+
+      try {
+        onNewCameraSelected(
+          cameras.firstWhere(
+            (final CameraDescription description) =>
+                description.lensDirection == CameraLensDirection.back,
+          ),
+        );
+      } catch (_) {
+        onNewCameraSelected(
+          cameras.firstWhere(
+            (final CameraDescription description) =>
+                description.lensDirection == CameraLensDirection.external,
+          ),
+        );
+      }
     }
 
     /// Set aspectRatio Camera
@@ -181,22 +199,25 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   /// Take Picture
   void onTakePictureButtonPressed() {
-    takePicture().then((final String? filePath) {
+    takePicture().then((final String? filePath) async {
       if (filePath == '') {
         return;
       }
+
+      final XFile file = XFile(filePath!);
+
       if (mounted) {
         Navigator.pop(
           context,
           FullPickerOutput(
-            bytes: <Uint8List?>[File(filePath!).readAsBytesSync()],
+            bytes: <Uint8List?>[await file.readAsBytes()],
             fileType: FullPickerType.image,
             name: <String?>['${widget.prefixName}.jpg'],
-            file: <File?>[File(filePath)],
+            file: <File?>[File(file.path)],
             xFile: <XFile?>[
               getFillXFile(
-                file: File(filePath),
-                bytes: File(filePath).readAsBytesSync(),
+                file: File(file.path),
+                bytes: await file.readAsBytes(),
                 mime: 'image/jpeg',
                 name: '${widget.prefixName}.jpg',
               ),
@@ -328,17 +349,21 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
               padding: const EdgeInsets.only(top: 10, bottom: 15),
               child: Row(
                 children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: Visibility(
-                      visible: toggleCameraAndTextVisibility,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.flip_camera_android,
-                          color: Colors.white,
-                          size: 33,
+                  Visibility(
+                    visible: hasBackFrontCamera,
+                    replacement: Expanded(flex: 3, child: Container()),
+                    child: Expanded(
+                      flex: 3,
+                      child: Visibility(
+                        visible: toggleCameraAndTextVisibility,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.flip_camera_android,
+                            color: Colors.white,
+                            size: 33,
+                          ),
+                          onPressed: changeCamera,
                         ),
-                        onPressed: changeCamera,
                       ),
                     ),
                   ),
