@@ -314,9 +314,16 @@ Future<void> getFullPicker({
       value = await getFiles(
         context: context,
         videoCompressor: videoCompressor,
-        fileType: FileType.image,
         pickerFileType: FullPickerType.image,
         prefixName: prefixName,
+        fileType: FileType.custom,
+        allowedExtensions: <String>[
+          'bmp',
+          'gif',
+          'jpeg',
+          'jpg',
+          'png',
+        ],
         multiFile: multiFile,
         inSheet: inSheet,
         imageCropper: imageCropper,
