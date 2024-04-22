@@ -302,6 +302,7 @@ Future<void> getFullPicker({
           'jpg',
           'jpeg',
           'png',
+          'gif',
           'bmp',
         ],
         multiFile: multiFile,
