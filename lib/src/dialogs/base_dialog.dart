@@ -7,6 +7,7 @@ abstract class BaseDialog {
     required this.autoHeight,
     final bool? touchOutside,
     final double? width,
+    final double? maxWidth,
     final double? height,
     this.onClose,
   }) {
@@ -38,6 +39,7 @@ abstract class BaseDialog {
   late bool touchOutside;
   late double height;
   late double width;
+  double? maxWidth;
   late bool autoHeight;
   ValueSetter<void>? onClose;
 
@@ -56,13 +58,23 @@ abstract class BaseDialog {
   Future<void> show() async {
     Widget child;
     if (autoHeight) {
-      child = SizedBox(
-        width: width,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[build(context)],
-        ),
-      );
+      if (maxWidth != null) {
+        child = ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth!),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[build(context)],
+          ),
+        );
+      } else {
+        child = SizedBox(
+          width: width,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[build(context)],
+          ),
+        );
+      }
     } else {
       child = SizedBox(
         height: height,

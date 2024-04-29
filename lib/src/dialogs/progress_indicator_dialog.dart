@@ -4,7 +4,7 @@ import 'package:full_picker/src/dialogs/base_dialog.dart';
 /// Progress Indicator Dialog for keep waiting
 class ProgressIndicatorDialog extends BaseDialog {
   ProgressIndicatorDialog(super.context)
-      : super(width: double.infinity, autoHeight: true);
+      : super(maxWidth: 450, autoHeight: true);
 
   @override
   Widget build(final BuildContext context) => const PopScope(
