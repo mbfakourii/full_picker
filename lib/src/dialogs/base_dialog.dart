@@ -7,6 +7,7 @@ abstract class BaseDialog {
     required this.autoHeight,
     final bool? touchOutside,
     final double? width,
+    // ignore: avoid_unused_constructor_parameters
     final double? maxWidth,
     final double? height,
     this.onClose,
