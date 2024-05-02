@@ -1,3 +1,8 @@
+## 2.0.5
+
+* Upgrade package dependencies
+* Fix bug
+
 ## 2.0.0
 
 * Upgrade package dependencies
