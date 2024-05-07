@@ -83,7 +83,6 @@ Future<FullPickerOutput?> getFiles({
   final FilePickerResult? result = await FilePicker.platform
       .pickFiles(
     allowMultiple: multiFile,
-    withData: true,
     type: fileType,
     allowedExtensions: allowedExtensions,
     onFileLoading: (final FilePickerStatus value) {
