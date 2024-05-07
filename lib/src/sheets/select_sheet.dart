@@ -113,7 +113,7 @@ class _SheetSelectState extends State<SelectSheet> {
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
-          mainAxisExtent: 70,
+          mainAxisExtent: 95,
           childAspectRatio: MediaQuery.of(context).size.width /
               (MediaQuery.of(context).size.height / childAspectRatio),
         ),
