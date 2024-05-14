@@ -12,7 +12,6 @@ import 'package:full_picker/src/utils/pl.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:light_compressor/light_compressor.dart';
 import 'package:mime/mime.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uuid/uuid.dart';
 
 /// show sheet
@@ -111,12 +110,15 @@ Future<FullPickerOutput?> getFiles({
         name.add(
           '${prefixName}_${generateRandomString()}_${name.length + 1}.${file.extension!}',
         );
-        Uint8List byte;
+        Uint8List? byte;
 
-        if (file.bytes == null) {
-          byte = File(file.path!).readAsBytesSync();
-        } else {
-          byte = file.bytes!;
+        // only in web because this section some time has out of memory error
+        if (Pl.isWeb) {
+          if (file.bytes == null) {
+            byte = File(file.path!).readAsBytesSync();
+          } else {
+            byte = file.bytes;
+          }
         }
 
         // for counter
@@ -129,18 +131,17 @@ Future<FullPickerOutput?> getFiles({
         }
 
         /// video compressor
+        File? videoCompressorFile;
         if (file.extension == 'mp4' && videoCompressor) {
           if (!context.mounted) {
             return null;
           }
-          final Uint8List? byteCompress =
-              await videoCompress(context: context, byte: byte, file: file);
+          videoCompressorFile =
+              await videoCompress(context: context, file: file);
 
-          if (byteCompress == null) {
+          if (videoCompressorFile == null) {
             return null;
           }
-
-          byte = byteCompress;
         }
 
         /// image cropper
@@ -154,7 +155,6 @@ Future<FullPickerOutput?> getFiles({
             }
             final Uint8List? byteCrop = await cropImage(
               context: context,
-              byte: byte,
               sourcePath: file.path!,
             );
 
@@ -168,14 +168,11 @@ Future<FullPickerOutput?> getFiles({
 
         if (!isWeb) {
           if (file.path != null) {
-            final Directory appDir =
-                await path_provider.getTemporaryDirectory();
-            final File file = File('${appDir.path}/${name.last!}');
-            await file.writeAsBytes(byte);
-            files.add(file);
+            files.add(File(file.path!));
+
             xFiles.add(
               XFile(
-                file.path,
+                file.path!,
                 bytes: byte,
                 name: name.last,
                 mimeType: lookupMimeType(name.last!, headerBytes: byte),
@@ -186,18 +183,24 @@ Future<FullPickerOutput?> getFiles({
 
         bytes.add(byte);
         xFiles.add(
-          XFile.fromData(
-            byte,
-            name: name.last,
-            mimeType: lookupMimeType(name.last!, headerBytes: byte),
-            path: () {
-              try {
-                return file.path;
-              } catch (_) {
-                return null;
-              }
-            }(),
-          ),
+          (byte != null)
+              ? XFile.fromData(
+                  byte,
+                  name: name.last,
+                  mimeType: lookupMimeType(name.last!, headerBytes: byte),
+                  path: () {
+                    try {
+                      return file.path;
+                    } catch (_) {
+                      return null;
+                    }
+                  }(),
+                )
+              : XFile(
+                  videoCompressorFile?.path ?? file.path ?? '',
+                  name: name.last,
+                  mimeType: lookupMimeType(name.last!, headerBytes: byte),
+                ),
         );
       }
 
@@ -498,23 +501,13 @@ void checkError(
 
 /// Web does not support video compression
 /// Video compressor
-Future<Uint8List?> videoCompress({
+Future<File?> videoCompress({
   required final BuildContext context,
-  required final Uint8List byte,
   required final PlatformFile file,
 }) async {
-  if (isWeb) {
-    return byte;
-  }
-
   final File mainFile = File(file.path!);
   final ValueNotifier<double> onProgress = ValueNotifier<double>(0);
   final LightCompressor lightCompressor = LightCompressor();
-
-  final int size = int.parse(File(mainFile.path).lengthSync().toString());
-  if (size < 50000000) {
-    return byte;
-  }
 
   final LightCompressor compressor = LightCompressor();
 
@@ -549,36 +542,26 @@ Future<Uint8List?> videoCompress({
     progressDialog.dismiss();
 
     if (response is OnSuccess) {
-      final File outputFile = File(response.destinationPath);
-      final Uint8List outputByte = outputFile.readAsBytesSync();
-
-      /// delete cash file
-      await outputFile.delete();
-      return outputByte;
+      return File(response.destinationPath);
     } else if (response is OnFailure) {
       /// failure message
-      return byte;
+      return null;
     } else if (response is OnCancelled) {
       return null;
     }
   } catch (_) {
-    return byte;
+    return null;
   }
 
-  return byte;
+  return null;
 }
 
 /// web does not support crop Image
 /// crop image
 Future<Uint8List?> cropImage({
   required final BuildContext context,
-  required final Uint8List byte,
   required final String sourcePath,
 }) async {
-  if (isWeb) {
-    return byte;
-  }
-
   final CroppedFile? croppedFile = await ImageCropper().cropImage(
     sourcePath: sourcePath,
     compressQuality: 20,
