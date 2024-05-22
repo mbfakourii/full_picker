@@ -150,16 +150,6 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       }
     }
 
-    /// Set aspectRatio Camera
-    double scale;
-    try {
-      scale = 1 /
-          (controller!.value.aspectRatio *
-              MediaQuery.of(context).size.aspectRatio);
-    } catch (_) {
-      scale = 1.0;
-    }
-
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onScaleStart: (final ScaleStartDetails details) {
@@ -522,9 +512,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   Widget _close() => PositionedDirectional(
         end: 0,
         child: Padding(
-          padding: const EdgeInsetsDirectional.only(
+          padding: EdgeInsetsDirectional.only(
             end: 15,
-            top: 26,
+            top: Pl.isWeb ? 10 : 26,
           ),
           child: IconButton(
             onPressed: () {
