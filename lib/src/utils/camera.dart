@@ -101,14 +101,12 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            _cameraPreviewWidget(),
-            _close(),
-            _buttons(context),
-          ],
-        ),
+      body: Stack(
+        children: <Widget>[
+          _cameraPreviewWidget(),
+          _close(),
+          _buttons(context),
+        ],
       ),
     );
   }
@@ -132,10 +130,15 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
       try {
         onNewCameraSelected(
-          cameras.lastWhere(
-            (final CameraDescription description) =>
-                description.lensDirection == CameraLensDirection.back,
-          ),
+          Pl.isWeb
+              ? cameras.lastWhere(
+                  (final CameraDescription description) =>
+                      description.lensDirection == CameraLensDirection.back,
+                )
+              : cameras.firstWhere(
+                  (final CameraDescription description) =>
+                      description.lensDirection == CameraLensDirection.back,
+                ),
         );
       } catch (_) {
         onNewCameraSelected(
@@ -169,18 +172,13 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         }
         controller!.setZoomLevel(_scaleFactor);
       },
-      child: Pl.isWeb
-          ? () {
-              try {
-                return controller!.buildPreview();
-              } catch (_) {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }()
-          : Transform.scale(
-              scale: scale,
-              child: CameraPreview(controller!),
-            ),
+      child: () {
+        try {
+          return controller!.buildPreview();
+        } catch (_) {
+          return const Center(child: CircularProgressIndicator());
+        }
+      }(),
     );
   }
 
@@ -447,10 +445,15 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       );
     } else {
       onNewCameraSelected(
-        cameras.lastWhere(
-          (final CameraDescription description) =>
-              description.lensDirection == CameraLensDirection.back,
-        ),
+        Pl.isWeb
+            ? cameras.lastWhere(
+                (final CameraDescription description) =>
+                    description.lensDirection == CameraLensDirection.back,
+              )
+            : cameras.firstWhere(
+                (final CameraDescription description) =>
+                    description.lensDirection == CameraLensDirection.back,
+              ),
       );
       firstCamera = true;
     }
@@ -520,8 +523,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         end: 0,
         child: Padding(
           padding: const EdgeInsetsDirectional.only(
-            end: 10,
-            top: 8,
+            end: 15,
+            top: 26,
           ),
           child: IconButton(
             onPressed: () {
