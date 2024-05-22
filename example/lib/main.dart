@@ -67,7 +67,7 @@ class _ExonFilePicker extends State<FilePickerTest> {
                       print(' ----  onError ----=$value');
                     }
                   },
-                  onSelected: (final FullPickerOutput value) {
+                  onSelected: (final FullPickerOutput value) async {
                     if (kDebugMode) {
                       print(' ----  onSelected ----');
                     }
@@ -75,8 +75,12 @@ class _ExonFilePicker extends State<FilePickerTest> {
                     if (value.fileType != FullPickerType.url) {
                       info = '';
                       for (int i = 0; i < value.name.length; i++) {
+                        final String fileSizeInt = fileSize(
+                          await value.xFile[i]!.readAsBytes(),
+                        );
+
                         info =
-                            '${info}File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :${fileSize(value.bytes[i]!)}\n--------\n';
+                            '${info}File Type :${value.fileType}\nPath File :${value.name[i]}\nSize File :$fileSizeInt\n--------\n';
                       }
                     } else {
                       info = value.data as String;

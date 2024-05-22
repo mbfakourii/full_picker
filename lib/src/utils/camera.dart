@@ -235,23 +235,17 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   /// Stop Video Recording
   Future<void> onStopButtonPressed() async {
     stopVideoClick = true;
-    await stopVideoRecording().then((final XFile? file) {
+    await stopVideoRecording().then((final XFile? file) async {
       if (mounted) {
         Navigator.pop(
           context,
           FullPickerOutput(
-            bytes: () {
-              try {
-                return <Uint8List?>[File(file!.path).readAsBytesSync()];
-              } catch (_) {
-                return <Uint8List?>[];
-              }
-            }(),
+            bytes: <Uint8List?>[await file!.readAsBytes()],
             fileType: FullPickerType.video,
             name: <String?>['${widget.prefixName}.mp4'],
             file: () {
               try {
-                return <File?>[File(file!.path)];
+                return <File?>[File(file.path)];
               } catch (_) {
                 return <File?>[];
               }
@@ -261,8 +255,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                 file
               else
                 getFillXFile(
-                  file: File(file!.path),
-                  bytes: File(file.path).readAsBytesSync(),
+                  file: () {
+                    try {
+                      return File(file.path);
+                    } catch (_) {
+                      return null;
+                    }
+                  }(),
+                  bytes: await file.readAsBytes(),
                   mime: 'video/mp4',
                   name: '${widget.prefixName}.mp4',
                 ),
