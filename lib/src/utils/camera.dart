@@ -35,7 +35,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   bool recordVideoClick = false;
   bool firstCamera = true;
 
-  IconData flashLightIcon = Icons.flash_off;
+  IconData flashLightIcon = Icons.flash_auto;
 
   @override
   void initState() {
