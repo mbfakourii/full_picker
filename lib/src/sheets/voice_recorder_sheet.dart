@@ -193,7 +193,7 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
     }
     try {
       final String? value = await _record.stop();
-      if (isWeb) {
+      if (Pl.isWeb) {
         final Response result = await get(Uri.parse(value!));
 
         lastUint8List = result.bodyBytes;

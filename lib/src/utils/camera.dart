@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:full_picker/full_picker.dart';
+import 'package:full_picker/src/utils/pl.dart';
 
 /// Custom Camera for Image and Video
 class Camera extends StatefulWidget {
@@ -103,7 +105,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         child: Stack(
           children: <Widget>[
             _cameraPreviewWidget(),
-            buttons(context),
+            _close(),
+            _buttons(context),
           ],
         ),
       ),
@@ -129,14 +132,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
       try {
         onNewCameraSelected(
-          cameras.firstWhere(
+          cameras.lastWhere(
             (final CameraDescription description) =>
                 description.lensDirection == CameraLensDirection.back,
           ),
         );
       } catch (_) {
         onNewCameraSelected(
-          cameras.firstWhere(
+          cameras.lastWhere(
             (final CameraDescription description) =>
                 description.lensDirection == CameraLensDirection.external,
           ),
@@ -166,11 +169,18 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         }
         controller!.setZoomLevel(_scaleFactor);
       },
-      child: Transform.scale(
-        scale: scale,
-        alignment: Alignment.topCenter,
-        child: CameraPreview(controller!),
-      ),
+      child: Pl.isWeb
+          ? () {
+              try {
+                return controller!.buildPreview();
+              } catch (_) {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }()
+          : Transform.scale(
+              scale: scale,
+              child: CameraPreview(controller!),
+            ),
     );
   }
 
@@ -178,6 +188,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   Future<void> onNewCameraSelected(
     final CameraDescription cameraDescription,
   ) async {
+    if (controller != null) {
+      await controller!.dispose();
+    }
+
     controller = CameraController(
       cameraDescription,
       ResolutionPreset.high,
@@ -195,6 +209,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
 
     await _setMaxMinVideoSize();
+
+    unawaited(_setFlashLightIcon(context));
   }
 
   /// Take Picture
@@ -321,7 +337,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   }
 
   /// struct buttons in main page
-  Container buttons(final BuildContext context) => Container(
+  Container _buttons(final BuildContext context) => Container(
         // remove this height
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -424,14 +440,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     if (firstCamera) {
       firstCamera = false;
       onNewCameraSelected(
-        cameras.firstWhere(
+        cameras.lastWhere(
           (final CameraDescription description) =>
               description.lensDirection == CameraLensDirection.front,
         ),
       );
     } else {
       onNewCameraSelected(
-        cameras.firstWhere(
+        cameras.lastWhere(
           (final CameraDescription description) =>
               description.lensDirection == CameraLensDirection.back,
         ),
@@ -465,6 +481,18 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
   }
 
+  Future<void> _setFlashLightIcon(final BuildContext context) async {
+    if (controller!.value.flashMode == FlashMode.off) {
+      flashLightIcon = Icons.flash_off;
+    } else if (controller!.value.flashMode == FlashMode.auto) {
+      flashLightIcon = Icons.flash_auto;
+    } else {
+      flashLightIcon = Icons.flash_on;
+    }
+
+    setState(() {});
+  }
+
   Future<void> _toggleFlashLight(final BuildContext context) async {
     if (controller!.value.flashMode == FlashMode.off) {
       flashLightIcon = Icons.flash_auto;
@@ -487,6 +515,24 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     _maxZoom = await controller!.getMaxZoomLevel();
     _minZoom = await controller!.getMinZoomLevel();
   }
-}
 
-bool get isWeb => kIsWeb;
+  Widget _close() => PositionedDirectional(
+        end: 0,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.only(
+            end: 10,
+            top: 8,
+          ),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+              size: 33,
+            ),
+          ),
+        ),
+      );
+}

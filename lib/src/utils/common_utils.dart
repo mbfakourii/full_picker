@@ -166,7 +166,7 @@ Future<FullPickerOutput?> getFiles({
           } catch (_) {}
         }
 
-        if (!isWeb) {
+        if (!Pl.isWeb) {
           if (file.path != null) {
             files.add(File(file.path!));
 
@@ -485,7 +485,7 @@ void checkError(
   if (inSheet) {
     onIsUserChange.call(false);
 
-    if (isWeb) {
+    if (Pl.isWeb) {
       Navigator.of(context).pop();
     } else {
       if (Platform.isAndroid || Platform.isIOS) {
