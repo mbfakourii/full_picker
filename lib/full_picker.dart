@@ -8,4 +8,5 @@ export 'src/sheets/select_sheet.dart';
 export 'src/utils/camera.dart';
 export 'src/utils/common_utils.dart';
 export 'src/utils/full_picker_language.dart';
+export 'src/utils/full_picker_widget_icon.dart';
 export 'src/widgets/full_picker.dart';

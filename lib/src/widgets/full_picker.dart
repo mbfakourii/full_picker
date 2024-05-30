@@ -26,6 +26,7 @@ class FullPicker {
     this.imageCropper = false,
     this.multiFile = false,
     this.onError,
+    this.fullPickerWidgetIcon,
   }) {
     /// show or not show sheet for single item or multi item
     int countTrue = 0;
@@ -87,6 +88,7 @@ class FullPicker {
       showSheet(
         SelectSheet(
           video: video,
+          fullPickerWidgetIcon: fullPickerWidgetIcon ?? FullPickerWidgetIcon(),
           file: file,
           voiceRecorder: voiceRecorder,
           url: url,
@@ -106,6 +108,7 @@ class FullPicker {
       );
     }
   }
+
   final bool image;
   final bool video;
   final bool imageCamera;
@@ -121,6 +124,7 @@ class FullPicker {
   final ValueSetter<FullPickerOutput> onSelected;
   final ValueSetter<int>? onError;
   final BuildContext context;
+  final FullPickerWidgetIcon? fullPickerWidgetIcon;
 
   /// show file picker for single item
   void openAloneFullPicker(final int id) {
@@ -177,8 +181,15 @@ enum FullPickerType { image, video, file, voiceRecorder, url, mixed }
 
 /// item sheet model
 class ItemSheet {
-  ItemSheet(this.name, this.icon, this.id);
+  ItemSheet({
+    required this.name,
+    required this.icon,
+    required this.id,
+    this.widget,
+  });
+
   late IconData icon;
+  late Widget? widget;
   late String name;
   late int id;
 }

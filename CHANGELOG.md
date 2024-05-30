@@ -1,3 +1,11 @@
+## 2.1.0
+
+* Add `FullPickerWidgetIcon`
+
+## 2.0.6
+
+* Fix bug
+
 ## 2.0.5
 
 * Upgrade package dependencies

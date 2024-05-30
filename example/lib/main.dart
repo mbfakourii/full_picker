@@ -61,6 +61,9 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   imageCamera: true,
                   imageCropper: true,
                   multiFile: true,
+                  // fullPickerWidgetIcon: FullPickerWidgetIcon.copy(
+                  //   gallery: Icon(Icons.gamepad, size: 30),
+                  // ),
                   url: true,
                   onError: (final int value) {
                     if (kDebugMode) {

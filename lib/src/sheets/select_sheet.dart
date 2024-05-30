@@ -19,8 +19,10 @@ class SelectSheet extends StatefulWidget {
     required this.url,
     required this.bodyTextUrl,
     required this.file,
+    required this.fullPickerWidgetIcon,
     super.key,
   });
+
   final BuildContext context;
   final ValueSetter<FullPickerOutput> onSelected;
   final ValueSetter<int>? onError;
@@ -36,6 +38,7 @@ class SelectSheet extends StatefulWidget {
   final bool multiFile;
   final String bodyTextUrl;
   final String prefixName;
+  final FullPickerWidgetIcon fullPickerWidgetIcon;
 
   @override
   State<SelectSheet> createState() => _SheetSelectState();
@@ -50,31 +53,57 @@ class _SheetSelectState extends State<SelectSheet> {
     super.initState();
 
     if (widget.image || widget.video) {
-      itemList.add(ItemSheet(globalFullPickerLanguage.gallery, Icons.image, 1));
+      itemList.add(
+        ItemSheet(
+          name: globalFullPickerLanguage.gallery,
+          icon: Icons.image,
+          id: 1,
+          widget: widget.fullPickerWidgetIcon.gallery,
+        ),
+      );
     }
 
     if (widget.imageCamera || widget.videoCamera) {
-      itemList.add(ItemSheet(globalFullPickerLanguage.camera, Icons.camera, 2));
+      itemList.add(
+        ItemSheet(
+          name: globalFullPickerLanguage.camera,
+          icon: Icons.camera,
+          id: 2,
+          widget: widget.fullPickerWidgetIcon.camera,
+        ),
+      );
     }
 
     if (widget.file) {
       itemList.add(
-        ItemSheet(globalFullPickerLanguage.file, Icons.insert_drive_file, 3),
+        ItemSheet(
+          name: globalFullPickerLanguage.file,
+          icon: Icons.insert_drive_file,
+          id: 3,
+          widget: widget.fullPickerWidgetIcon.file,
+        ),
       );
     }
 
     if (widget.voiceRecorder) {
       itemList.add(
         ItemSheet(
-          globalFullPickerLanguage.voiceRecorder,
-          Icons.keyboard_voice_sharp,
-          4,
+          name: globalFullPickerLanguage.voiceRecorder,
+          icon: Icons.keyboard_voice_sharp,
+          id: 4,
+          widget: widget.fullPickerWidgetIcon.voice,
         ),
       );
     }
+
     if (widget.url) {
       itemList.add(
-        ItemSheet(globalFullPickerLanguage.url, Icons.add_link_sharp, 5),
+        ItemSheet(
+          name: globalFullPickerLanguage.url,
+          icon: Icons.add_link_sharp,
+          id: 5,
+          widget: widget.fullPickerWidgetIcon.url,
+        ),
       );
     }
 
@@ -125,7 +154,10 @@ class _SheetSelectState extends State<SelectSheet> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(itemList[index].icon, size: 30),
+                if (itemList[index].widget == null)
+                  Icon(itemList[index].icon, size: 30)
+                else
+                  itemList[index].widget!,
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(itemList[index].name),
