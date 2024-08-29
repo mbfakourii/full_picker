@@ -565,24 +565,6 @@ Future<Uint8List?> cropImage({
   final CroppedFile? croppedFile = await ImageCropper().cropImage(
     sourcePath: sourcePath,
     compressQuality: 20,
-    aspectRatioPresets: Platform.isAndroid
-        ? <CropAspectRatioPreset>[
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9,
-          ]
-        : <CropAspectRatioPreset>[
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio5x3,
-            CropAspectRatioPreset.ratio5x4,
-            CropAspectRatioPreset.ratio7x5,
-            CropAspectRatioPreset.ratio16x9,
-          ],
     uiSettings: <PlatformUiSettings>[
       AndroidUiSettings(
         toolbarTitle: globalFullPickerLanguage.cropper,
@@ -592,9 +574,26 @@ Future<Uint8List?> cropImage({
         toolbarWidgetColor: Theme.of(context).colorScheme.primary,
         initAspectRatio: CropAspectRatioPreset.original,
         lockAspectRatio: false,
+        aspectRatioPresets: <CropAspectRatioPresetData>[
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9,
+        ],
       ),
       IOSUiSettings(
         title: globalFullPickerLanguage.cropper,
+        aspectRatioPresets: <CropAspectRatioPresetData>[
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9,
+        ],
       ),
     ],
   );
