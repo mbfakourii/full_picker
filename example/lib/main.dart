@@ -100,9 +100,11 @@ class _ExonFilePicker extends State<FilePickerTest> {
                   padding: const EdgeInsets.all(2),
                   child: Row(
                     children: <Widget>[
-                      Text(
-                        'Output :\n\n$info',
-                        style: const TextStyle(fontSize: 18),
+                      Expanded(
+                        child: Text(
+                          'Output :\n\n$info',
+                          style: const TextStyle(fontSize: 18),
+                        ),
                       ),
                     ],
                   ),

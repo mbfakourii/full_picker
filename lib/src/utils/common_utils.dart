@@ -93,7 +93,12 @@ Future<FullPickerOutput?> getFiles({
     },
   )
       .catchError((final _, final __) {
-    showFullPickerToast(globalFullPickerLanguage.denyAccessPermission, context);
+    if (context.mounted) {
+      showFullPickerToast(
+        globalFullPickerLanguage.denyAccessPermission,
+        context,
+      );
+    }
     return null;
   });
 
@@ -171,15 +176,6 @@ Future<FullPickerOutput?> getFiles({
         if (!Pl.isWeb) {
           if (file.path != null) {
             files.add(File(cropFile?.path ?? file.path!));
-
-            xFiles.add(
-              XFile(
-                cropFile?.path ?? file.path!,
-                bytes: byte,
-                name: name.last,
-                mimeType: lookupMimeType(name.last!, headerBytes: byte),
-              ),
-            );
           }
         }
 
@@ -192,14 +188,18 @@ Future<FullPickerOutput?> getFiles({
                   mimeType: lookupMimeType(name.last!, headerBytes: byte),
                   path: () {
                     try {
-                      return file.path;
+                      return cropFile?.path ?? file.path!;
                     } catch (_) {
                       return null;
                     }
                   }(),
                 )
               : XFile(
-                  videoCompressorFile?.path ?? file.path ?? '',
+                  videoCompressorFile?.path ??
+                      cropFile?.path ??
+                      file.path ??
+                      '',
+                  bytes: byte,
                   name: name.last,
                   mimeType: lookupMimeType(name.last!, headerBytes: byte),
                 ),
