@@ -144,6 +144,8 @@ Future<FullPickerOutput?> getFiles({
           }
         }
 
+        XFile? cropFile;
+
         /// image cropper
         if ((file.extension == 'jpg' ||
                 file.extension == 'png' ||
@@ -153,26 +155,26 @@ Future<FullPickerOutput?> getFiles({
             if (!context.mounted) {
               return null;
             }
-            final Uint8List? byteCrop = await cropImage(
+            cropFile = await cropImage(
               context: context,
               sourcePath: file.path!,
             );
 
-            if (byteCrop == null) {
+            if (cropFile == null) {
               return null;
             }
 
-            byte = byteCrop;
+            byte = await cropFile.readAsBytes();
           } catch (_) {}
         }
 
         if (!Pl.isWeb) {
           if (file.path != null) {
-            files.add(File(file.path!));
+            files.add(File(cropFile?.path ?? file.path!));
 
             xFiles.add(
               XFile(
-                file.path!,
+                cropFile?.path ?? file.path!,
                 bytes: byte,
                 name: name.last,
                 mimeType: lookupMimeType(name.last!, headerBytes: byte),
@@ -558,7 +560,7 @@ Future<File?> videoCompress({
 
 /// web does not support crop Image
 /// crop image
-Future<Uint8List?> cropImage({
+Future<XFile?> cropImage({
   required final BuildContext context,
   required final String sourcePath,
 }) async {
@@ -599,7 +601,10 @@ Future<Uint8List?> cropImage({
   );
 
   try {
-    return await croppedFile!.readAsBytes();
+    return XFile(
+      croppedFile!.path,
+      bytes: await croppedFile.readAsBytes(),
+    );
   } catch (_) {
     return null;
   }
