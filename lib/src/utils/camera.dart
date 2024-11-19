@@ -211,19 +211,21 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       final XFile file = XFile(filePath!);
 
       if (mounted) {
+        final String fileName = getFileNameFullPicker(filePath);
+
         Navigator.pop(
           context,
           FullPickerOutput(
             bytes: <Uint8List?>[await file.readAsBytes()],
             fileType: FullPickerType.image,
-            name: <String?>['${widget.prefixName}.jpg'],
+            name: <String?>[fileName],
             file: <File?>[File(file.path)],
             xFile: <XFile?>[
               getFillXFile(
                 file: File(file.path),
                 bytes: await file.readAsBytes(),
                 mime: 'image/jpeg',
-                name: '${widget.prefixName}.jpg',
+                name: fileName,
               ),
             ],
           ),

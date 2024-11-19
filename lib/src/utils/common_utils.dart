@@ -12,6 +12,7 @@ import 'package:full_picker/src/utils/pl.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:light_compressor/light_compressor.dart';
 import 'package:mime/mime.dart';
+import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
 /// show sheet
@@ -635,3 +636,5 @@ XFile getFillXFile({
     return XFile(file!.path, mimeType: mime, name: name);
   }
 }
+
+String getFileNameFullPicker(final String pathh) => basename(pathh);
