@@ -428,10 +428,12 @@ Future<void> getFullPicker({
     }
   } else if (id == 4) {
     // Voice Recorder and isDismissible is false because recording may be closed unintentionally!
+    final String fileName = generateFileName('audio');
+
     showSheet(
       VoiceRecorderSheet(
         context: context,
-        voiceFileName: '${prefixName}_1.m4a',
+        voiceFileName: '$prefixName$fileName.m4a',
         onSelected: (final FullPickerOutput value) {
           checkError(
             inSheet: inSheet,
@@ -638,3 +640,20 @@ XFile getFillXFile({
 }
 
 String getFileNameFullPicker(final String pathh) => basename(pathh);
+
+String getFileExtensionFullPicker(final String pathh) => extension(pathh);
+
+String generateFileName(final String fileType) {
+  final DateTime now = DateTime.now();
+
+  final String year = now.year.toString();
+  final String month = now.month.toString().padLeft(2, '0');
+  final String day = now.day.toString().padLeft(2, '0');
+  final String hour = now.hour.toString().padLeft(2, '0');
+  final String minute = now.minute.toString().padLeft(2, '0');
+  final String second = now.second.toString().padLeft(2, '0');
+
+  final String fileName = '${fileType}_$year$month${day}_$hour$minute$second';
+
+  return fileName;
+}
