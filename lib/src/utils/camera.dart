@@ -219,14 +219,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
           FullPickerOutput(
             bytes: <Uint8List?>[await file.readAsBytes()],
             fileType: FullPickerType.image,
-            name: <String?>[fileName+extension],
+            name: <String?>[fileName + extension],
             file: <File?>[File(file.path)],
             xFile: <XFile?>[
               getFillXFile(
                 file: File(file.path),
                 bytes: await file.readAsBytes(),
                 mime: 'image/jpeg',
-                name: fileName+extension,
+                name: fileName + extension,
               ),
             ],
           ),

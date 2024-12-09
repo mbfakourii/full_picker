@@ -433,7 +433,7 @@ Future<void> getFullPicker({
     showSheet(
       VoiceRecorderSheet(
         context: context,
-        voiceFileName: '$prefixName$fileName.m4a',
+        voiceFileName: '$prefixName$fileName.wav',
         onSelected: (final FullPickerOutput value) {
           checkError(
             inSheet: inSheet,

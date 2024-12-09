@@ -67,76 +67,78 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
   }
 
   @override
-  Widget build(final BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            StopWatchTimer.getDisplayTime(recordTime),
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _addButton(
-                  Icons.close,
-                  () {
-                    Navigator.pop(context);
-                  },
-                  30,
-                  false,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30),
-                  child: _addButton(
-                    recordIcon,
+  Widget build(final BuildContext context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              StopWatchTimer.getDisplayTime(recordTime),
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _addButton(
+                    Icons.close,
                     () {
-                      if (started) {
-                        _pausePlay();
+                      Navigator.pop(context);
+                    },
+                    30,
+                    false,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    child: _addButton(
+                      recordIcon,
+                      () {
+                        if (started) {
+                          _pausePlay();
+                        } else {
+                          _startRecord();
+                        }
+                      },
+                      40,
+                      true,
+                    ),
+                  ),
+                  _addButton(
+                    Icons.stop,
+                    () async {
+                      /// get voice record data
+                      await _stopRecord();
+
+                      if (lastUint8List != null) {
+                        userClose = false;
+                        widget.onSelected.call(
+                          FullPickerOutput(
+                            bytes: <Uint8List?>[lastUint8List],
+                            fileType: FullPickerType.voiceRecorder,
+                            name: <String?>[widget.voiceFileName],
+                            file: <File?>[lastFile],
+                            xFile: <XFile?>[
+                              getFillXFile(
+                                file: lastFile,
+                                bytes: lastUint8List,
+                                mime: 'audio/wav',
+                                name: widget.voiceFileName,
+                              ),
+                            ],
+                          ),
+                        );
                       } else {
-                        _startRecord();
+                        _showNotStartToast();
                       }
                     },
-                    40,
-                    true,
+                    30,
+                    false,
                   ),
-                ),
-                _addButton(
-                  Icons.stop,
-                  () async {
-                    /// get voice record data
-                    await _stopRecord();
-
-                    if (lastUint8List != null) {
-                      userClose = false;
-                      widget.onSelected.call(
-                        FullPickerOutput(
-                          bytes: <Uint8List?>[lastUint8List],
-                          fileType: FullPickerType.voiceRecorder,
-                          name: <String?>[widget.voiceFileName],
-                          file: <File?>[lastFile],
-                          xFile: <XFile?>[
-                            getFillXFile(
-                              file: lastFile,
-                              bytes: lastUint8List,
-                              mime: Pl.isWeb ? 'audio/wav' : 'audio/mp4',
-                              name: widget.voiceFileName,
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      _showNotStartToast();
-                    }
-                  },
-                  30,
-                  false,
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 
   /// add voice record buttons
@@ -178,10 +180,13 @@ class _SheetSelectState extends State<VoiceRecorderSheet> {
       });
 
       await _record.start(
-        RecordConfig(encoder: Pl.isWeb ? AudioEncoder.wav : AudioEncoder.aacLc),
+        const RecordConfig(
+          encoder: AudioEncoder.wav,
+          numChannels: 1,
+        ),
         path: Pl.isWeb
             ? ''
-            : '${(await path_provider.getTemporaryDirectory()).path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a',
+            : '${(await path_provider.getTemporaryDirectory()).path}/audio_${DateTime.now().millisecondsSinceEpoch}.wav',
       );
     }
   }
