@@ -578,6 +578,7 @@ Future<XFile?> cropImage({
         backgroundColor: Theme.of(context).colorScheme.surface,
         toolbarWidgetColor: Theme.of(context).colorScheme.primary,
         initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false,
         aspectRatioPresets: <CropAspectRatioPresetData>[
           CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
