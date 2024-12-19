@@ -1,3 +1,8 @@
+## 2.1.3
+
+* Upgrade package dependencies
+* Fix warning in flutter 3.27.0
+
 ## 2.1.2
 
 * Upgrade package dependencies
