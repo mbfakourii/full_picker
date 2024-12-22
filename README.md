@@ -105,7 +105,7 @@ If you need to crop the image (only support Android And IOS), add the following
 <activity
     android:name="com.yalantis.ucrop.UCropActivity"
     android:screenOrientation="portrait"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+    android:theme="@style/Ucrop.CropTheme"/>
 ````
 
 ### iOS
