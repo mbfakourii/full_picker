@@ -1,3 +1,7 @@
+## 2.1.5
+
+* Increase image_cropper version
+
 ## 2.1.4
 
 * Upgrade package dependencies
