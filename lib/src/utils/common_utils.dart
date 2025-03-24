@@ -376,6 +376,7 @@ Future<void> getFullPicker({
           imageCamera: imageCamera,
           videoCamera: videoCamera,
           prefixName: prefixName,
+          imageCropper: imageCropper,
         ),
       ),
     );

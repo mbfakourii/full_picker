@@ -62,6 +62,12 @@ dependencies:
   # Path
   path: ^1.9.0
 
+  # Device orientation
+  device_orientation: ^1.0.0
+
+  # Image
+  image: ^4.5.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

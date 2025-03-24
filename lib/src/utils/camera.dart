@@ -3,20 +3,24 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
+import 'package:device_orientation/device_orientation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:full_picker/full_picker.dart';
 import 'package:full_picker/src/utils/pl.dart';
+import 'package:image/image.dart' as img;
 
 /// Custom Camera for Image and Video
 class Camera extends StatefulWidget {
   const Camera({
+    required this.imageCropper,
     required this.imageCamera,
     required this.videoCamera,
     required this.prefixName,
     super.key,
   });
 
+  final bool imageCropper;
   final bool videoCamera;
   final bool imageCamera;
   final String prefixName;
@@ -37,6 +41,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   IconData flashLightIcon = Icons.flash_auto;
 
+  StreamSubscription<dynamic>? _subscription;
+  DeviceOrientation currentOrientation = DeviceOrientation.portraitUp;
+
   @override
   void initState() {
     super.initState();
@@ -46,8 +53,41 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
+  Future<File> rotateWrongOrientedImage(
+    final String imagePath,
+    final DeviceOrientation orientation,
+  ) async {
+    final File originalFile = File(imagePath);
+    final Uint8List imageBytes = await originalFile.readAsBytes();
+    final img.Image? originalImage = img.decodeImage(imageBytes);
+
+    img.Image fixedImage;
+
+    if (orientation == DeviceOrientation.portraitUp) {
+      fixedImage = img.copyRotate(originalImage!, angle: 0);
+    } else if (orientation == DeviceOrientation.landscapeLeft) {
+      fixedImage = img.copyRotate(originalImage!, angle: 90);
+    } else if (orientation == DeviceOrientation.portraitDown) {
+      fixedImage = img.copyRotate(originalImage!, angle: 180);
+    } else if (orientation == DeviceOrientation.landscapeRight) {
+      fixedImage = img.copyRotate(originalImage!, angle: -90);
+    } else {
+      fixedImage = img.copyRotate(originalImage!, angle: 0);
+    }
+
+    final File fixedFile =
+        await originalFile.writeAsBytes(img.encodeJpg(fixedImage));
+
+    return fixedFile;
+  }
+
   /// init Camera
   Future<void> _init() async {
+    _subscription =
+        deviceOrientation$.listen((final DeviceOrientation orientation) {
+      currentOrientation = orientation;
+    });
+
     try {
       WidgetsFlutterBinding.ensureInitialized();
       try {
@@ -74,6 +114,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
 
     controller?.dispose();
+    _subscription?.cancel();
 
     super.dispose();
   }
@@ -203,12 +244,34 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   /// Take Picture
   void onTakePictureButtonPressed() {
+    final DeviceOrientation orientation = currentOrientation;
+
     takePicture().then((final String? filePath) async {
       if (filePath == '') {
         return;
       }
+      XFile file;
 
-      final XFile file = XFile(filePath!);
+      if (firstCamera) {
+        file = XFile(
+          (await rotateWrongOrientedImage(filePath!, orientation)).path,
+        );
+      } else {
+        file = XFile(filePath!);
+      }
+
+      if (widget.imageCropper) {
+        final XFile? cropFile = await cropImage(
+          context: context,
+          sourcePath: file.path,
+        );
+
+        if (cropFile == null) {
+          return null;
+        } else {
+          file = cropFile;
+        }
+      }
 
       if (mounted) {
         final String extension = getFileExtensionFullPicker(file.path);
