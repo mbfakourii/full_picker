@@ -43,6 +43,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   StreamSubscription<dynamic>? _subscription;
   DeviceOrientation currentOrientation = DeviceOrientation.portraitUp;
+  DeviceOrientation? lockedOrientation;
 
   @override
   void initState() {
@@ -112,6 +113,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+
+    if (lockedOrientation != null) {
+      _unlockOrientation();
+    }
 
     controller?.dispose();
     _subscription?.cancel();
@@ -244,6 +249,36 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     unawaited(_setFlashLightIcon(context));
   }
 
+  Future<void> _lockOrientation() async {
+    lockedOrientation = currentOrientation;
+
+    try {
+      await controller?.lockCaptureOrientation(
+        toggleLandscapeOrientation(currentOrientation),
+      );
+    } catch (_) {}
+  }
+
+  DeviceOrientation toggleLandscapeOrientation(
+    final DeviceOrientation currentOrientation,
+  ) {
+    if (currentOrientation == DeviceOrientation.landscapeLeft) {
+      return DeviceOrientation.landscapeRight;
+    } else if (currentOrientation == DeviceOrientation.landscapeRight) {
+      return DeviceOrientation.landscapeLeft;
+    } else {
+      return currentOrientation;
+    }
+  }
+
+  Future<void> _unlockOrientation() async {
+    lockedOrientation = null;
+
+    try {
+      await controller?.unlockCaptureOrientation();
+    } catch (_) {}
+  }
+
   /// Take Picture
   void onTakePictureButtonPressed() {
     final DeviceOrientation orientation = currentOrientation;
@@ -303,6 +338,9 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   /// Stop Video Recording
   Future<void> onStopButtonPressed() async {
     stopVideoClick = true;
+
+    await _unlockOrientation();
+
     await stopVideoRecording().then((final XFile? file) async {
       if (file == null) {
         return;
@@ -359,8 +397,11 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     }
 
     try {
+      await _lockOrientation();
+
       await controller!.startVideoRecording();
     } on CameraException catch (e) {
+      await _unlockOrientation();
       _showCameraException(e);
       return;
     }
@@ -435,6 +476,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
                   toggleCameraAndTextVisibility,
               child: Text(
                 globalFullPickerLanguage.tapForPhotoHoldForVideo,
+                textAlign: TextAlign.center,
                 style: const TextStyle(color: Color(0xa3ffffff), fontSize: 20),
               ),
             ),
