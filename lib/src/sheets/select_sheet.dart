@@ -136,37 +136,40 @@ class _SheetSelectState extends State<SelectSheet> {
   int crossAxisCount = 2;
 
   @override
-  Widget build(final BuildContext context) => GridView.builder(
-        padding: const EdgeInsets.only(bottom: 22),
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          mainAxisExtent: 95,
-          childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height / childAspectRatio),
-        ),
-        itemCount: itemList.length,
-        itemBuilder: (final BuildContext context, final int index) => Material(
-          color: Colors.transparent,
-          child: InkWell(
-            customBorder: const CircleBorder(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                if (itemList[index].widget == null)
-                  Icon(itemList[index].icon, size: 30)
-                else
-                  itemList[index].widget!,
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(itemList[index].name),
-                ),
-              ],
+  Widget build(final BuildContext context) => SafeArea(
+        child: GridView.builder(
+          padding: const EdgeInsets.only(bottom: 22),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            mainAxisExtent: 95,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.height / childAspectRatio),
+          ),
+          itemCount: itemList.length,
+          itemBuilder: (final BuildContext context, final int index) =>
+              Material(
+            color: Colors.transparent,
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (itemList[index].widget == null)
+                    Icon(itemList[index].icon, size: 30)
+                  else
+                    itemList[index].widget!,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(itemList[index].name),
+                  ),
+                ],
+              ),
+              onTap: () {
+                goPage(itemList[index]);
+              },
             ),
-            onTap: () {
-              goPage(itemList[index]);
-            },
           ),
         ),
       );

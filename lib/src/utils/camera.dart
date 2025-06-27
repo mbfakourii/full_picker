@@ -142,12 +142,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        children: <Widget>[
-          _cameraPreviewWidget(),
-          _close(),
-          _buttons(context),
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            _cameraPreviewWidget(),
+            _close(),
+            _buttons(context),
+          ],
+        ),
       ),
     );
   }
