@@ -42,6 +42,7 @@ FileType extensionType(final String extension) {
       extension == 'gif' ||
       extension == 'jpeg' ||
       extension == 'jpg' ||
+      extension == 'heic' ||
       extension == 'png') {
     return FileType.image;
   } else if (extension == 'avi' ||
@@ -128,11 +129,11 @@ Future<FullPickerOutput?> getFiles({
         }
 
         // for counter
-        if (extensionType(file.extension!) == FileType.video) {
+        if (extensionType(file.extension!.toLowerCase()) == FileType.video) {
           numberVideo = numberVideo + 1;
         }
 
-        if (extensionType(file.extension!) == FileType.image) {
+        if (extensionType(file.extension!.toLowerCase()) == FileType.image) {
           numberPicture = numberPicture + 1;
         }
 
@@ -155,6 +156,7 @@ Future<FullPickerOutput?> getFiles({
         /// image cropper
         if ((file.extension == 'jpg' ||
                 file.extension == 'png' ||
+                (file.extension?.toLowerCase() ?? '') == 'heic' ||
                 file.extension == 'jpeg') &&
             imageCropper) {
           try {
@@ -309,6 +311,7 @@ Future<void> getFullPicker({
           'png',
           'gif',
           'bmp',
+          'heic',
         ],
         multiFile: multiFile,
         onError: onError,
@@ -328,6 +331,7 @@ Future<void> getFullPicker({
           'jpeg',
           'jpg',
           'png',
+          'heic',
         ],
         multiFile: multiFile,
         inSheet: inSheet,
