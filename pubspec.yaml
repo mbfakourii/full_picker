@@ -39,7 +39,7 @@ dependencies:
   light_compressor: ^2.2.0
 
   # Recorder
-  record: ^5.2.0
+  record: ^6.0.0
 
   # Stop watch timer
   stop_watch_timer: ^3.1.1

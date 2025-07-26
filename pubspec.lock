@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: async
-      sha256: d2872f9c19731c2e5f10444b14686eb7cc85c76274bd6c16e1816bff9a3bab63
+      sha256: "758e6d74e971c3e5aceb4110bfd6698efc7f501675bcfe0c775459a8140750eb"
       url: "https://pub.dev"
     source: hosted
-    version: "2.12.0"
+    version: "2.13.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -117,10 +117,10 @@ packages:
     dependency: transitive
     description:
       name: fake_async
-      sha256: "6a95e56b2449df2273fd8c45a662d6947ce1ebb7aafe80e550a3f68297f3cacc"
+      sha256: "5368f224a74523e8d2e7399ea1638b37aecfca824a3cc4dfdf77bf1fa905ac44"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.2"
+    version: "1.3.3"
   ffi:
     dependency: transitive
     description:
@@ -228,10 +228,10 @@ packages:
     dependency: transitive
     description:
       name: leak_tracker
-      sha256: c35baad643ba394b40aac41080300150a4f08fd0fd6a10378f8f7c6bc161acec
+      sha256: "6bb818ecbdffe216e81182c2f0714a2e62b593f4a4f13098713ff1685dfb6ab0"
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.8"
+    version: "10.0.9"
   leak_tracker_flutter_testing:
     dependency: transitive
     description:
@@ -388,34 +388,42 @@ packages:
     dependency: "direct main"
     description:
       name: record
-      sha256: "8cb57763d954624fbc673874930c6f1ceca3baaf9bfee24b25da6fd451362394"
+      sha256: daeb3f9b3fea9797094433fe6e49a879d8e4ca4207740bc6dc7e4a58764f0817
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.0"
+    version: "6.0.0"
   record_android:
     dependency: transitive
     description:
       name: record_android
-      sha256: "0b4739a2502fff402b0ac0ff1d6b2740854d116d78e06a4a16b3989821f84446"
+      sha256: "97d7122455f30de89a01c6c244c839085be6b12abca251fc0e78f67fed73628b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
-  record_darwin:
+    version: "1.3.3"
+  record_ios:
     dependency: transitive
     description:
-      name: record_darwin
-      sha256: e487eccb19d82a9a39cd0126945cfc47b9986e0df211734e2788c95e3f63c82c
+      name: record_ios
+      sha256: "73706ebbece6150654c9d6f57897cf9b622c581148304132ba85dba15df0fdfb"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.0.0"
   record_linux:
     dependency: transitive
     description:
       name: record_linux
-      sha256: "7d0e70cd51635128fe9d37d89bafd6011d7cbba9af8dc323079ae60f23546aef"
+      sha256: "0626678a092c75ce6af1e32fe7fd1dea709b92d308bc8e3b6d6348e2430beb95"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "1.1.1"
+  record_macos:
+    dependency: transitive
+    description:
+      name: record_macos
+      sha256: "02240833fde16c33fcf2c589f3e08d4394b704761b4a3bb609d872ff3043fbbd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   record_platform_interface:
     dependency: transitive
     description:
@@ -428,18 +436,18 @@ packages:
     dependency: transitive
     description:
       name: record_web
-      sha256: "10cb041349024ce4256e11dd35874df26d8b45b800678f2f51fd1318901adc64"
+      sha256: a12856d0b3dd03d336b4b10d7520a8b3e21649a06a8f95815318feaa8f07adbb
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.4"
+    version: "1.1.9"
   record_windows:
     dependency: transitive
     description:
       name: record_windows
-      sha256: "7bce0ac47454212ca8bfa72791d8b6a951f2fb0d4b953b64443c014227f035b4"
+      sha256: "85a22fc97f6d73ecd67c8ba5f2f472b74ef1d906f795b7970f771a0914167e99"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.6"
   rxdart:
     dependency: transitive
     description:
@@ -569,10 +577,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: "0968250880a6c5fe7edc067ed0a13d4bae1577fe2771dcf3010d52c4a9d3ca14"
+      sha256: ddfa8d30d89985b96407efce8acbdd124701f96741f2d981ca860662f1c0dc02
       url: "https://pub.dev"
     source: hosted
-    version: "14.3.1"
+    version: "15.0.0"
   web:
     dependency: transitive
     description:
