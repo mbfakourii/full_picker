@@ -33,7 +33,7 @@ dependencies:
   image_cropper: ^8.1.0
 
   # File Picker
-  file_picker: ^8.0.3
+  file_picker: ^10.2.1
 
   # Compressor Video
   light_compressor: ^2.2.0
